@@ -44,11 +44,7 @@
       <artifactId>quartz-oracle</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.quartz-scheduler.internal</groupId>
-      <artifactId>quartz-weblogic</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+
     <dependency>
       <groupId>org.quartz-scheduler.internal</groupId>
       <artifactId>quartz-plugins</artifactId>
