@@ -69,21 +69,21 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
 import javax.xml.bind.DatatypeConverter;
 
 
 /**
  * Parses an XML file that declares Jobs and their schedules (Triggers), and processes the related data.
- * 
+ * <p>
  * The xml document must conform to the format defined in
  * "job_scheduling_data_2_0.xsd"
- * 
+ * <p>
  * The same instance can be used again and again, however a single instance is not thread-safe.
- * 
+ *
  * @author James House
  * @author Past contributions from <a href="mailto:bonhamcm@thirdeyeconsulting.com">Chris Bonham</a>
  * @author Past contributions from pl47ypus
- * 
  * @since Quartz 1.8
  */
 public class XMLSchedulingDataProcessor implements ErrorHandler {
@@ -98,7 +98,7 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
     public static final String QUARTZ_NS = "http://www.quartz-scheduler.org/xml/JobSchedulingData";
 
     public static final String QUARTZ_SCHEMA_WEB_URL = "http://www.quartz-scheduler.org/xml/job_scheduling_data_2_0.xsd";
-    
+
     public static final String QUARTZ_XSD_PATH_IN_JAR = "org/quartz/xml/job_scheduling_data_2_0.xsd";
 
     public static final String QUARTZ_XML_DEFAULT_FILE_NAME = "quartz_data.xml";
@@ -123,21 +123,21 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
     // scheduling commands
     protected List<JobDetail> loadedJobs = new LinkedList<JobDetail>();
     protected List<MutableTrigger> loadedTriggers = new LinkedList<MutableTrigger>();
-    
+
     // directives
     private boolean overWriteExistingData = true;
     private boolean ignoreDuplicates = false;
 
     protected Collection<Exception> validationExceptions = new ArrayList<Exception>();
 
-    
+
     protected ClassLoadHelper classLoadHelper;
     protected List<String> jobGroupsToNeverDelete = new LinkedList<String>();
     protected List<String> triggerGroupsToNeverDelete = new LinkedList<String>();
-    
+
     private DocumentBuilder docBuilder = null;
     private XPath xpath = null;
-    
+
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     /*
@@ -147,33 +147,34 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
      * 
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      */
-     
+
     /**
      * Constructor for JobSchedulingDataLoader.
-     * 
-     * @param clh               class-loader helper to share with digester.
-     * @throws ParserConfigurationException if the XML parser cannot be configured as needed. 
+     *
+     * @param clh class-loader helper to share with digester.
+     * @throws ParserConfigurationException if the XML parser cannot be configured as needed.
      */
     public XMLSchedulingDataProcessor(ClassLoadHelper clh) throws ParserConfigurationException {
         this.classLoadHelper = clh;
         initDocumentParser();
     }
-    
+
     /**
      * Initializes the XML parser.
-     * @throws ParserConfigurationException 
+     *
+     * @throws ParserConfigurationException
      */
-    protected void initDocumentParser() throws ParserConfigurationException  {
+    protected void initDocumentParser() throws ParserConfigurationException {
 
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 
         docBuilderFactory.setNamespaceAware(true);
         docBuilderFactory.setValidating(true);
-        
+
         docBuilderFactory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
-        
+
         docBuilderFactory.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaSource", resolveSchemaSource());
-        
+
         docBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
         docBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
         docBuilderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
@@ -182,44 +183,44 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
         docBuilderFactory.setExpandEntityReferences(false);
 
         docBuilder = docBuilderFactory.newDocumentBuilder();
-        
+
         docBuilder.setErrorHandler(this);
-        
-        NamespaceContext nsContext = new NamespaceContext()
-        {
-          public String getNamespaceURI(String prefix)
-          {
-              if (prefix == null)
-                  throw new IllegalArgumentException("Null prefix");
-              if (XMLConstants.XML_NS_PREFIX.equals(prefix))
-                  return XMLConstants.XML_NS_URI;
-              if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix))
-                  return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
-        
-              if ("q".equals(prefix))
-                  return QUARTZ_NS;
-        
-              return XMLConstants.NULL_NS_URI;
-          }
-        
-          public Iterator<?> getPrefixes(String namespaceURI)
-          {
-              // This method isn't necessary for XPath processing.
-              throw new UnsupportedOperationException();
-          }
-        
-          public String getPrefix(String namespaceURI)
-          {
-              // This method isn't necessary for XPath processing.
-              throw new UnsupportedOperationException();
-          }
-        
-        }; 
-        
+
+        NamespaceContext nsContext = new NamespaceContext() {
+
+            @Override
+            public String getNamespaceURI(String prefix) {
+                if (prefix == null)
+                    throw new IllegalArgumentException("Null prefix");
+                if (XMLConstants.XML_NS_PREFIX.equals(prefix))
+                    return XMLConstants.XML_NS_URI;
+                if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix))
+                    return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
+
+                if ("q".equals(prefix))
+                    return QUARTZ_NS;
+
+                return XMLConstants.NULL_NS_URI;
+            }
+
+            @Override
+            public Iterator<?> getPrefixes(String namespaceURI) {
+                // This method isn't necessary for XPath processing.
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public String getPrefix(String namespaceURI) {
+                // This method isn't necessary for XPath processing.
+                throw new UnsupportedOperationException();
+            }
+
+        };
+
         xpath = XPathFactory.newInstance().newXPath();
         xpath.setNamespaceContext(nsContext);
     }
-    
+
     protected Object resolveSchemaSource() {
         InputSource inputSource;
 
@@ -227,44 +228,43 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
         try {
             is = classLoadHelper.getResourceAsStream(QUARTZ_XSD_PATH_IN_JAR);
-        }  finally {
+        } finally {
             if (is != null) {
                 inputSource = new InputSource(is);
                 inputSource.setSystemId(QUARTZ_SCHEMA_WEB_URL);
                 log.debug("Utilizing schema packaged in local quartz distribution jar.");
-            }
-            else {
+            } else {
                 log.info("Unable to load local schema packaged in quartz distribution jar. Utilizing schema online at " + QUARTZ_SCHEMA_WEB_URL);
                 return QUARTZ_SCHEMA_WEB_URL;
             }
-                
+
         }
 
         return inputSource;
     }
 
     /**
-     * Whether the existing scheduling data (with same identifiers) will be 
-     * overwritten. 
-     * 
-     * If false, and <code>IgnoreDuplicates</code> is not false, and jobs or 
-     * triggers with the same names already exist as those in the file, an 
+     * Whether the existing scheduling data (with same identifiers) will be
+     * overwritten.
+     * <p>
+     * If false, and <code>IgnoreDuplicates</code> is not false, and jobs or
+     * triggers with the same names already exist as those in the file, an
      * error will occur.
-     * 
+     *
      * @see #isIgnoreDuplicates()
      */
     public boolean isOverWriteExistingData() {
         return overWriteExistingData;
     }
-    
+
     /**
-     * Whether the existing scheduling data (with same identifiers) will be 
-     * overwritten. 
-     * 
-     * If false, and <code>IgnoreDuplicates</code> is not false, and jobs or 
-     * triggers with the same names already exist as those in the file, an 
+     * Whether the existing scheduling data (with same identifiers) will be
+     * overwritten.
+     * <p>
+     * If false, and <code>IgnoreDuplicates</code> is not false, and jobs or
+     * triggers with the same names already exist as those in the file, an
      * error will occur.
-     * 
+     *
      * @see #setIgnoreDuplicates(boolean)
      */
     protected void setOverWriteExistingData(boolean overWriteExistingData) {
@@ -272,23 +272,23 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
     }
 
     /**
-     * If true (and <code>OverWriteExistingData</code> is false) then any 
-     * job/triggers encountered in this file that have names that already exist 
+     * If true (and <code>OverWriteExistingData</code> is false) then any
+     * job/triggers encountered in this file that have names that already exist
      * in the scheduler will be ignored, and no error will be produced.
-     * 
+     *
      * @see #isOverWriteExistingData()
-     */ 
+     */
     public boolean isIgnoreDuplicates() {
         return ignoreDuplicates;
     }
 
     /**
-     * If true (and <code>OverWriteExistingData</code> is false) then any 
-     * job/triggers encountered in this file that have names that already exist 
+     * If true (and <code>OverWriteExistingData</code> is false) then any
+     * job/triggers encountered in this file that have names that already exist
      * in the scheduler will be ignored, and no error will be produced.
-     * 
+     *
      * @see #setOverWriteExistingData(boolean)
-     */ 
+     */
     public void setIgnoreDuplicates(boolean ignoreDuplicates) {
         this.ignoreDuplicates = ignoreDuplicates;
     }
@@ -299,10 +299,10 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
      * delete the group is encountered.
      */
     public void addJobGroupToNeverDelete(String group) {
-        if(group != null)
+        if (group != null)
             jobGroupsToNeverDelete.add(group);
     }
-    
+
     /**
      * Remove the given group to the list of job groups that will never be
      * deleted by this processor, even if a pre-processing-command to
@@ -327,17 +327,17 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
      * delete the group is encountered.
      */
     public void addTriggerGroupToNeverDelete(String group) {
-        if(group != null)
+        if (group != null)
             triggerGroupsToNeverDelete.add(group);
     }
-    
+
     /**
      * Remove the given group to the list of trigger groups that will never be
      * deleted by this processor, even if a pre-processing-command to
      * delete the group is encountered.
      */
     public boolean removeTriggerGroupToNeverDelete(String group) {
-        if(group != null)
+        if (group != null)
             return triggerGroupsToNeverDelete.remove(group);
         return false;
     }
@@ -363,7 +363,6 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
     /**
      * Process the xml file in the default location (a file named
      * "quartz_jobs.xml" in the current working directory).
-     *  
      */
     protected void processFile() throws Exception {
         processFile(QUARTZ_XML_DEFAULT_FILE_NAME);
@@ -371,9 +370,8 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
     /**
      * Process the xml file named <code>fileName</code>.
-     * 
-     * @param fileName
-     *          meta data file name.
+     *
+     * @param fileName meta data file name.
      */
     protected void processFile(String fileName) throws Exception {
         processFile(fileName, getSystemIdForFileName(fileName));
@@ -382,7 +380,7 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
     /**
      * For the given <code>fileName</code>, attempt to expand it to its full path
      * for use as a system id.
-     * 
+     *
      * @see #getURL(String)
      * @see #processFile()
      * @see #processFile(String)
@@ -395,7 +393,7 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
             try {
                 new FileInputStream(file).close();
                 return file.toURI().toString();
-            }catch (IOException ignore) {
+            } catch (IOException ignore) {
                 return fileName;
             }
         } else {
@@ -409,25 +407,23 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
                 } catch (IOException ignore) {
                     return fileName;
                 }
-            }      
+            }
         }
     }
 
     /**
      * Returns an <code>URL</code> from the fileName as a resource.
-     * 
-     * @param fileName
-     *          file name.
+     *
+     * @param fileName file name.
      * @return an <code>URL</code> from the fileName as a resource.
      */
     protected URL getURL(String fileName) {
-        return classLoadHelper.getResource(fileName); 
+        return classLoadHelper.getResource(fileName);
     }
 
-    protected void prepForProcessing()
-    {
+    protected void prepForProcessing() {
         clearValidationExceptions();
-        
+
         setOverWriteExistingData(true);
         setIgnoreDuplicates(false);
 
@@ -435,48 +431,44 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
         jobsToDelete.clear();
         triggerGroupsToDelete.clear();
         triggersToDelete.clear();
-        
+
         loadedJobs.clear();
         loadedTriggers.clear();
     }
-    
+
     /**
      * Process the xmlfile named <code>fileName</code> with the given system
      * ID.
-     * 
-     * @param fileName
-     *          meta data file name.
-     * @param systemId
-     *          system ID.
+     *
+     * @param fileName meta data file name.
+     * @param systemId system ID.
      */
     protected void processFile(String fileName, String systemId)
-        throws ValidationException, ParserConfigurationException,
+            throws ValidationException, ParserConfigurationException,
             SAXException, IOException, SchedulerException,
             ClassNotFoundException, ParseException, XPathException {
 
         prepForProcessing();
-        
-        log.info("Parsing XML file: " + fileName + 
+
+        log.info("Parsing XML file: " + fileName +
                 " with systemId: " + systemId);
         InputSource is = new InputSource(getInputStream(fileName));
         is.setSystemId(systemId);
-        
+
         process(is);
-        
+
         maybeThrowValidationException();
     }
-    
+
     /**
      * Process the xmlfile named <code>fileName</code> with the given system
      * ID.
-     * 
-     * @param stream
-     *          an input stream containing the xml content.
-     * @param systemId
-     *          system ID.
+     *
+     * @param stream   an input stream containing the xml content.
+     * @param systemId system ID.
      */
     public void processStreamAndScheduleJobs(InputStream stream, String systemId, Scheduler sched)
-        throws ValidationException, ParserConfigurationException,
+            throws ValidationException, ParserConfigurationException,
             SAXException, XPathException, IOException, SchedulerException,
             ClassNotFoundException, ParseException {
 
@@ -493,13 +485,13 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
         maybeThrowValidationException();
     }
-    
+
     @SuppressWarnings("ConstantConditions")
     protected void process(InputSource is) throws SAXException, IOException, ParseException, XPathException, ClassNotFoundException {
-        
+
         // load the document 
         Document document = docBuilder.parse(is);
-        
+
         //
         // Extract pre-processing commands
         //
@@ -513,7 +505,7 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
         for (int i = 0; i < deleteJobGroupNodes.getLength(); i++) {
             Node node = deleteJobGroupNodes.item(i);
             String t = node.getTextContent();
-            if(t == null || (t = t.trim()).length() == 0)
+            if (t == null || (t = t.trim()).length() == 0)
                 continue;
             jobGroupsToDelete.add(t);
         }
@@ -527,7 +519,7 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
         for (int i = 0; i < deleteTriggerGroupNodes.getLength(); i++) {
             Node node = deleteTriggerGroupNodes.item(i);
             String t = node.getTextContent();
-            if(t == null || (t = t.trim()).length() == 0)
+            if (t == null || (t = t.trim()).length() == 0)
                 continue;
             triggerGroupsToDelete.add(t);
         }
@@ -543,8 +535,8 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
             String name = getTrimmedToNullString(xpath, "q:name", node);
             String group = getTrimmedToNullString(xpath, "q:group", node);
-            
-            if(name == null)
+
+            if (name == null)
                 throw new ParseException("Encountered a 'delete-job' command without a name specified.", -1);
             jobsToDelete.add(new JobKey(name, group));
         }
@@ -560,36 +552,34 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
             String name = getTrimmedToNullString(xpath, "q:name", node);
             String group = getTrimmedToNullString(xpath, "q:group", node);
-            
-            if(name == null)
+
+            if (name == null)
                 throw new ParseException("Encountered a 'delete-trigger' command without a name specified.", -1);
             triggersToDelete.add(new TriggerKey(name, group));
         }
-        
+
         //
         // Extract directives
         //
 
-        Boolean overWrite = getBoolean(xpath, 
+        Boolean overWrite = getBoolean(xpath,
                 "/q:job-scheduling-data/q:processing-directives/q:overwrite-existing-data", document);
-        if(overWrite == null) {
+        if (overWrite == null) {
             log.debug("Directive 'overwrite-existing-data' not specified, defaulting to " + isOverWriteExistingData());
-        }
-        else {
+        } else {
             log.debug("Directive 'overwrite-existing-data' specified as: " + overWrite);
             setOverWriteExistingData(overWrite);
         }
-        
-        Boolean ignoreDupes = getBoolean(xpath, 
+
+        Boolean ignoreDupes = getBoolean(xpath,
                 "/q:job-scheduling-data/q:processing-directives/q:ignore-duplicates", document);
-        if(ignoreDupes == null) {
+        if (ignoreDupes == null) {
             log.debug("Directive 'ignore-duplicates' not specified, defaulting to " + isIgnoreDuplicates());
-        }
-        else {
+        } else {
             log.debug("Directive 'ignore-duplicates' specified as: " + ignoreDupes);
             setIgnoreDuplicates(ignoreDupes);
         }
-        
+
         //
         // Extract Job definitions...
         //
@@ -615,29 +605,29 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
             Class<? extends Job> jobClass = classLoadHelper.loadClass(jobClassName, Job.class);
 
             JobDetail jobDetail = newJob(jobClass)
-                .withIdentity(jobName, jobGroup)
-                .withDescription(jobDescription)
-                .storeDurably(jobDurability)
-                .requestRecovery(jobRecoveryRequested)
-                .build();
-            
+                    .withIdentity(jobName, jobGroup)
+                    .withDescription(jobDescription)
+                    .storeDurably(jobDurability)
+                    .requestRecovery(jobRecoveryRequested)
+                    .build();
+
             NodeList jobDataEntries = (NodeList) xpath.evaluate(
                     "q:job-data-map/q:entry", jobDetailNode,
                     XPathConstants.NODESET);
-            
+
             for (int k = 0; k < jobDataEntries.getLength(); k++) {
                 Node entryNode = jobDataEntries.item(k);
                 String key = getTrimmedToNullString(xpath, "q:key", entryNode);
                 String value = getTrimmedToNullString(xpath, "q:value", entryNode);
                 jobDetail.getJobDataMap().put(key, value);
             }
-            
-            if(log.isDebugEnabled())
+
+            if (log.isDebugEnabled())
                 log.debug("Parsed job definition: " + jobDetail);
 
             addJobToSchedule(jobDetail);
         }
-        
+
         //
         // Extract Trigger definitions...
         //
@@ -659,25 +649,25 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
             String triggerJobGroup = getTrimmedToNullString(xpath, "q:job-group", triggerNode);
 
             int triggerPriority = Trigger.DEFAULT_PRIORITY;
-            if(triggerPriorityString != null)
+            if (triggerPriorityString != null)
                 triggerPriority = Integer.valueOf(triggerPriorityString);
-            
+
             String startTimeString = getTrimmedToNullString(xpath, "q:start-time", triggerNode);
             String startTimeFutureSecsString = getTrimmedToNullString(xpath, "q:start-time-seconds-in-future", triggerNode);
             String endTimeString = getTrimmedToNullString(xpath, "q:end-time", triggerNode);
 
             //QTZ-273 : use of DatatypeConverter.parseDateTime() instead of SimpleDateFormat
             Date triggerStartTime;
-            if(startTimeFutureSecsString != null)
+            if (startTimeFutureSecsString != null)
                 triggerStartTime = new Date(System.currentTimeMillis() + (Long.valueOf(startTimeFutureSecsString) * 1000L));
-            else 
+            else
                 triggerStartTime = (startTimeString == null || startTimeString.length() == 0 ? new Date() : DatatypeConverter.parseDateTime(startTimeString).getTime());
             Date triggerEndTime = endTimeString == null || endTimeString.length() == 0 ? null : DatatypeConverter.parseDateTime(endTimeString).getTime();
 
             TriggerKey triggerKey = triggerKey(triggerName, triggerGroup);
-            
+
             ScheduleBuilder<?> sched;
-            
+
             if (triggerNode.getNodeName().equals("simple")) {
                 String repeatCountString = getTrimmedToNullString(xpath, "q:repeat-count", triggerNode);
                 String repeatIntervalString = getTrimmedToNullString(xpath, "q:repeat-interval", triggerNode);
@@ -686,24 +676,23 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
                 long repeatInterval = repeatIntervalString == null ? 0 : Long.parseLong(repeatIntervalString);
 
                 sched = simpleSchedule()
-                    .withIntervalInMilliseconds(repeatInterval)
-                    .withRepeatCount(repeatCount);
-                
+                        .withIntervalInMilliseconds(repeatInterval)
+                        .withRepeatCount(repeatCount);
+
                 if (triggerMisfireInstructionConst != null && triggerMisfireInstructionConst.length() != 0) {
-                    if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_FIRE_NOW"))
-                        ((SimpleScheduleBuilder)sched).withMisfireHandlingInstructionFireNow();
-                    else if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT"))
-                        ((SimpleScheduleBuilder)sched).withMisfireHandlingInstructionNextWithExistingCount();
-                    else if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT"))
-                        ((SimpleScheduleBuilder)sched).withMisfireHandlingInstructionNextWithRemainingCount();
-                    else if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT"))
-                        ((SimpleScheduleBuilder)sched).withMisfireHandlingInstructionNowWithExistingCount();
-                    else if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_REMAINING_REPEAT_COUNT"))
-                        ((SimpleScheduleBuilder)sched).withMisfireHandlingInstructionNowWithRemainingCount();
-                    else if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_SMART_POLICY")) {
+                    if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_FIRE_NOW"))
+                        ((SimpleScheduleBuilder) sched).withMisfireHandlingInstructionFireNow();
+                    else if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT"))
+                        ((SimpleScheduleBuilder) sched).withMisfireHandlingInstructionNextWithExistingCount();
+                    else if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT"))
+                        ((SimpleScheduleBuilder) sched).withMisfireHandlingInstructionNextWithRemainingCount();
+                    else if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT"))
+                        ((SimpleScheduleBuilder) sched).withMisfireHandlingInstructionNowWithExistingCount();
+                    else if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_REMAINING_REPEAT_COUNT"))
+                        ((SimpleScheduleBuilder) sched).withMisfireHandlingInstructionNowWithRemainingCount();
+                    else if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_SMART_POLICY")) {
                         // do nothing.... (smart policy is default)
-                    }
-                    else
+                    } else
                         throw new ParseException("Unexpected/Unhandlable Misfire Instruction encountered '" + triggerMisfireInstructionConst + "', for trigger: " + triggerKey, -1);
                 }
             } else if (triggerNode.getNodeName().equals("cron")) {
@@ -713,17 +702,16 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
                 TimeZone tz = timezoneString == null ? null : TimeZone.getTimeZone(timezoneString);
 
                 sched = cronSchedule(cronExpression)
-                    .inTimeZone(tz);
+                        .inTimeZone(tz);
 
                 if (triggerMisfireInstructionConst != null && triggerMisfireInstructionConst.length() != 0) {
-                    if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_DO_NOTHING"))
-                        ((CronScheduleBuilder)sched).withMisfireHandlingInstructionDoNothing();
-                    else if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_FIRE_ONCE_NOW"))
-                        ((CronScheduleBuilder)sched).withMisfireHandlingInstructionFireAndProceed();
-                    else if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_SMART_POLICY")) {
+                    if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_DO_NOTHING"))
+                        ((CronScheduleBuilder) sched).withMisfireHandlingInstructionDoNothing();
+                    else if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_FIRE_ONCE_NOW"))
+                        ((CronScheduleBuilder) sched).withMisfireHandlingInstructionFireAndProceed();
+                    else if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_SMART_POLICY")) {
                         // do nothing.... (smart policy is default)
-                    }
-                    else
+                    } else
                         throw new ParseException("Unexpected/Unhandlable Misfire Instruction encountered '" + triggerMisfireInstructionConst + "', for trigger: " + triggerKey, -1);
                 }
             } else if (triggerNode.getNodeName().equals("calendar-interval")) {
@@ -735,88 +723,87 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
                 IntervalUnit repeatUnit = IntervalUnit.valueOf(repeatUnitString);
 
                 sched = calendarIntervalSchedule()
-                    .withInterval(repeatInterval, repeatUnit);
+                        .withInterval(repeatInterval, repeatUnit);
 
                 if (triggerMisfireInstructionConst != null && triggerMisfireInstructionConst.length() != 0) {
-                    if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_DO_NOTHING"))
-                        ((CalendarIntervalScheduleBuilder)sched).withMisfireHandlingInstructionDoNothing();
-                    else if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_FIRE_ONCE_NOW"))
-                        ((CalendarIntervalScheduleBuilder)sched).withMisfireHandlingInstructionFireAndProceed();
-                    else if(triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_SMART_POLICY")) {
+                    if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_DO_NOTHING"))
+                        ((CalendarIntervalScheduleBuilder) sched).withMisfireHandlingInstructionDoNothing();
+                    else if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_FIRE_ONCE_NOW"))
+                        ((CalendarIntervalScheduleBuilder) sched).withMisfireHandlingInstructionFireAndProceed();
+                    else if (triggerMisfireInstructionConst.equals("MISFIRE_INSTRUCTION_SMART_POLICY")) {
                         // do nothing.... (smart policy is default)
-                    }
-                    else
+                    } else
                         throw new ParseException("Unexpected/Unhandlable Misfire Instruction encountered '" + triggerMisfireInstructionConst + "', for trigger: " + triggerKey, -1);
                 }
             } else {
                 throw new ParseException("Unknown trigger type: " + triggerNode.getNodeName(), -1);
             }
 
-            
+
             MutableTrigger trigger = (MutableTrigger) newTrigger()
-                .withIdentity(triggerName, triggerGroup)
-                .withDescription(triggerDescription)
-                .forJob(triggerJobName, triggerJobGroup)
-                .startAt(triggerStartTime)
-                .endAt(triggerEndTime)
-                .withPriority(triggerPriority)
-                .modifiedByCalendar(triggerCalendarRef)
-                .withSchedule(sched)
-                .build();
+                    .withIdentity(triggerName, triggerGroup)
+                    .withDescription(triggerDescription)
+                    .forJob(triggerJobName, triggerJobGroup)
+                    .startAt(triggerStartTime)
+                    .endAt(triggerEndTime)
+                    .withPriority(triggerPriority)
+                    .modifiedByCalendar(triggerCalendarRef)
+                    .withSchedule(sched)
+                    .build();
 
             NodeList jobDataEntries = (NodeList) xpath.evaluate(
                     "q:job-data-map/q:entry", triggerNode,
                     XPathConstants.NODESET);
-            
+
             for (int k = 0; k < jobDataEntries.getLength(); k++) {
                 Node entryNode = jobDataEntries.item(k);
                 String key = getTrimmedToNullString(xpath, "q:key", entryNode);
                 String value = getTrimmedToNullString(xpath, "q:value", entryNode);
                 trigger.getJobDataMap().put(key, value);
             }
-            
-            if(log.isDebugEnabled())
+
+            if (log.isDebugEnabled())
                 log.debug("Parsed trigger definition: " + trigger);
-            
+
             addTriggerToSchedule(trigger);
         }
     }
-    
+
     protected String getTrimmedToNullString(XPath xpathToElement, String elementName, Node parentNode) throws XPathExpressionException {
         String str = (String) xpathToElement.evaluate(elementName,
                 parentNode, XPathConstants.STRING);
-        
-        if(str != null)
+
+        if (str != null)
             str = str.trim();
-        
-        if(str != null && str.length() == 0)
+
+        if (str != null && str.length() == 0)
             str = null;
-        
+
         return str;
     }
 
     protected Boolean getBoolean(XPath xpathToElement, String elementName, Document document) throws XPathExpressionException {
-        
+
         Node directive = (Node) xpathToElement.evaluate(elementName, document, XPathConstants.NODE);
 
-        if(directive == null || directive.getTextContent() == null)
+        if (directive == null || directive.getTextContent() == null)
             return null;
-        
+
         String val = directive.getTextContent();
-        if(val.equalsIgnoreCase("true") || val.equalsIgnoreCase("yes") || val.equalsIgnoreCase("y"))
+        if (val.equalsIgnoreCase("true") || val.equalsIgnoreCase("yes") || val.equalsIgnoreCase("y"))
             return Boolean.TRUE;
-        
+
         return Boolean.FALSE;
     }
 
     /**
      * Process the xml file in the default location, and schedule all of the
      * jobs defined within it.
-     * 
-     * <p>Note that we will set overWriteExistingJobs after the default xml is parsed. 
+     * <p>
+     * <p>Note that we will set overWriteExistingJobs after the default xml is parsed.
      */
     public void processFileAndScheduleJobs(Scheduler sched,
-            boolean overWriteExistingJobs) throws Exception {
+                                           boolean overWriteExistingJobs) throws Exception {
         String fileName = QUARTZ_XML_DEFAULT_FILE_NAME;
         processFile(fileName, getSystemIdForFileName(fileName));
         // The overWriteExistingJobs flag was set by processFile() -> prepForProcessing(), then by xml parsing, and then now
@@ -829,20 +816,18 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
     /**
      * Process the xml file in the given location, and schedule all of the
      * jobs defined within it.
-     * 
-     * @param fileName
-     *          meta data file name.
+     *
+     * @param fileName meta data file name.
      */
     public void processFileAndScheduleJobs(String fileName, Scheduler sched) throws Exception {
         processFileAndScheduleJobs(fileName, getSystemIdForFileName(fileName), sched);
     }
-    
+
     /**
      * Process the xml file in the given location, and schedule all of the
      * jobs defined within it.
-     * 
-     * @param fileName
-     *          meta data file name.
+     *
+     * @param fileName meta data file name.
      */
     public void processFileAndScheduleJobs(String fileName, String systemId, Scheduler sched) throws Exception {
         processFile(fileName, systemId);
@@ -852,18 +837,18 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
     /**
      * Returns a <code>List</code> of jobs loaded from the xml file.
-     * <p/>
-     * 
+     * <p>
+     *
      * @return a <code>List</code> of jobs.
      */
     protected List<JobDetail> getLoadedJobs() {
         return Collections.unmodifiableList(loadedJobs);
     }
-    
+
     /**
      * Returns a <code>List</code> of triggers loaded from the xml file.
-     * <p/>
-     * 
+     * <p>
+     *
      * @return a <code>List</code> of triggers.
      */
     protected List<MutableTrigger> getLoadedTriggers() {
@@ -872,30 +857,29 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
     /**
      * Returns an <code>InputStream</code> from the fileName as a resource.
-     * 
-     * @param fileName
-     *          file name.
+     *
+     * @param fileName file name.
      * @return an <code>InputStream</code> from the fileName as a resource.
      */
     protected InputStream getInputStream(String fileName) {
         return this.classLoadHelper.getResourceAsStream(fileName);
     }
-    
+
     protected void addJobToSchedule(JobDetail job) {
         loadedJobs.add(job);
     }
-    
+
     protected void addTriggerToSchedule(MutableTrigger trigger) {
         loadedTriggers.add(trigger);
     }
 
     private Map<JobKey, List<MutableTrigger>> buildTriggersByFQJobNameMap(List<MutableTrigger> triggers) {
-        
+
         Map<JobKey, List<MutableTrigger>> triggersByFQJobName = new HashMap<JobKey, List<MutableTrigger>>();
-        
-        for(MutableTrigger trigger: triggers) {
+
+        for (MutableTrigger trigger : triggers) {
             List<MutableTrigger> triggersOfJob = triggersByFQJobName.get(trigger.getJobKey());
-            if(triggersOfJob == null) {
+            if (triggersOfJob == null) {
                 triggersOfJob = new LinkedList<MutableTrigger>();
                 triggersByFQJobName.put(trigger.getJobKey(), triggersOfJob);
             }
@@ -904,12 +888,12 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
         return triggersByFQJobName;
     }
-    
-    protected void executePreProcessCommands(Scheduler scheduler) 
-        throws SchedulerException {
-        
-        for(String group: jobGroupsToDelete) {
-            if(group.equals("*")) {
+
+    protected void executePreProcessCommands(Scheduler scheduler)
+            throws SchedulerException {
+
+        for (String group : jobGroupsToDelete) {
+            if (group.equals("*")) {
                 log.info("Deleting all jobs in ALL groups.");
                 for (String groupName : scheduler.getJobGroupNames()) {
                     if (!jobGroupsToNeverDelete.contains(groupName)) {
@@ -918,9 +902,8 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
                         }
                     }
                 }
-            }
-            else {
-                if(!jobGroupsToNeverDelete.contains(group)) {
+            } else {
+                if (!jobGroupsToNeverDelete.contains(group)) {
                     log.info("Deleting all jobs in group: {}", group);
                     for (JobKey key : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(group))) {
                         scheduler.deleteJob(key);
@@ -928,9 +911,9 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
                 }
             }
         }
-        
-        for(String group: triggerGroupsToDelete) {
-            if(group.equals("*")) {
+
+        for (String group : triggerGroupsToDelete) {
+            if (group.equals("*")) {
                 log.info("Deleting all triggers in ALL groups.");
                 for (String groupName : scheduler.getTriggerGroupNames()) {
                     if (!triggerGroupsToNeverDelete.contains(groupName)) {
@@ -939,9 +922,8 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
                         }
                     }
                 }
-            }
-            else {
-                if(!triggerGroupsToNeverDelete.contains(group)) {
+            } else {
+                if (!triggerGroupsToNeverDelete.contains(group)) {
                     log.info("Deleting all triggers in group: {}", group);
                     for (TriggerKey key : scheduler.getTriggerKeys(GroupMatcher.triggerGroupEquals(group))) {
                         scheduler.unscheduleJob(key);
@@ -949,16 +931,16 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
                 }
             }
         }
-        
-        for(JobKey key: jobsToDelete) {
-            if(!jobGroupsToNeverDelete.contains(key.getGroup())) {
+
+        for (JobKey key : jobsToDelete) {
+            if (!jobGroupsToNeverDelete.contains(key.getGroup())) {
                 log.info("Deleting job: {}", key);
                 scheduler.deleteJob(key);
-            } 
+            }
         }
-        
-        for(TriggerKey key: triggersToDelete) {
-            if(!triggerGroupsToNeverDelete.contains(key.getGroup())) {
+
+        for (TriggerKey key : triggersToDelete) {
+            if (!triggerGroupsToNeverDelete.contains(key.getGroup())) {
                 log.info("Deleting trigger: {}", key);
                 scheduler.unscheduleJob(key);
             }
@@ -967,27 +949,25 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
     /**
      * Schedules the given sets of jobs and triggers.
-     * 
-     * @param sched
-     *          job scheduler.
-     * @exception SchedulerException
-     *              if the Job or Trigger cannot be added to the Scheduler, or
-     *              there is an internal Scheduler error.
+     *
+     * @param sched job scheduler.
+     * @throws SchedulerException if the Job or Trigger cannot be added to the Scheduler, or
+     *                            there is an internal Scheduler error.
      */
     @SuppressWarnings("ConstantConditions")
     protected void scheduleJobs(Scheduler sched)
-        throws SchedulerException {
-        
+            throws SchedulerException {
+
         List<JobDetail> jobs = new LinkedList<JobDetail>(getLoadedJobs());
-        List<MutableTrigger> triggers = new LinkedList<MutableTrigger>( getLoadedTriggers());
-        
+        List<MutableTrigger> triggers = new LinkedList<MutableTrigger>(getLoadedTriggers());
+
         log.info("Adding " + jobs.size() + " jobs, " + triggers.size() + " triggers.");
-        
+
         Map<JobKey, List<MutableTrigger>> triggersByFQJobName = buildTriggersByFQJobNameMap(triggers);
-        
+
         // add each job, and it's associated triggers
         Iterator<JobDetail> itr = jobs.iterator();
-        while(itr.hasNext()) {
+        while (itr.hasNext()) {
             JobDetail detail = itr.next();
             itr.remove(); // remove jobs as we handle them...
 
@@ -1007,47 +987,46 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
             }
 
             if ((dupeJ != null)) {
-                if(!isOverWriteExistingData() && isIgnoreDuplicates()) {
+                if (!isOverWriteExistingData() && isIgnoreDuplicates()) {
                     log.info("Not overwriting existing job: " + dupeJ.getKey());
                     continue; // just ignore the entry
                 }
-                if(!isOverWriteExistingData() && !isIgnoreDuplicates()) {
+                if (!isOverWriteExistingData() && !isIgnoreDuplicates()) {
                     throw new ObjectAlreadyExistsException(detail);
                 }
             }
-            
+
             if (dupeJ != null) {
                 log.info("Replacing job: " + detail.getKey());
             } else {
                 log.info("Adding job: " + detail.getKey());
             }
-            
+
             List<MutableTrigger> triggersOfJob = triggersByFQJobName.get(detail.getKey());
-            
+
             if (!detail.isDurable() && (triggersOfJob == null || triggersOfJob.size() == 0)) {
                 if (dupeJ == null) {
                     throw new SchedulerException(
-                        "A new job defined without any triggers must be durable: " + 
-                        detail.getKey());
+                            "A new job defined without any triggers must be durable: " +
+                                    detail.getKey());
                 }
-                
-                if ((dupeJ.isDurable() && 
-                    (sched.getTriggersOfJob(
-                        detail.getKey()).size() == 0))) {
+
+                if ((dupeJ.isDurable() &&
+                        (sched.getTriggersOfJob(
+                                detail.getKey()).size() == 0))) {
                     throw new SchedulerException(
-                        "Can't change existing durable job without triggers to non-durable: " + 
-                        detail.getKey());
+                            "Can't change existing durable job without triggers to non-durable: " +
+                                    detail.getKey());
                 }
             }
-            
-            
-            if(dupeJ != null || detail.isDurable()) {
+
+
+            if (dupeJ != null || detail.isDurable()) {
                 if (triggersOfJob != null && triggersOfJob.size() > 0)
                     sched.addJob(detail, true, true);  // add the job regardless is durable or not b/c we have trigger to add
                 else
                     sched.addJob(detail, true, false); // add the job only if a replacement or durable, else exception will throw!
-            }
-            else {
+            } else {
                 boolean addJobWithFirstSchedule = true;
 
                 // Add triggers related to the job...
@@ -1106,39 +1085,37 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
                 }
             }
         }
-        
+
         // add triggers that weren't associated with a new job... (those we already handled were removed above)
-        for(MutableTrigger trigger: triggers) {
-            
-            if(trigger.getStartTime() == null) {
+        for (MutableTrigger trigger : triggers) {
+
+            if (trigger.getStartTime() == null) {
                 trigger.setStartTime(new Date());
             }
-            
+
             Trigger dupeT = sched.getTrigger(trigger.getKey());
             if (dupeT != null) {
-                if(isOverWriteExistingData()) {
+                if (isOverWriteExistingData()) {
                     if (log.isDebugEnabled()) {
                         log.debug(
-                            "Rescheduling job: " + trigger.getJobKey() + " with updated trigger: " + trigger.getKey());
+                                "Rescheduling job: " + trigger.getJobKey() + " with updated trigger: " + trigger.getKey());
                     }
-                }
-                else if(isIgnoreDuplicates()) {
+                } else if (isIgnoreDuplicates()) {
                     log.info("Not overwriting existing trigger: " + dupeT.getKey());
                     continue; // just ignore the trigger 
-                }
-                else {
+                } else {
                     throw new ObjectAlreadyExistsException(trigger);
                 }
-                
-                if(!dupeT.getJobKey().equals(trigger.getJobKey())) {
+
+                if (!dupeT.getJobKey().equals(trigger.getJobKey())) {
                     log.warn("Possibly duplicately named ({}) triggers in jobs xml file! ", trigger.getKey());
                 }
-                
+
                 sched.rescheduleJob(trigger.getKey(), trigger);
             } else {
                 if (log.isDebugEnabled()) {
                     log.debug(
-                        "Scheduling job: " + trigger.getJobKey() + " with trigger: " + trigger.getKey());
+                            "Scheduling job: " + trigger.getJobKey() + " with trigger: " + trigger.getKey());
                 }
 
                 try {
@@ -1146,10 +1123,10 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
                 } catch (ObjectAlreadyExistsException e) {
                     if (log.isDebugEnabled()) {
                         log.debug(
-                            "Adding trigger: " + trigger.getKey() + " for job: " +trigger.getJobKey() + 
-                            " failed because the trigger already existed.  " +
-                            "This is likely due to a race condition between multiple instances " + 
-                            "in the cluster.  Will try to reschedule instead.");
+                                "Adding trigger: " + trigger.getKey() + " for job: " + trigger.getJobKey() +
+                                        " failed because the trigger already existed.  " +
+                                        "This is likely due to a race condition between multiple instances " +
+                                        "in the cluster.  Will try to reschedule instead.");
                     }
 
                     // Let's rescheduleJob one more time.
@@ -1161,13 +1138,11 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
     /**
      * ErrorHandler interface.
-     * 
+     * <p>
      * Receive notification of a warning.
-     * 
-     * @param e
-     *          The error information encapsulated in a SAX parse exception.
-     * @exception SAXException
-     *              Any SAX exception, possibly wrapping another exception.
+     *
+     * @param e The error information encapsulated in a SAX parse exception.
+     * @throws SAXException Any SAX exception, possibly wrapping another exception.
      */
     public void warning(SAXParseException e) throws SAXException {
         addValidationException(e);
@@ -1175,13 +1150,11 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
     /**
      * ErrorHandler interface.
-     * 
+     * <p>
      * Receive notification of a recoverable error.
-     * 
-     * @param e
-     *          The error information encapsulated in a SAX parse exception.
-     * @exception SAXException
-     *              Any SAX exception, possibly wrapping another exception.
+     *
+     * @param e The error information encapsulated in a SAX parse exception.
+     * @throws SAXException Any SAX exception, possibly wrapping another exception.
      */
     public void error(SAXParseException e) throws SAXException {
         addValidationException(e);
@@ -1189,13 +1162,11 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
     /**
      * ErrorHandler interface.
-     * 
+     * <p>
      * Receive notification of a non-recoverable error.
-     * 
-     * @param e
-     *          The error information encapsulated in a SAX parse exception.
-     * @exception SAXException
-     *              Any SAX exception, possibly wrapping another exception.
+     *
+     * @param e The error information encapsulated in a SAX parse exception.
+     * @throws SAXException Any SAX exception, possibly wrapping another exception.
      */
     public void fatalError(SAXParseException e) throws SAXException {
         addValidationException(e);
@@ -1203,9 +1174,8 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
 
     /**
      * Adds a detected validation exception.
-     * 
-     * @param e
-     *          SAX exception.
+     *
+     * @param e SAX exception.
      */
     protected void addValidationException(SAXException e) {
         validationExceptions.add(e);
@@ -1221,9 +1191,8 @@ public class XMLSchedulingDataProcessor implements ErrorHandler {
     /**
      * Throws a ValidationException if the number of validationExceptions
      * detected is greater than zero.
-     * 
-     * @exception ValidationException
-     *              DTD validation exception.
+     *
+     * @throws ValidationException DTD validation exception.
      */
     protected void maybeThrowValidationException() throws ValidationException {
         if (validationExceptions.size() > 0) {
