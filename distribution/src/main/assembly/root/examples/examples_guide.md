@@ -1,21 +1,10 @@
 Welcome
-=======
-
-Welcome to the Quartz Examples directory.  
-
-This directory contains 15 examples that show you how to use various
-features of Quartz.   Each example is located in its own subdirectory. 
-Every example can be run using Windows .bat files or Linux/UNIX .sh files.  
-
-Additionally, each example directory contains a readme.txt file.  Please 
-read this file first, as it will contain useful information for running 
-the examples.
 
 Running examples with Maven:
 - All examples except 13 and 15 can be run with Maven command:
 
-%> ./mvnw install ( run at least once to compile the examples )
-%> ./mvnw exec:exec -P exampleX   (where X is 1 to 15)
+%> ./mvn install ( run at least once to compile the examples )
+%> ./mvn exec:exec -P exampleX   (where X is 1 to 15)
 
 Examples Listing
 ================
