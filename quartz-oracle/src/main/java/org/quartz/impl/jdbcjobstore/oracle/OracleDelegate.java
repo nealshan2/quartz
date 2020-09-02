@@ -17,32 +17,24 @@
 
 package org.quartz.impl.jdbcjobstore.oracle;
 
+import org.quartz.Calendar;
+import org.quartz.JobDetail;
+import org.quartz.impl.jdbcjobstore.StdJDBCDelegate;
+import org.quartz.impl.jdbcjobstore.TriggerPersistenceDelegate;
+import org.quartz.spi.OperableTrigger;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.math.BigDecimal;
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.quartz.Calendar;
-import org.quartz.JobDetail;
-import org.quartz.impl.jdbcjobstore.StdJDBCDelegate;
-import org.quartz.impl.jdbcjobstore.TriggerPersistenceDelegate;
-import org.quartz.spi.ClassLoadHelper;
-import org.quartz.spi.OperableTrigger;
-import org.slf4j.Logger;
+import java.sql.*;
 
 /**
  * <p>
  * This is a driver delegate for the Oracle 10 and 11 database.
  * </p>
  * 
- * @see org.quartz.impl.jdbcjobstore.WebLogicDelegate
- * @see org.quartz.impl.jdbcjobstore.oracle.weblogic.WebLogicOracleDelegate
  * @author James House
  * @author Patrick Lightbody
  * @author Eric Mueller

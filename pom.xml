@@ -49,7 +49,6 @@
   <modules>
     <module>quartz-core</module>
     <module>quartz-commonj</module>
-    <module>quartz-stubs</module>
     <module>quartz-oracle</module>
     <module>quartz-jobs</module>
     <module>quartz-plugins</module>
