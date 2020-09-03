@@ -34,12 +34,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.quartz-scheduler</groupId>
-      <artifactId>quartz-jobs</artifactId>
-      <version>${project.version}</version>
-      <scope>provided</scope>
-    </dependency>    
-    <dependency>
       <groupId>com.mchange</groupId>
       <artifactId>c3p0</artifactId>
       <version>${c3p0.version}</version>
@@ -65,25 +59,7 @@
     </dependency>  
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>includeJavadoc</id>
-      <activation>
-        <property>
-          <name>!skipJavadoc</name>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.quartz-scheduler</groupId>
-          <artifactId>quartz</artifactId>
-          <version>${project.version}</version>
-          <classifier>javadoc</classifier>
-          <scope>provided</scope>
-        </dependency> 
-      </dependencies>
-    </profile>
-  </profiles>
+
   
   <build>
     <plugins>
