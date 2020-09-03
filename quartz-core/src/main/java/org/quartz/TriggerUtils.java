@@ -26,13 +26,11 @@ import org.quartz.spi.OperableTrigger;
 
 /**
  * Convenience and utility methods for working with <code>{@link Trigger}s</code>.
- * 
- * 
+ *
+ * @author James House
  * @see CronTrigger
  * @see SimpleTrigger
  * @see DateBuilder
- * 
- * @author James House
  */
 public class TriggerUtils {
 
@@ -59,21 +57,18 @@ public class TriggerUtils {
      */
 
     /**
-     * Returns a list of Dates that are the next fire times of a 
+     * Returns a list of Dates that are the next fire times of a
      * <code>Trigger</code>.
      * The input trigger will be cloned before any work is done, so you need
      * not worry about its state being altered by this method.
-     * 
-     * @param trigg
-     *          The trigger upon which to do the work
-     * @param cal
-     *          The calendar to apply to the trigger's schedule
-     * @param numTimes
-     *          The number of next fire times to produce
+     *
+     * @param trigg    The trigger upon which to do the work
+     * @param cal      The calendar to apply to the trigger's schedule
+     * @param numTimes The number of next fire times to produce
      * @return List of java.util.Date objects
      */
     public static List<Date> computeFireTimes(OperableTrigger trigg, org.quartz.Calendar cal,
-            int numTimes) {
+                                              int numTimes) {
         LinkedList<Date> lst = new LinkedList<Date>();
 
         OperableTrigger t = (OperableTrigger) trigg.clone();
@@ -94,80 +89,73 @@ public class TriggerUtils {
 
         return java.util.Collections.unmodifiableList(lst);
     }
-    
+
     /**
-     * Compute the <code>Date</code> that is 1 second after the Nth firing of 
-     * the given <code>Trigger</code>, taking the triger's associated 
+     * Compute the <code>Date</code> that is 1 second after the Nth firing of
+     * the given <code>Trigger</code>, taking the triger's associated
      * <code>Calendar</code> into consideration.
-     *  
+     * <p>
      * The input trigger will be cloned before any work is done, so you need
      * not worry about its state being altered by this method.
-     * 
-     * @param trigg
-     *          The trigger upon which to do the work
-     * @param cal
-     *          The calendar to apply to the trigger's schedule
-     * @param numTimes
-     *          The number of next fire times to produce
+     *
+     * @param trigg    The trigger upon which to do the work
+     * @param cal      The calendar to apply to the trigger's schedule
+     * @param numTimes The number of next fire times to produce
      * @return the computed Date, or null if the trigger (as configured) will not fire that many times.
      */
-    public static Date computeEndTimeToAllowParticularNumberOfFirings(OperableTrigger trigg, org.quartz.Calendar cal, 
-            int numTimes) {
+    public static Date computeEndTimeToAllowParticularNumberOfFirings(OperableTrigger trigg, org.quartz.Calendar cal,
+                                                                      int numTimes) {
 
         OperableTrigger t = (OperableTrigger) trigg.clone();
 
         if (t.getNextFireTime() == null) {
             t.computeFirstFireTime(cal);
         }
-        
+
         int c = 0;
         Date endTime = null;
-        
+
         for (int i = 0; i < numTimes; i++) {
             Date d = t.getNextFireTime();
             if (d != null) {
                 c++;
                 t.triggered(cal);
-                if(c == numTimes)
+                if (c == numTimes)
                     endTime = d;
             } else {
                 break;
             }
         }
-        
-        if(endTime == null)
+
+        if (endTime == null)
             return null;
-        
+
         endTime = new Date(endTime.getTime() + 1000L);
-        
+
         return endTime;
     }
 
     /**
-     * Returns a list of Dates that are the next fire times of a 
+     * Returns a list of Dates that are the next fire times of a
      * <code>Trigger</code>
      * that fall within the given date range. The input trigger will be cloned
      * before any work is done, so you need not worry about its state being
      * altered by this method.
-     * 
+     * <p>
      * <p>
      * NOTE: if this is a trigger that has previously fired within the given
      * date range, then firings which have already occurred will not be listed
      * in the output List.
      * </p>
-     * 
-     * @param trigg
-     *          The trigger upon which to do the work
-     * @param cal
-     *          The calendar to apply to the trigger's schedule
-     * @param from
-     *          The starting date at which to find fire times
-     * @param to
-     *          The ending date at which to stop finding fire times
+     *
+     * @param trigg The trigger upon which to do the work
+     * @param cal   The calendar to apply to the trigger's schedule
+     * @param from  The starting date at which to find fire times
+     * @param to    The ending date at which to stop finding fire times
      * @return List of java.util.Date objects
      */
     public static List<Date> computeFireTimesBetween(OperableTrigger trigg,
-            org.quartz.Calendar cal, Date from, Date to) {
+                                                     org.quartz.Calendar cal, Date from, Date to) {
         LinkedList<Date> lst = new LinkedList<Date>();
 
         OperableTrigger t = (OperableTrigger) trigg.clone();

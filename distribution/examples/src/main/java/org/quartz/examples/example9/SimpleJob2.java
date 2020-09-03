@@ -14,7 +14,7 @@
  * under the License.
  * 
  */
- 
+
 package org.quartz.examples.example9;
 
 import java.util.Date;
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * This is just a simple job that gets fired off many times by example 1
  * </p>
- * 
+ *
  * @author Bill Kratzer
  */
 public class SimpleJob2 implements Job {
@@ -49,12 +49,11 @@ public class SimpleJob2 implements Job {
      * <code>{@link org.quartz.Trigger}</code> fires that is associated with
      * the <code>Job</code>.
      * </p>
-     * 
-     * @throws JobExecutionException
-     *             if there is an exception while executing the job.
+     *
+     * @throws JobExecutionException if there is an exception while executing the job.
      */
     public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+            throws JobExecutionException {
 
         // This job simply prints out its job name and the
         // date and time that it is running

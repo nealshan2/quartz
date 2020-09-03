@@ -30,21 +30,21 @@ import org.quartz.listeners.SchedulerListenerSupport;
  * Instantiates an instance of Quartz Scheduler as a stand-alone program, if
  * the scheduler is configured for RMI it will be made available.
  * </p>
- *
+ * <p>
  * <p>
  * The main() method of this class currently accepts 0 or 1 arguemtns, if there
  * is an argument, and its value is <code>"console"</code>, then the program
  * will print a short message on the console (std-out) and wait for the user to
  * type "exit" - at which time the scheduler will be shutdown.
  * </p>
- *
+ * <p>
  * <p>
  * Future versions of this server should allow additional configuration for
  * responding to scheduler events by allowing the user to specify <code>{@link org.quartz.JobListener}</code>,
  * <code>{@link org.quartz.TriggerListener}</code> and <code>{@link org.quartz.SchedulerListener}</code>
  * classes.
  * </p>
- *
+ * <p>
  * <p>
  * Please read the Quartz FAQ entries about RMI before asking questions in the
  * forums or mail-lists.
@@ -84,7 +84,7 @@ public class QuartzServer extends SchedulerListenerSupport {
      */
 
     public void serve(SchedulerFactory schedFact, boolean console)
-        throws Exception {
+            throws Exception {
         sched = schedFact.getScheduler();
 
         sched.start();
@@ -135,7 +135,7 @@ public class QuartzServer extends SchedulerListenerSupport {
      * or the inability to instantiate a <code>Job</code> instance when its
      * <code>Trigger</code> has fired.
      * </p>
-     *
+     * <p>
      * <p>
      * The <code>getErrorCode()</code> method of the given SchedulerException
      * can be used to determine more specific information about the type of
@@ -182,7 +182,7 @@ public class QuartzServer extends SchedulerListenerSupport {
             QuartzServer server = new QuartzServer();
             if (args.length == 0) {
                 server.serve(
-                    new org.quartz.impl.StdSchedulerFactory(), false);
+                        new org.quartz.impl.StdSchedulerFactory(), false);
             } else if (args.length == 1 && args[0].equalsIgnoreCase("console")) {
                 server.serve(new org.quartz.impl.StdSchedulerFactory(), true);
             } else {

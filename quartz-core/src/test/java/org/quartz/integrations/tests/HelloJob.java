@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * This is just a simple job that says "Hello" to the world.
  * </p>
- * 
+ *
  * @author Bill Kratzer
  */
 public class HelloJob implements Job {
@@ -54,9 +54,8 @@ public class HelloJob implements Job {
      * <code>{@link org.quartz.Trigger}</code> fires that is associated with the
      * <code>Job</code>.
      * </p>
-     * 
-     * @throws JobExecutionException
-     *             if there is an exception while executing the job.
+     *
+     * @throws JobExecutionException if there is an exception while executing the job.
      */
     public void execute(JobExecutionContext context) throws JobExecutionException {
 

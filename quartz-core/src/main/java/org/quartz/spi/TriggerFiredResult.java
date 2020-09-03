@@ -5,23 +5,23 @@ package org.quartz.spi;
  */
 public class TriggerFiredResult {
 
-  private TriggerFiredBundle triggerFiredBundle;
+    private TriggerFiredBundle triggerFiredBundle;
 
-  private Exception exception;
+    private Exception exception;
 
-  public TriggerFiredResult(TriggerFiredBundle triggerFiredBundle) {
-    this.triggerFiredBundle = triggerFiredBundle;
-  }
+    public TriggerFiredResult(TriggerFiredBundle triggerFiredBundle) {
+        this.triggerFiredBundle = triggerFiredBundle;
+    }
 
-  public TriggerFiredResult(Exception exception) {
-    this.exception = exception;
-  }
+    public TriggerFiredResult(Exception exception) {
+        this.exception = exception;
+    }
 
-  public TriggerFiredBundle getTriggerFiredBundle() {
-    return triggerFiredBundle;
-  }
+    public TriggerFiredBundle getTriggerFiredBundle() {
+        return triggerFiredBundle;
+    }
 
-  public Exception getException() {
-    return exception;
-  }
+    public Exception getException() {
+        return exception;
+    }
 }

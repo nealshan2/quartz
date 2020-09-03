@@ -29,8 +29,8 @@ public class ListenerManagerImpl implements ListenerManager {
 
     private ArrayList<SchedulerListener> schedulerListeners = new ArrayList<SchedulerListener>(10);
 
-    
-    public void addJobListener(JobListener jobListener, Matcher<JobKey> ... matchers) {
+
+    public void addJobListener(JobListener jobListener, Matcher<JobKey>... matchers) {
         addJobListener(jobListener, Arrays.asList(matchers));
     }
 
@@ -39,15 +39,15 @@ public class ListenerManagerImpl implements ListenerManager {
             throw new IllegalArgumentException(
                     "JobListener name cannot be empty.");
         }
-        
+
         synchronized (globalJobListeners) {
             globalJobListeners.put(jobListener.getName(), jobListener);
-            LinkedList<Matcher<JobKey>> matchersL = new  LinkedList<Matcher<JobKey>>();
-            if(matchers != null && matchers.size() > 0)
+            LinkedList<Matcher<JobKey>> matchersL = new LinkedList<Matcher<JobKey>>();
+            if (matchers != null && matchers.size() > 0)
                 matchersL.addAll(matchers);
             else
                 matchersL.add(EverythingMatcher.allJobs());
-            
+
             globalJobListenersMatchers.put(jobListener.getName(), matchersL);
         }
     }
@@ -56,33 +56,33 @@ public class ListenerManagerImpl implements ListenerManager {
     public void addJobListener(JobListener jobListener) {
         addJobListener(jobListener, EverythingMatcher.allJobs());
     }
-    
+
     public void addJobListener(JobListener jobListener, Matcher<JobKey> matcher) {
         if (jobListener.getName() == null || jobListener.getName().length() == 0) {
             throw new IllegalArgumentException(
                     "JobListener name cannot be empty.");
         }
-        
+
         synchronized (globalJobListeners) {
             globalJobListeners.put(jobListener.getName(), jobListener);
-            LinkedList<Matcher<JobKey>> matchersL = new  LinkedList<Matcher<JobKey>>();
-            if(matcher != null)
+            LinkedList<Matcher<JobKey>> matchersL = new LinkedList<Matcher<JobKey>>();
+            if (matcher != null)
                 matchersL.add(matcher);
             else
                 matchersL.add(EverythingMatcher.allJobs());
-            
+
             globalJobListenersMatchers.put(jobListener.getName(), matchersL);
         }
     }
 
 
     public boolean addJobListenerMatcher(String listenerName, Matcher<JobKey> matcher) {
-        if(matcher == null)
+        if (matcher == null)
             throw new IllegalArgumentException("Null value not acceptable.");
-        
+
         synchronized (globalJobListeners) {
             List<Matcher<JobKey>> matchers = globalJobListenersMatchers.get(listenerName);
-            if(matchers == null)
+            if (matchers == null)
                 return false;
             matchers.add(matcher);
             return true;
@@ -90,12 +90,12 @@ public class ListenerManagerImpl implements ListenerManager {
     }
 
     public boolean removeJobListenerMatcher(String listenerName, Matcher<JobKey> matcher) {
-        if(matcher == null)
+        if (matcher == null)
             throw new IllegalArgumentException("Non-null value not acceptable.");
-        
+
         synchronized (globalJobListeners) {
             List<Matcher<JobKey>> matchers = globalJobListenersMatchers.get(listenerName);
-            if(matchers == null)
+            if (matchers == null)
                 return false;
             return matchers.remove(matcher);
         }
@@ -104,19 +104,19 @@ public class ListenerManagerImpl implements ListenerManager {
     public List<Matcher<JobKey>> getJobListenerMatchers(String listenerName) {
         synchronized (globalJobListeners) {
             List<Matcher<JobKey>> matchers = globalJobListenersMatchers.get(listenerName);
-            if(matchers == null)
+            if (matchers == null)
                 return null;
             return Collections.unmodifiableList(matchers);
         }
     }
 
-    public boolean setJobListenerMatchers(String listenerName, List<Matcher<JobKey>> matchers)  {
-        if(matchers == null)
+    public boolean setJobListenerMatchers(String listenerName, List<Matcher<JobKey>> matchers) {
+        if (matchers == null)
             throw new IllegalArgumentException("Non-null value not acceptable.");
-        
+
         synchronized (globalJobListeners) {
             List<Matcher<JobKey>> oldMatchers = globalJobListenersMatchers.get(listenerName);
-            if(oldMatchers == null)
+            if (oldMatchers == null)
                 return false;
             globalJobListenersMatchers.put(listenerName, matchers);
             return true;
@@ -129,7 +129,7 @@ public class ListenerManagerImpl implements ListenerManager {
             return (globalJobListeners.remove(name) != null);
         }
     }
-    
+
     public List<JobListener> getJobListeners() {
         synchronized (globalJobListeners) {
             return java.util.Collections.unmodifiableList(new LinkedList<JobListener>(globalJobListeners.values()));
@@ -142,10 +142,10 @@ public class ListenerManagerImpl implements ListenerManager {
         }
     }
 
-    public void addTriggerListener(TriggerListener triggerListener, Matcher<TriggerKey> ... matchers) {
+    public void addTriggerListener(TriggerListener triggerListener, Matcher<TriggerKey>... matchers) {
         addTriggerListener(triggerListener, Arrays.asList(matchers));
     }
-    
+
     public void addTriggerListener(TriggerListener triggerListener, List<Matcher<TriggerKey>> matchers) {
         if (triggerListener.getName() == null
                 || triggerListener.getName().length() == 0) {
@@ -156,8 +156,8 @@ public class ListenerManagerImpl implements ListenerManager {
         synchronized (globalTriggerListeners) {
             globalTriggerListeners.put(triggerListener.getName(), triggerListener);
 
-            LinkedList<Matcher<TriggerKey>> matchersL = new  LinkedList<Matcher<TriggerKey>>();
-            if(matchers != null && matchers.size() > 0)
+            LinkedList<Matcher<TriggerKey>> matchersL = new LinkedList<Matcher<TriggerKey>>();
+            if (matchers != null && matchers.size() > 0)
                 matchersL.addAll(matchers);
             else
                 matchersL.add(EverythingMatcher.allTriggers());
@@ -165,15 +165,15 @@ public class ListenerManagerImpl implements ListenerManager {
             globalTriggerListenersMatchers.put(triggerListener.getName(), matchersL);
         }
     }
-    
+
     public void addTriggerListener(TriggerListener triggerListener) {
         addTriggerListener(triggerListener, EverythingMatcher.allTriggers());
     }
 
     public void addTriggerListener(TriggerListener triggerListener, Matcher<TriggerKey> matcher) {
-        if(matcher == null)
+        if (matcher == null)
             throw new IllegalArgumentException("Null value not acceptable for matcher.");
-        
+
         if (triggerListener.getName() == null
                 || triggerListener.getName().length() == 0) {
             throw new IllegalArgumentException(
@@ -189,12 +189,12 @@ public class ListenerManagerImpl implements ListenerManager {
     }
 
     public boolean addTriggerListenerMatcher(String listenerName, Matcher<TriggerKey> matcher) {
-        if(matcher == null)
+        if (matcher == null)
             throw new IllegalArgumentException("Non-null value not acceptable.");
-        
+
         synchronized (globalTriggerListeners) {
             List<Matcher<TriggerKey>> matchers = globalTriggerListenersMatchers.get(listenerName);
-            if(matchers == null)
+            if (matchers == null)
                 return false;
             matchers.add(matcher);
             return true;
@@ -202,12 +202,12 @@ public class ListenerManagerImpl implements ListenerManager {
     }
 
     public boolean removeTriggerListenerMatcher(String listenerName, Matcher<TriggerKey> matcher) {
-        if(matcher == null)
+        if (matcher == null)
             throw new IllegalArgumentException("Non-null value not acceptable.");
-        
+
         synchronized (globalTriggerListeners) {
             List<Matcher<TriggerKey>> matchers = globalTriggerListenersMatchers.get(listenerName);
-            if(matchers == null)
+            if (matchers == null)
                 return false;
             return matchers.remove(matcher);
         }
@@ -216,19 +216,19 @@ public class ListenerManagerImpl implements ListenerManager {
     public List<Matcher<TriggerKey>> getTriggerListenerMatchers(String listenerName) {
         synchronized (globalTriggerListeners) {
             List<Matcher<TriggerKey>> matchers = globalTriggerListenersMatchers.get(listenerName);
-            if(matchers == null)
+            if (matchers == null)
                 return null;
             return Collections.unmodifiableList(matchers);
         }
     }
 
-    public boolean setTriggerListenerMatchers(String listenerName, List<Matcher<TriggerKey>> matchers)  {
-        if(matchers == null)
+    public boolean setTriggerListenerMatchers(String listenerName, List<Matcher<TriggerKey>> matchers) {
+        if (matchers == null)
             throw new IllegalArgumentException("Non-null value not acceptable.");
-        
+
         synchronized (globalTriggerListeners) {
             List<Matcher<TriggerKey>> oldMatchers = globalTriggerListenersMatchers.get(listenerName);
-            if(oldMatchers == null)
+            if (oldMatchers == null)
                 return false;
             globalTriggerListenersMatchers.put(listenerName, matchers);
             return true;
@@ -240,7 +240,7 @@ public class ListenerManagerImpl implements ListenerManager {
             return (globalTriggerListeners.remove(name) != null);
         }
     }
-    
+
 
     public List<TriggerListener> getTriggerListeners() {
         synchronized (globalTriggerListeners) {
@@ -253,8 +253,8 @@ public class ListenerManagerImpl implements ListenerManager {
             return globalTriggerListeners.get(name);
         }
     }
-    
-    
+
+
     public void addSchedulerListener(SchedulerListener schedulerListener) {
         synchronized (schedulerListeners) {
             schedulerListeners.add(schedulerListener);

@@ -27,7 +27,7 @@ import org.quartz.TriggerKey;
  * <p>
  * Object representing a job or trigger key.
  * </p>
- * 
+ *
  * @author James House
  */
 public class TriggerStatus {
@@ -46,7 +46,7 @@ public class TriggerStatus {
     private JobKey jobKey;
 
     private String status;
-    
+
     private Date nextFireTime;
 
     /*
@@ -59,11 +59,9 @@ public class TriggerStatus {
 
     /**
      * Construct a new TriggerStatus with the status name and nextFireTime.
-     * 
-     * @param status
-     *          the trigger's status
-     * @param nextFireTime
-     *          the next time the trigger will fire
+     *
+     * @param status       the trigger's status
+     * @param nextFireTime the next time the trigger will fire
      */
     public TriggerStatus(String status, Date nextFireTime) {
         this.status = status;
@@ -98,7 +96,7 @@ public class TriggerStatus {
      * <p>
      * Get the name portion of the key.
      * </p>
-     * 
+     *
      * @return the name
      */
     public String getStatus() {
@@ -109,7 +107,7 @@ public class TriggerStatus {
      * <p>
      * Get the group portion of the key.
      * </p>
-     * 
+     *
      * @return the group
      */
     public Date getNextFireTime() {
@@ -120,7 +118,6 @@ public class TriggerStatus {
      * <p>
      * Return the string representation of the TriggerStatus.
      * </p>
-     *  
      */
     @Override
     public String toString() {

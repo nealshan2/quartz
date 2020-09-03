@@ -36,10 +36,10 @@ public class SchedulerDetailsSetterTest extends TestCase {
         props.load(getClass().getResourceAsStream("/org/quartz/quartz.properties"));
         props.setProperty(StdSchedulerFactory.PROP_THREAD_POOL_CLASS, MyThreadPool.class.getName());
         props.setProperty(StdSchedulerFactory.PROP_JOB_STORE_CLASS, MyJobStore.class.getName());
-        
+
         StdSchedulerFactory factory = new StdSchedulerFactory(props);
         factory.getScheduler(); // this will initialize all the test fixtures.
-        
+
         assertEquals(3, instanceIdCalls.get());
         assertEquals(3, instanceNameCalls.get());
 
@@ -50,7 +50,7 @@ public class SchedulerDetailsSetterTest extends TestCase {
         assertEquals(6, instanceNameCalls.get());
     }
 
-    public void testMissingSetterMethods() throws SchedulerException  {
+    public void testMissingSetterMethods() throws SchedulerException {
         SchedulerDetailsSetter.setDetails(new Object(), "name", "id");
     }
 
@@ -70,7 +70,7 @@ public class SchedulerDetailsSetterTest extends TestCase {
     private ThreadPool makeIncompleteThreadPool() throws InstantiationException, IllegalAccessException {
         String name = "IncompleteThreadPool";
         ClassWriter cw = new ClassWriter(0);
-        cw.visit(Opcodes.V1_5, Opcodes.ACC_PUBLIC, name, null, "java/lang/Object", new String[] { "org/quartz/spi/ThreadPool" });
+        cw.visit(Opcodes.V1_5, Opcodes.ACC_PUBLIC, name, null, "java/lang/Object", new String[]{"org/quartz/spi/ThreadPool"});
 
         MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
         mv.visitCode();
@@ -93,7 +93,7 @@ public class SchedulerDetailsSetterTest extends TestCase {
     private static final AtomicInteger instanceNameCalls = new AtomicInteger();
 
     public static class MyThreadPool extends SimpleThreadPool {
-        
+
         @Override
         public void initialize() {
         }

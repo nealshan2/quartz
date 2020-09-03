@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  */
 public class QTZ336_MissSchedulingChangeSignalTest {
     private static final Logger LOG = LoggerFactory.getLogger(QTZ336_MissSchedulingChangeSignalTest.class);
-	
+
     @Test
     public void simpleScheduleAlwaysFiredUnder20s() throws Exception {
         Properties properties = new Properties();
@@ -65,49 +65,49 @@ public class QTZ336_MissSchedulingChangeSignalTest {
         properties.setProperty("org.quartz.jobStore.class", SlowRAMJobStore.class.getName());
         SchedulerFactory sf = new StdSchedulerFactory(properties);
         Scheduler sched = sf.getScheduler();
-		LOG.info("------- Initialization Complete -----------");
+        LOG.info("------- Initialization Complete -----------");
 
-		LOG.info("------- Scheduling Job  -------------------");
+        LOG.info("------- Scheduling Job  -------------------");
 
         JobDetail job = newJob(CollectDuractionBetweenFireTimesJob.class).withIdentity("job", "group").build();
 
         SimpleTrigger trigger = newTrigger()
-	            .withIdentity("trigger1", "group1")
+                .withIdentity("trigger1", "group1")
                 .startAt(new Date(System.currentTimeMillis() + 1000))
-	            .withSchedule(simpleSchedule()
-                .withIntervalInSeconds(1)
-	            .repeatForever()
-	            .withMisfireHandlingInstructionIgnoreMisfires())
-	            .build();
+                .withSchedule(simpleSchedule()
+                        .withIntervalInSeconds(1)
+                        .repeatForever()
+                        .withMisfireHandlingInstructionIgnoreMisfires())
+                .build();
 
         sched.scheduleJob(job, trigger);
-	        
-		// Start up the scheduler (nothing can actually run until the
-		// scheduler has been started)
-		sched.start();
 
-		LOG.info("------- Scheduler Started -----------------");
-		
+        // Start up the scheduler (nothing can actually run until the
+        // scheduler has been started)
+        sched.start();
+
+        LOG.info("------- Scheduler Started -----------------");
+
 
         // wait long enough so that the scheduler has an opportunity to
         // run the job in theory around 50 times
-		try {
+        try {
             Thread.sleep(50000L);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         List<Long> durationBetweenFireTimesInMillis = CollectDuractionBetweenFireTimesJob.getDurations();
-        
+
         assertFalse("Job was not executed once!", durationBetweenFireTimesInMillis.isEmpty());
-        
+
         // Let's check that every call for around 1 second and not between 23 and 30 seconds
         // which would be the case if the scheduling change signal were not checked
         for (long durationInMillis : durationBetweenFireTimesInMillis) {
             assertTrue("Missed an execution with one duration being between two fires: " + durationInMillis + " (all: "
                     + durationBetweenFireTimesInMillis + ")", durationInMillis < 20000);
         }
-	}
+    }
 
     /**
      * A simple job for collecting fire times in order to check that we did not miss one call, for having the race
@@ -130,12 +130,12 @@ public class QTZ336_MissSchedulingChangeSignalTest {
 
         /**
          * Retrieves the durations between fire times.
-         * 
+         *
          * @return the durations in millis as an immutable list.
          */
         public static List<Long> getDurations() {
             synchronized (durationBetweenFireTimes) {
-              return Collections.unmodifiableList(new ArrayList<Long>(durationBetweenFireTimes));
+                return Collections.unmodifiableList(new ArrayList<Long>(durationBetweenFireTimes));
             }
         }
 

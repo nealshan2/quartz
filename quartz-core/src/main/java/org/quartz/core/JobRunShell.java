@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * the <code>Trigger</code> with the <code>Job</code>'s completion code,
  * etc.
  * </p>
- *
+ * <p>
  * <p>
  * A <code>JobRunShell</code> instance is created by a <code>JobRunShellFactory</code>
  * on behalf of the <code>QuartzSchedulerThread</code> which then runs the
@@ -48,12 +48,11 @@ import org.slf4j.LoggerFactory;
  * scheduler determines that a <code>Job</code> has been triggered.
  * </p>
  *
+ * @author James House
  * @see JobRunShellFactory
  * @see org.quartz.core.QuartzSchedulerThread
  * @see org.quartz.Job
  * @see org.quartz.Trigger
- *
- * @author James House
  */
 public class JobRunShell extends SchedulerListenerSupport implements Runnable {
     /*
@@ -67,7 +66,7 @@ public class JobRunShell extends SchedulerListenerSupport implements Runnable {
     protected JobExecutionContextImpl jec = null;
 
     protected QuartzScheduler qs = null;
-    
+
     protected TriggerFiredBundle firedTriggerBundle = null;
 
     protected Scheduler scheduler = null;
@@ -89,9 +88,8 @@ public class JobRunShell extends SchedulerListenerSupport implements Runnable {
      * Create a JobRunShell instance with the given settings.
      * </p>
      *
-     * @param scheduler
-     *          The <code>Scheduler</code> instance that should be made
-     *          available within the <code>JobExecutionContext</code>.
+     * @param scheduler The <code>Scheduler</code> instance that should be made
+     *                  available within the <code>JobExecutionContext</code>.
      */
     public JobRunShell(Scheduler scheduler, TriggerFiredBundle bndle) {
         this.scheduler = scheduler;
@@ -117,7 +115,7 @@ public class JobRunShell extends SchedulerListenerSupport implements Runnable {
     }
 
     public void initialize(QuartzScheduler sched)
-        throws SchedulerException {
+            throws SchedulerException {
         this.qs = sched;
 
         Job job = null;
@@ -173,11 +171,11 @@ public class JobRunShell extends SchedulerListenerSupport implements Runnable {
                     if (!notifyListenersBeginning(jec)) {
                         break;
                     }
-                } catch(VetoedException ve) {
+                } catch (VetoedException ve) {
                     try {
                         CompletedExecutionInstruction instCode = trigger.executionComplete(jec, null);
                         qs.notifyJobStoreJobVetoed(trigger, jobDetail, instCode);
-                        
+
                         // QTZ-205
                         // Even if trigger got vetoed, we still needs to check to see if it's the trigger's finalized run or not.
                         if (jec.getTrigger().getNextFireTime() == null) {
@@ -279,7 +277,7 @@ public class JobRunShell extends SchedulerListenerSupport implements Runnable {
     }
 
     protected void complete(boolean successfulExecution)
-        throws SchedulerException {
+            throws SchedulerException {
     }
 
     public void passivate() {
@@ -304,16 +302,16 @@ public class JobRunShell extends SchedulerListenerSupport implements Runnable {
             return false;
         }
 
-        if(vetoed) {
+        if (vetoed) {
             try {
                 qs.notifyJobListenersWasVetoed(jobExCtxt);
             } catch (SchedulerException se) {
                 qs.notifySchedulerListenersError(
                         "Unable to notify JobListener(s) of vetoed execution " +
-                        "while firing trigger (Trigger and Job will NOT be " +
-                        "fired!). trigger= "
-                        + jobExCtxt.getTrigger().getKey() + " job= "
-                        + jobExCtxt.getJobDetail().getKey(), se);
+                                "while firing trigger (Trigger and Job will NOT be " +
+                                "fired!). trigger= "
+                                + jobExCtxt.getTrigger().getKey() + " job= "
+                                + jobExCtxt.getJobDetail().getKey(), se);
 
             }
             throw new VetoedException();

@@ -29,15 +29,14 @@ import java.util.Properties;
  * A <code>ConnectionProvider</code> implementation that creates its own
  * pool of connections.
  * </p>
- *
+ * <p>
  * <p>
  * This class uses HikariCP (https://brettwooldridge.github.io/HikariCP/) as
  * the underlying pool implementation.</p>
  *
+ * @author Ludovic Orban
  * @see DBConnectionManager
  * @see ConnectionProvider
- *
- * @author Ludovic Orban
  */
 public class HikariCpPoolingConnectionProvider implements PoolingConnectionProvider {
 
@@ -49,10 +48,14 @@ public class HikariCpPoolingConnectionProvider implements PoolingConnectionProvi
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      */
 
-    /** This pooling provider name. */
+    /**
+     * This pooling provider name.
+     */
     public static final String POOLING_PROVIDER_NAME = "hikaricp";
 
-    /** Discard connections after they have been idle this many seconds.  0 disables the feature. Default is 0.*/
+    /**
+     * Discard connections after they have been idle this many seconds.  0 disables the feature. Default is 0.
+     */
     private static final String DB_DISCARD_IDLE_CONNECTIONS_SECONDS = "discardIdleConnectionsSeconds";
 
     /*
@@ -83,7 +86,7 @@ public class HikariCpPoolingConnectionProvider implements PoolingConnectionProvi
 
     /**
      * Create a connection pool using the given properties.
-     *
+     * <p>
      * <p>
      * The properties passed should contain:
      * <UL>
@@ -97,8 +100,7 @@ public class HikariCpPoolingConnectionProvider implements PoolingConnectionProvi
      * </UL>
      * </p>
      *
-     * @param config
-     *            configuration properties
+     * @param config configuration properties
      */
     public HikariCpPoolingConnectionProvider(Properties config) throws SchedulerException, SQLException {
         PropertiesParser cfg = new PropertiesParser(config);
@@ -121,8 +123,9 @@ public class HikariCpPoolingConnectionProvider implements PoolingConnectionProvi
      */
 
     /**
-     * Create the underlying C3PO ComboPooledDataSource with the 
+     * Create the underlying C3PO ComboPooledDataSource with the
      * default supported properties.
+     *
      * @throws SchedulerException
      */
     private void initialize(
@@ -166,9 +169,9 @@ public class HikariCpPoolingConnectionProvider implements PoolingConnectionProvi
 
     /**
      * Get the HikariCP HikariDataSource created during initialization.
-     *
      * <p>
-     * This can be used to set additional data source properties in a 
+     * <p>
+     * This can be used to set additional data source properties in a
      * subclass's constructor.
      * </p>
      */

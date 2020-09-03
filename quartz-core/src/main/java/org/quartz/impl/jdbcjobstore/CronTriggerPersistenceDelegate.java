@@ -44,7 +44,7 @@ public class CronTriggerPersistenceDelegate implements TriggerPersistenceDelegat
     }
 
     public boolean canHandleTriggerType(OperableTrigger trigger) {
-        return ((trigger instanceof CronTriggerImpl) && !((CronTriggerImpl)trigger).hasAdditionalProperties());
+        return ((trigger instanceof CronTriggerImpl) && !((CronTriggerImpl) trigger).hasAdditionalProperties());
     }
 
     public int deleteExtendedTriggerProperties(Connection conn, TriggerKey triggerKey) throws SQLException {
@@ -64,10 +64,10 @@ public class CronTriggerPersistenceDelegate implements TriggerPersistenceDelegat
 
     public int insertExtendedTriggerProperties(Connection conn, OperableTrigger trigger, String state, JobDetail jobDetail) throws SQLException, IOException {
 
-        CronTrigger cronTrigger = (CronTrigger)trigger;
-        
+        CronTrigger cronTrigger = (CronTrigger) trigger;
+
         PreparedStatement ps = null;
-        
+
         try {
             ps = conn.prepareStatement(Util.rtp(INSERT_CRON_TRIGGER, tablePrefix, schedNameLiteral));
             ps.setString(1, trigger.getKey().getName());
@@ -85,7 +85,7 @@ public class CronTriggerPersistenceDelegate implements TriggerPersistenceDelegat
 
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             ps = conn.prepareStatement(Util.rtp(SELECT_CRON_TRIGGER, tablePrefix, schedNameLiteral));
             ps.setString(1, triggerKey.getName());
@@ -97,13 +97,13 @@ public class CronTriggerPersistenceDelegate implements TriggerPersistenceDelegat
                 String timeZoneId = rs.getString(COL_TIME_ZONE_ID);
 
                 CronScheduleBuilder cb = CronScheduleBuilder.cronSchedule(cronExpr);
-              
-                if (timeZoneId != null) 
+
+                if (timeZoneId != null)
                     cb.inTimeZone(TimeZone.getTimeZone(timeZoneId));
-                
+
                 return new TriggerPropertyBundle(cb, null, null);
             }
-            
+
             throw new IllegalStateException("No record found for selection of Trigger with key: '" + triggerKey + "' and statement: " + Util.rtp(SELECT_CRON_TRIGGER, tablePrefix, schedNameLiteral));
         } finally {
             Util.closeResultSet(rs);
@@ -113,8 +113,8 @@ public class CronTriggerPersistenceDelegate implements TriggerPersistenceDelegat
 
     public int updateExtendedTriggerProperties(Connection conn, OperableTrigger trigger, String state, JobDetail jobDetail) throws SQLException, IOException {
 
-        CronTrigger cronTrigger = (CronTrigger)trigger;
-        
+        CronTrigger cronTrigger = (CronTrigger) trigger;
+
         PreparedStatement ps = null;
 
         try {
@@ -123,7 +123,7 @@ public class CronTriggerPersistenceDelegate implements TriggerPersistenceDelegat
             ps.setString(2, cronTrigger.getTimeZone().getID());
             ps.setString(3, trigger.getKey().getName());
             ps.setString(4, trigger.getKey().getGroup());
-            
+
             return ps.executeUpdate();
         } finally {
             Util.closeStatement(ps);

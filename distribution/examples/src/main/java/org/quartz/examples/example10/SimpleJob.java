@@ -14,7 +14,7 @@
  * under the License.
  * 
  */
- 
+
 package org.quartz.examples.example10;
 
 import java.util.Date;
@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * This is just a simple job that gets fired off many times by example 1
  * </p>
- * 
+ *
  * @author Bill Kratzer
  */
 public class SimpleJob implements Job {
@@ -50,27 +50,26 @@ public class SimpleJob implements Job {
      * <code>{@link org.quartz.Trigger}</code> fires that is associated with
      * the <code>Job</code>.
      * </p>
-     * 
-     * @throws JobExecutionException
-     *             if there is an exception while executing the job.
+     *
+     * @throws JobExecutionException if there is an exception while executing the job.
      */
     @SuppressWarnings("unchecked")
     public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+            throws JobExecutionException {
 
         // This job simply prints out its job name and the
         // date and time that it is running
         JobKey jobKey = context.getJobDetail().getKey();
         _log.info("Executing job: " + jobKey + " executing at " + new Date() + ", fired by: " + context.getTrigger().getKey());
-        
-        if(context.getMergedJobDataMap().size() > 0) {
+
+        if (context.getMergedJobDataMap().size() > 0) {
             Set<String> keys = context.getMergedJobDataMap().keySet();
-            for(String key: keys) {
+            for (String key : keys) {
                 String val = context.getMergedJobDataMap().getString(key);
                 _log.info(" - jobDataMap entry: " + key + " = " + val);
             }
         }
-        
+
         context.setResult("hello");
     }
 

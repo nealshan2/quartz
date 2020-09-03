@@ -25,15 +25,14 @@ import java.io.InputStream;
 /**
  * A <code>ClassLoadHelper</code> that uses either the current thread's
  * context class loader (<code>Thread.currentThread().getContextClassLoader().loadClass( .. )</code>).
- * 
+ *
+ * @author jhouse
+ * @author pl47ypus
  * @see org.quartz.spi.ClassLoadHelper
  * @see org.quartz.simpl.InitThreadContextClassLoadHelper
  * @see org.quartz.simpl.SimpleClassLoadHelper
  * @see org.quartz.simpl.CascadingClassLoadHelper
  * @see org.quartz.simpl.LoadingLoaderClassLoadHelper
- * 
- * @author jhouse
- * @author pl47ypus
  */
 public class ThreadContextClassLoadHelper implements ClassLoadHelper {
 
@@ -65,10 +64,11 @@ public class ThreadContextClassLoadHelper implements ClassLoadHelper {
             throws ClassNotFoundException {
         return (Class<? extends T>) loadClass(name);
     }
-    
+
     /**
      * Finds a resource with a given name. This method returns null if no
      * resource with this name is found.
+     *
      * @param name name of the desired resource
      * @return a java.net.URL object
      */
@@ -79,6 +79,7 @@ public class ThreadContextClassLoadHelper implements ClassLoadHelper {
     /**
      * Finds a resource with a given name. This method returns null if no
      * resource with this name is found.
+     *
      * @param name name of the desired resource
      * @return a java.io.InputStream object
      */

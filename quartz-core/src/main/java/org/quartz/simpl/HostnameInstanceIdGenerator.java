@@ -23,17 +23,17 @@ import org.quartz.spi.InstanceIdGenerator;
 
 /**
  * <p>
- * <code>InstanceIdGenerator</code> that names the scheduler instance using 
+ * <code>InstanceIdGenerator</code> that names the scheduler instance using
  * just the machine hostname.
  * </p>
- * 
  * <p>
- * This class is useful when you know that your scheduler instance will be the 
- * only one running on a particular machine.  Each time the scheduler is 
- * restarted, it will get the same instance id as long as the machine is not 
+ * <p>
+ * This class is useful when you know that your scheduler instance will be the
+ * only one running on a particular machine.  Each time the scheduler is
+ * restarted, it will get the same instance id as long as the machine is not
  * renamed.
  * </p>
- * 
+ *
  * @see InstanceIdGenerator
  * @see SimpleInstanceIdGenerator
  */

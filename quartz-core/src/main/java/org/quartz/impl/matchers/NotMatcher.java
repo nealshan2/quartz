@@ -20,23 +20,23 @@ import org.quartz.Matcher;
 import org.quartz.utils.Key;
 
 /**
- * Matches using an NOT operator on another Matcher. 
- *  
+ * Matches using an NOT operator on another Matcher.
+ *
  * @author jhouse
  */
 public class NotMatcher<T extends Key<?>> implements Matcher<T> {
-  
+
     private static final long serialVersionUID = -2856769076151741391L;
 
     protected Matcher<T> operand;
-    
+
     protected NotMatcher(Matcher<T> operand) {
-        if(operand == null)
+        if (operand == null)
             throw new IllegalArgumentException("Non-null operand required!");
-        
+
         this.operand = operand;
     }
-    
+
     /**
      * Create a NotMatcher that reverses the result of the given matcher.
      */

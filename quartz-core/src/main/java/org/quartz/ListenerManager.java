@@ -22,16 +22,16 @@ import java.util.List;
 /**
  * Client programs may be interested in the 'listener' interfaces that are
  * available from Quartz. The <code>{@link JobListener}</code> interface
- * provides notifications of <code>Job</code> executions. The 
- * <code>{@link TriggerListener}</code> interface provides notifications of 
- * <code>Trigger</code> firings. The <code>{@link SchedulerListener}</code> 
- * interface provides notifications of <code>Scheduler</code> events and 
- * errors.  Listeners can be associated with local schedulers through the 
- * {@link ListenerManager} interface.  
- * 
+ * provides notifications of <code>Job</code> executions. The
+ * <code>{@link TriggerListener}</code> interface provides notifications of
+ * <code>Trigger</code> firings. The <code>{@link SchedulerListener}</code>
+ * interface provides notifications of <code>Scheduler</code> events and
+ * errors.  Listeners can be associated with local schedulers through the
+ * {@link ListenerManager} interface.
+ * <p>
  * <p>Listener registration order is preserved, and hence notification of listeners
  * will be in the order in which they were registered.</p>
- * 
+ *
  * @author jhouse
  * @since 2.0 - previously listeners were managed directly on the Scheduler interface.
  */
@@ -40,9 +40,9 @@ public interface ListenerManager {
     /**
      * Add the given <code>{@link JobListener}</code> to the <code>Scheduler</code>,
      * and register it to receive events for all Jobs.
-     * 
+     * <p>
      * Because no matchers are provided, the <code>EverythingMatcher</code> will be used.
-     * 
+     *
      * @see Matcher
      * @see org.quartz.impl.matchers.EverythingMatcher
      */
@@ -52,9 +52,9 @@ public interface ListenerManager {
      * Add the given <code>{@link JobListener}</code> to the <code>Scheduler</code>,
      * and register it to receive events for Jobs that are matched by the
      * given Matcher.
-     * 
+     * <p>
      * If no matchers are provided, the <code>EverythingMatcher</code> will be used.
-     * 
+     *
      * @see Matcher
      * @see org.quartz.impl.matchers.EverythingMatcher
      */
@@ -64,21 +64,21 @@ public interface ListenerManager {
      * Add the given <code>{@link JobListener}</code> to the <code>Scheduler</code>,
      * and register it to receive events for Jobs that are matched by ANY of the
      * given Matchers.
-     * 
+     * <p>
      * If no matchers are provided, the <code>EverythingMatcher</code> will be used.
-     * 
+     *
      * @see Matcher
      * @see org.quartz.impl.matchers.EverythingMatcher
      */
-    public void addJobListener(JobListener jobListener, Matcher<JobKey> ... matchers);
+    public void addJobListener(JobListener jobListener, Matcher<JobKey>... matchers);
 
     /**
      * Add the given <code>{@link JobListener}</code> to the <code>Scheduler</code>,
      * and register it to receive events for Jobs that are matched by ANY of the
      * given Matchers.
-     * 
+     * <p>
      * If no matchers are provided, the <code>EverythingMatcher</code> will be used.
-     * 
+     *
      * @see Matcher
      * @see org.quartz.impl.matchers.EverythingMatcher
      */
@@ -87,9 +87,9 @@ public interface ListenerManager {
     /**
      * Add the given Matcher to the set of matchers for which the listener
      * will receive events if ANY of the matchers match.
-     *  
+     *
      * @param listenerName the name of the listener to add the matcher to
-     * @param matcher the additional matcher to apply for selecting events
+     * @param matcher      the additional matcher to apply for selecting events
      * @return true if the identified listener was found and updated
      */
     public boolean addJobListenerMatcher(String listenerName, Matcher<JobKey> matcher);
@@ -97,9 +97,9 @@ public interface ListenerManager {
     /**
      * Remove the given Matcher to the set of matchers for which the listener
      * will receive events if ANY of the matchers match.
-     *  
+     *
      * @param listenerName the name of the listener to add the matcher to
-     * @param matcher the additional matcher to apply for selecting events
+     * @param matcher      the additional matcher to apply for selecting events
      * @return true if the given matcher was found and removed from the listener's list of matchers
      */
     public boolean removeJobListenerMatcher(String listenerName, Matcher<JobKey> matcher);
@@ -107,11 +107,11 @@ public interface ListenerManager {
     /**
      * Set the set of Matchers for which the listener
      * will receive events if ANY of the matchers match.
-     * 
+     * <p>
      * <p>Removes any existing matchers for the identified listener!</p>
-     *  
+     *
      * @param listenerName the name of the listener to add the matcher to
-     * @param matchers the matchers to apply for selecting events
+     * @param matchers     the matchers to apply for selecting events
      * @return true if the given matcher was found and removed from the listener's list of matchers
      */
     public boolean setJobListenerMatchers(String listenerName, List<Matcher<JobKey>> matchers);
@@ -119,8 +119,7 @@ public interface ListenerManager {
     /**
      * Get the set of Matchers for which the listener
      * will receive events if ANY of the matchers match.
-     * 
-     *  
+     *
      * @param listenerName the name of the listener to add the matcher to
      * @return the matchers registered for selecting events for the identified listener
      */
@@ -128,9 +127,9 @@ public interface ListenerManager {
 
     /**
      * Remove the identified <code>{@link JobListener}</code> from the <code>Scheduler</code>.
-     * 
+     *
      * @return true if the identified listener was found in the list, and
-     *         removed.
+     * removed.
      */
     public boolean removeJobListener(String name);
 
@@ -148,45 +147,45 @@ public interface ListenerManager {
     /**
      * Add the given <code>{@link TriggerListener}</code> to the <code>Scheduler</code>,
      * and register it to receive events for all Triggers.
-     * 
+     * <p>
      * Because no matcher is provided, the <code>EverythingMatcher</code> will be used.
-     * 
+     *
      * @see Matcher
      * @see org.quartz.impl.matchers.EverythingMatcher
      */
     public void addTriggerListener(TriggerListener triggerListener);
-    
+
     /**
      * Add the given <code>{@link TriggerListener}</code> to the <code>Scheduler</code>,
      * and register it to receive events for Triggers that are matched by the
      * given Matcher.
-     * 
+     * <p>
      * If no matcher is provided, the <code>EverythingMatcher</code> will be used.
-     * 
+     *
      * @see Matcher
      * @see org.quartz.impl.matchers.EverythingMatcher
      */
     public void addTriggerListener(TriggerListener triggerListener, Matcher<TriggerKey> matcher);
-    
-    /**
-     * Add the given <code>{@link TriggerListener}</code> to the <code>Scheduler</code>,
-     * and register it to receive events for Triggers that are matched by ANY of the
-     * given Matchers.
-     * 
-     * If no matcher is provided, the <code>EverythingMatcher</code> will be used.
-     * 
-     * @see Matcher
-     * @see org.quartz.impl.matchers.EverythingMatcher
-     */
-    public void addTriggerListener(TriggerListener triggerListener, Matcher<TriggerKey> ... matchers);
 
     /**
      * Add the given <code>{@link TriggerListener}</code> to the <code>Scheduler</code>,
      * and register it to receive events for Triggers that are matched by ANY of the
      * given Matchers.
-     * 
+     * <p>
      * If no matcher is provided, the <code>EverythingMatcher</code> will be used.
-     * 
+     *
+     * @see Matcher
+     * @see org.quartz.impl.matchers.EverythingMatcher
+     */
+    public void addTriggerListener(TriggerListener triggerListener, Matcher<TriggerKey>... matchers);
+
+    /**
+     * Add the given <code>{@link TriggerListener}</code> to the <code>Scheduler</code>,
+     * and register it to receive events for Triggers that are matched by ANY of the
+     * given Matchers.
+     * <p>
+     * If no matcher is provided, the <code>EverythingMatcher</code> will be used.
+     *
      * @see Matcher
      * @see org.quartz.impl.matchers.EverythingMatcher
      */
@@ -195,9 +194,9 @@ public interface ListenerManager {
     /**
      * Add the given Matcher to the set of matchers for which the listener
      * will receive events if ANY of the matchers match.
-     *  
+     *
      * @param listenerName the name of the listener to add the matcher to
-     * @param matcher the additional matcher to apply for selecting events
+     * @param matcher      the additional matcher to apply for selecting events
      * @return true if the identified listener was found and updated
      */
     public boolean addTriggerListenerMatcher(String listenerName, Matcher<TriggerKey> matcher);
@@ -205,9 +204,9 @@ public interface ListenerManager {
     /**
      * Remove the given Matcher to the set of matchers for which the listener
      * will receive events if ANY of the matchers match.
-     *  
+     *
      * @param listenerName the name of the listener to add the matcher to
-     * @param matcher the additional matcher to apply for selecting events
+     * @param matcher      the additional matcher to apply for selecting events
      * @return true if the given matcher was found and removed from the listener's list of matchers
      */
     public boolean removeTriggerListenerMatcher(String listenerName, Matcher<TriggerKey> matcher);
@@ -215,11 +214,11 @@ public interface ListenerManager {
     /**
      * Set the set of Matchers for which the listener
      * will receive events if ANY of the matchers match.
-     * 
+     * <p>
      * <p>Removes any existing matchers for the identified listener!</p>
-     *  
+     *
      * @param listenerName the name of the listener to add the matcher to
-     * @param matchers the matchers to apply for selecting events
+     * @param matchers     the matchers to apply for selecting events
      * @return true if the given matcher was found and removed from the listener's list of matchers
      */
     public boolean setTriggerListenerMatchers(String listenerName, List<Matcher<TriggerKey>> matchers);
@@ -227,23 +226,22 @@ public interface ListenerManager {
     /**
      * Get the set of Matchers for which the listener
      * will receive events if ANY of the matchers match.
-     * 
-     *  
+     *
      * @param listenerName the name of the listener to add the matcher to
      * @return the matchers registered for selecting events for the identified listener
      */
-    public List<Matcher<TriggerKey>> getTriggerListenerMatchers( String listenerName);
+    public List<Matcher<TriggerKey>> getTriggerListenerMatchers(String listenerName);
 
     /**
      * Remove the identified <code>{@link TriggerListener}</code> from the <code>Scheduler</code>.
-     * 
+     *
      * @return true if the identified listener was found in the list, and
-     *         removed.
+     * removed.
      */
     public boolean removeTriggerListener(String name);
 
     /**
-     * Get a List containing all of the <code>{@link TriggerListener}</code>s 
+     * Get a List containing all of the <code>{@link TriggerListener}</code>s
      * in the <code>Scheduler</code>, in the order in which they were registered.
      */
     public List<TriggerListener> getTriggerListeners();
@@ -262,9 +260,9 @@ public interface ListenerManager {
     /**
      * Remove the given <code>{@link SchedulerListener}</code> from the
      * <code>Scheduler</code>.
-     * 
+     *
      * @return true if the identified listener was found in the list, and
-     *         removed.
+     * removed.
      */
     public boolean removeSchedulerListener(SchedulerListener schedulerListener);
 

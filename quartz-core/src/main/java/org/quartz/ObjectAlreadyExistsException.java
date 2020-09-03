@@ -23,11 +23,11 @@ package org.quartz;
  * object (i.e. <code>{@link org.quartz.JobDetail}</code>,<code>{@link Trigger}</code>
  * or <code>{@link Calendar}</code>) in a <code>{@link Scheduler}</code>
  * failed, because one with the same name & group already exists.
- * 
+ *
  * @author James House
  */
 public class ObjectAlreadyExistsException extends JobPersistenceException {
-  
+
     private static final long serialVersionUID = -558301282071659896L;
 
     /*
@@ -53,7 +53,7 @@ public class ObjectAlreadyExistsException extends JobPersistenceException {
      * Create a <code>ObjectAlreadyExistsException</code> and auto-generate a
      * message using the name/group from the given <code>JobDetail</code>.
      * </p>
-     * 
+     * <p>
      * <p>
      * The message will read: <BR>"Unable to store Job with name: '__' and
      * group: '__', because one already exists with this identification."
@@ -69,7 +69,7 @@ public class ObjectAlreadyExistsException extends JobPersistenceException {
      * Create a <code>ObjectAlreadyExistsException</code> and auto-generate a
      * message using the name/group from the given <code>Trigger</code>.
      * </p>
-     * 
+     * <p>
      * <p>
      * The message will read: <BR>"Unable to store Trigger with name: '__' and
      * group: '__', because one already exists with this identification."

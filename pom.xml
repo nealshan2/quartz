@@ -1,94 +1,96 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.quartz-scheduler</groupId>
-  <artifactId>quartz-parent</artifactId>
-  <version>${revision}</version>
-  <name>quartz-parent</name>
-  <packaging>pom</packaging>
-  
-
-  <modules>
-    <module>quartz-core</module>
-  </modules>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-
-    <revision>2.4.0-SNAPSHOT</revision>
-
-    <slf4j.version>1.7.7</slf4j.version>
-    <c3p0.version>0.9.5.4</c3p0.version>
-    <hikaricp.version>3.2.0</hikaricp.version>
-    <log4j.version>1.2.16</log4j.version>
-    <gmaven-plugin.version>1.4</gmaven-plugin.version>
-
-  </properties>
-
-  <build>
-    <pluginManagement>                                                           
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.3.2</version>
-          <configuration>
-            <fork>true</fork>
-            <meminitial>128</meminitial>
-            <maxmem>512</maxmem>
-          </configuration>
-        </plugin>
-
-      </plugins>
-    </pluginManagement>
-
-  </build>
-
-  <profiles>
-    <profile>
-      <id>mysql-test</id>
-      <dependencies>
-        <dependency>
-          <groupId>mysql</groupId>
-          <artifactId>mysql-connector-java</artifactId>
-          <version>8.0.15</version>
-        </dependency>
-      </dependencies>
-      <properties>
-        <liquibase.url>jdbc:mysql://localhost:3306/quartz?serverTimezone=EST</liquibase.url>
-        <liquibase.username>quartz</liquibase.username>
-        <liquibase.password>quartz123</liquibase.password>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-maven-plugin</artifactId>
-            <version>3.6.3</version>
-            <configuration>
-              <changeLogFile>org/quartz/impl/jdbcjobstore/liquibase.quartz.init.xml</changeLogFile>
-              <driver>com.mysql.cj.jdbc.Driver</driver>
-              <url>${liquibase.url}</url>
-              <username>${liquibase.username}</username>
-              <password>${liquibase.password}</password>
-            </configuration>
-            <executions>
-              <execution>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>update</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
+    <groupId>org.quartz-scheduler</groupId>
+    <artifactId>quartz-parent</artifactId>
+    <version>${revision}</version>
+    <name>quartz-parent</name>
+    <packaging>pom</packaging>
 
 
-  </profiles>  
+    <modules>
+        <module>quartz-core</module>
+        <module>quartz-sample</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <revision>2.4.0-SNAPSHOT</revision>
+
+        <slf4j.version>1.7.7</slf4j.version>
+        <c3p0.version>0.9.5.4</c3p0.version>
+        <hikaricp.version>3.2.0</hikaricp.version>
+        <log4j.version>1.2.16</log4j.version>
+        <gmaven-plugin.version>1.4</gmaven-plugin.version>
+
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
+                    <configuration>
+                        <fork>true</fork>
+                        <meminitial>128</meminitial>
+                        <maxmem>512</maxmem>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
+    </build>
+
+    <profiles>
+        <profile>
+            <id>mysql-test</id>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>8.0.15</version>
+                </dependency>
+            </dependencies>
+            <properties>
+                <liquibase.url>jdbc:mysql://localhost:3306/quartz?serverTimezone=EST</liquibase.url>
+                <liquibase.username>quartz</liquibase.username>
+                <liquibase.password>quartz123</liquibase.password>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>3.6.3</version>
+                        <configuration>
+                            <changeLogFile>org/quartz/impl/jdbcjobstore/liquibase.quartz.init.xml</changeLogFile>
+                            <driver>com.mysql.cj.jdbc.Driver</driver>
+                            <url>${liquibase.url}</url>
+                            <username>${liquibase.username}</username>
+                            <password>${liquibase.password}</password>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>update</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+
+    </profiles>
 
 </project>

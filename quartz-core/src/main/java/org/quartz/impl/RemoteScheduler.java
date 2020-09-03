@@ -49,11 +49,10 @@ import org.quartz.spi.JobFactory;
  * proxies all method calls to the equivalent call on a given <code>QuartzScheduler</code>
  * instance, via RMI.
  * </p>
- * 
+ *
+ * @author James House
  * @see org.quartz.Scheduler
  * @see org.quartz.core.QuartzScheduler
- * 
- * @author James House
  */
 public class RemoteScheduler implements Scheduler {
 
@@ -103,7 +102,7 @@ public class RemoteScheduler implements Scheduler {
      */
 
     protected RemotableQuartzScheduler getRemoteScheduler()
-        throws SchedulerException {
+            throws SchedulerException {
         if (rsched != null) {
             return rsched;
         }
@@ -124,7 +123,7 @@ public class RemoteScheduler implements Scheduler {
     }
 
     protected SchedulerException invalidateHandleCreateException(String msg,
-            Exception cause) {
+                                                                 Exception cause) {
         rsched = null;
         SchedulerException ex = new SchedulerException(msg, cause);
         return ex;
@@ -162,10 +161,10 @@ public class RemoteScheduler implements Scheduler {
         try {
             RemotableQuartzScheduler sched = getRemoteScheduler();
             return new SchedulerMetaData(getSchedulerName(),
-                    getSchedulerInstanceId(), getClass(), true, isStarted(), 
-                    isInStandbyMode(), isShutdown(), sched.runningSince(), 
-                    sched.numJobsExecuted(), sched.getJobStoreClass(), 
-                    sched.supportsPersistence(), sched.isClustered(), sched.getThreadPoolClass(), 
+                    getSchedulerInstanceId(), getClass(), true, isStarted(),
+                    isInStandbyMode(), isShutdown(), sched.runningSince(),
+                    sched.numJobsExecuted(), sched.getJobStoreClass(),
+                    sched.supportsPersistence(), sched.isClustered(), sched.getThreadPoolClass(),
                     sched.getThreadPoolSize(), sched.getVersion());
 
         } catch (RemoteException re) {
@@ -222,7 +221,7 @@ public class RemoteScheduler implements Scheduler {
                     "Error communicating with remote scheduler.", re);
         }
     }
-    
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
@@ -238,28 +237,28 @@ public class RemoteScheduler implements Scheduler {
     }
 
     /**
-     * Whether the scheduler has been started.  
-     * 
+     * Whether the scheduler has been started.
+     * <p>
      * <p>
      * Note: This only reflects whether <code>{@link #start()}</code> has ever
-     * been called on this Scheduler, so it will return <code>true</code> even 
-     * if the <code>Scheduler</code> is currently in standby mode or has been 
+     * been called on this Scheduler, so it will return <code>true</code> even
+     * if the <code>Scheduler</code> is currently in standby mode or has been
      * since shutdown.
      * </p>
-     * 
+     *
      * @see #start()
      * @see #isShutdown()
      * @see #isInStandbyMode()
-     */    
+     */
     public boolean isStarted() throws SchedulerException {
         try {
             return (getRemoteScheduler().runningSince() != null);
         } catch (RemoteException re) {
             throw invalidateHandleCreateException(
                     "Error communicating with remote scheduler.", re);
-        }   
+        }
     }
-    
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
@@ -282,9 +281,9 @@ public class RemoteScheduler implements Scheduler {
     public void shutdown() throws SchedulerException {
         try {
             String schedulerName = getSchedulerName();
-            
+
             getRemoteScheduler().shutdown();
-            
+
             SchedulerRepository.getInstance().remove(schedulerName);
         } catch (RemoteException re) {
             throw invalidateHandleCreateException(
@@ -298,10 +297,10 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public void shutdown(boolean waitForJobsToComplete)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             String schedulerName = getSchedulerName();
-            
+
             getRemoteScheduler().shutdown(waitForJobsToComplete);
 
             SchedulerRepository.getInstance().remove(schedulerName);
@@ -351,7 +350,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public Date scheduleJob(JobDetail jobDetail, Trigger trigger)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             return getRemoteScheduler().scheduleJob(jobDetail,
                     trigger);
@@ -381,7 +380,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public void addJob(JobDetail jobDetail, boolean replace)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             getRemoteScheduler().addJob(jobDetail, replace);
         } catch (RemoteException re) {
@@ -410,14 +409,14 @@ public class RemoteScheduler implements Scheduler {
     }
 
     public void scheduleJobs(Map<JobDetail, Set<? extends Trigger>> triggersAndJobs, boolean replace) throws SchedulerException {
-            try {
-                getRemoteScheduler().scheduleJobs(triggersAndJobs, replace);
-            } catch (RemoteException re) {
-                throw invalidateHandleCreateException(
-                        "Error communicating with remote scheduler.", re);
-            }
+        try {
+            getRemoteScheduler().scheduleJobs(triggersAndJobs, replace);
+        } catch (RemoteException re) {
+            throw invalidateHandleCreateException(
+                    "Error communicating with remote scheduler.", re);
+        }
     }
-    
+
     public void scheduleJob(JobDetail jobDetail, Set<? extends Trigger> triggersForJob, boolean replace) throws SchedulerException {
         try {
             getRemoteScheduler().scheduleJob(jobDetail, triggersForJob, replace);
@@ -443,7 +442,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public boolean deleteJob(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             return getRemoteScheduler()
                     .deleteJob(jobKey);
@@ -459,7 +458,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public boolean unscheduleJob(TriggerKey triggerKey)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             return getRemoteScheduler().unscheduleJob(triggerKey);
         } catch (RemoteException re) {
@@ -474,7 +473,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public Date rescheduleJob(TriggerKey triggerKey,
-            Trigger newTrigger) throws SchedulerException {
+                              Trigger newTrigger) throws SchedulerException {
         try {
             return getRemoteScheduler().rescheduleJob(triggerKey,
                     newTrigger);
@@ -483,25 +482,25 @@ public class RemoteScheduler implements Scheduler {
                     "Error communicating with remote scheduler.", re);
         }
     }
-    
-    
+
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
      * </p>
      */
     public void triggerJob(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         triggerJob(jobKey, null);
     }
-    
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
      * </p>
      */
     public void triggerJob(JobKey jobKey, JobDataMap data)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             getRemoteScheduler().triggerJob(jobKey, data);
         } catch (RemoteException re) {
@@ -516,7 +515,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public void pauseTrigger(TriggerKey triggerKey)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             getRemoteScheduler()
                     .pauseTrigger(triggerKey);
@@ -546,7 +545,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public void pauseJob(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             getRemoteScheduler().pauseJob(jobKey);
         } catch (RemoteException re) {
@@ -575,7 +574,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public void resumeTrigger(TriggerKey triggerKey)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             getRemoteScheduler().resumeTrigger(triggerKey);
         } catch (RemoteException re) {
@@ -604,7 +603,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public void resumeJob(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             getRemoteScheduler().resumeJob(jobKey);
         } catch (RemoteException re) {
@@ -689,7 +688,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public List<? extends Trigger> getTriggersOfJob(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             return getRemoteScheduler().getTriggersOfJob(jobKey);
         } catch (RemoteException re) {
@@ -732,7 +731,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public JobDetail getJobDetail(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             return getRemoteScheduler().getJobDetail(jobKey);
         } catch (RemoteException re) {
@@ -754,7 +753,7 @@ public class RemoteScheduler implements Scheduler {
                     "Error communicating with remote scheduler.", re);
         }
     }
-   
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
@@ -768,7 +767,7 @@ public class RemoteScheduler implements Scheduler {
                     "Error communicating with remote scheduler.", re);
         }
     }
-  
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
@@ -782,14 +781,14 @@ public class RemoteScheduler implements Scheduler {
                     "Error communicating with remote scheduler.", re);
         }
     }
-    
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
      * </p>
      */
     public Trigger getTrigger(TriggerKey triggerKey)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             return getRemoteScheduler().getTrigger(triggerKey);
         } catch (RemoteException re) {
@@ -804,7 +803,7 @@ public class RemoteScheduler implements Scheduler {
      * </p>
      */
     public TriggerState getTriggerState(TriggerKey triggerKey)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             return getRemoteScheduler().getTriggerState(triggerKey);
         } catch (RemoteException re) {
@@ -829,15 +828,13 @@ public class RemoteScheduler implements Scheduler {
     }
 
 
-
-
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
      * </p>
      */
     public void addCalendar(String calName, Calendar calendar, boolean replace, boolean updateTriggers)
-        throws SchedulerException {
+            throws SchedulerException {
         try {
             getRemoteScheduler().addCalendar(calName, calendar,
                     replace, updateTriggers);
@@ -889,7 +886,7 @@ public class RemoteScheduler implements Scheduler {
         }
     }
 
-    /** 
+    /**
      * @see org.quartz.Scheduler#getPausedTriggerGroups()
      */
     public Set<String> getPausedTriggerGroups() throws SchedulerException {
@@ -911,13 +908,13 @@ public class RemoteScheduler implements Scheduler {
 
     public ListenerManager getListenerManager() throws SchedulerException {
         throw new SchedulerException(
-            "Operation not supported for remote schedulers.");
+                "Operation not supported for remote schedulers.");
     }
 
     /**
      * @see org.quartz.Scheduler#interrupt(JobKey)
      */
-    public boolean interrupt(JobKey jobKey) throws UnableToInterruptJobException  {
+    public boolean interrupt(JobKey jobKey) throws UnableToInterruptJobException {
         try {
             return getRemoteScheduler().interrupt(jobKey);
         } catch (RemoteException re) {

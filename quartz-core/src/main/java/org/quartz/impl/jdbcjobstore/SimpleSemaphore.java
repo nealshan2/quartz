@@ -24,10 +24,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Internal in-memory lock handler for providing thread/resource locking in 
- * order to protect resources from being altered by multiple threads at the 
+ * Internal in-memory lock handler for providing thread/resource locking in
+ * order to protect resources from being altered by multiple threads at the
  * same time.
- * 
+ *
  * @author jhouse
  */
 public class SimpleSemaphore implements Semaphore {
@@ -70,50 +70,50 @@ public class SimpleSemaphore implements Semaphore {
     /**
      * Grants a lock on the identified resource to the calling thread (blocking
      * until it is available).
-     * 
+     *
      * @return true if the lock was obtained.
      */
     public synchronized boolean obtainLock(Connection conn, String lockName) {
 
         lockName = lockName.intern();
 
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug(
-                "Lock '" + lockName + "' is desired by: "
-                        + Thread.currentThread().getName());
+                    "Lock '" + lockName + "' is desired by: "
+                            + Thread.currentThread().getName());
         }
 
         if (!isLockOwner(lockName)) {
-            if(log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug(
-                    "Lock '" + lockName + "' is being obtained: "
-                            + Thread.currentThread().getName());
+                        "Lock '" + lockName + "' is being obtained: "
+                                + Thread.currentThread().getName());
             }
             while (locks.contains(lockName)) {
                 try {
                     this.wait();
                 } catch (InterruptedException ie) {
-                    if(log.isDebugEnabled()) {
+                    if (log.isDebugEnabled()) {
                         log.debug(
-                            "Lock '" + lockName + "' was not obtained by: "
-                                    + Thread.currentThread().getName());
+                                "Lock '" + lockName + "' was not obtained by: "
+                                        + Thread.currentThread().getName());
                     }
                 }
             }
 
-            if(log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug(
-                    "Lock '" + lockName + "' given to: "
-                            + Thread.currentThread().getName());
+                        "Lock '" + lockName + "' given to: "
+                                + Thread.currentThread().getName());
             }
             getThreadLocks().add(lockName);
             locks.add(lockName);
-        } else if(log.isDebugEnabled()) {
+        } else if (log.isDebugEnabled()) {
             log.debug(
-                "Lock '" + lockName + "' already owned by: "
-                        + Thread.currentThread().getName()
-                        + " -- but not owner!",
-                new Exception("stack-trace of wrongful returner"));
+                    "Lock '" + lockName + "' already owned by: "
+                            + Thread.currentThread().getName()
+                            + " -- but not owner!",
+                    new Exception("stack-trace of wrongful returner"));
         }
 
         return true;
@@ -128,20 +128,20 @@ public class SimpleSemaphore implements Semaphore {
         lockName = lockName.intern();
 
         if (isLockOwner(lockName)) {
-            if(getLog().isDebugEnabled()) {
+            if (getLog().isDebugEnabled()) {
                 getLog().debug(
-                    "Lock '" + lockName + "' retuned by: "
-                            + Thread.currentThread().getName());
+                        "Lock '" + lockName + "' retuned by: "
+                                + Thread.currentThread().getName());
             }
             getThreadLocks().remove(lockName);
             locks.remove(lockName);
             this.notifyAll();
         } else if (getLog().isDebugEnabled()) {
             getLog().debug(
-                "Lock '" + lockName + "' attempt to retun by: "
-                        + Thread.currentThread().getName()
-                        + " -- but not owner!",
-                new Exception("stack-trace of wrongful returner"));
+                    "Lock '" + lockName + "' attempt to retun by: "
+                            + Thread.currentThread().getName()
+                            + " -- but not owner!",
+                    new Exception("stack-trace of wrongful returner"));
         }
     }
 

@@ -19,19 +19,18 @@
 package org.quartz;
 
 
-
 /**
  * Base class for exceptions thrown by the Quartz <code>{@link Scheduler}</code>.
- * 
+ * <p>
  * <p>
  * <code>SchedulerException</code>s may contain a reference to another
  * <code>Exception</code>, which was the underlying cause of the <code>SchedulerException</code>.
  * </p>
- * 
+ *
  * @author James House
  */
 public class SchedulerException extends Exception {
-  
+
     private static final long serialVersionUID = 174841398690789156L;
 
     /*
@@ -72,13 +71,13 @@ public class SchedulerException extends Exception {
      * <p>
      * Return the exception that is the underlying cause of this exception.
      * </p>
-     * 
+     * <p>
      * <p>
      * This may be used to find more detail about the cause of the error.
      * </p>
-     * 
+     *
      * @return the underlying exception, or <code>null</code> if there is not
-     *         one.
+     * one.
      */
     public Throwable getUnderlyingException() {
         return super.getCause();
@@ -86,7 +85,7 @@ public class SchedulerException extends Exception {
 
     @Override
     public String toString() {
-        Throwable cause = getUnderlyingException(); 
+        Throwable cause = getUnderlyingException();
         if (cause == null || cause == this) {
             return super.toString();
         } else {

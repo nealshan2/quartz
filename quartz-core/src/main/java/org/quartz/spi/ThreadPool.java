@@ -24,7 +24,7 @@ import org.quartz.SchedulerConfigException;
  * The interface to be implemented by classes that want to provide a thread
  * pool for the <code>{@link org.quartz.core.QuartzScheduler}</code>'s use.
  * </p>
- *
+ * <p>
  * <p>
  * <code>ThreadPool</code> implementation instances should ideally be made
  * for the sole use of Quartz.  Most importantly, when the method
@@ -36,9 +36,8 @@ import org.quartz.SchedulerConfigException;
  * are being used, it may result in greater imballance of load.
  * </p>
  *
- * @see org.quartz.core.QuartzScheduler
- *
  * @author James House
+ * @see org.quartz.core.QuartzScheduler
  */
 public interface ThreadPool {
 
@@ -55,7 +54,7 @@ public interface ThreadPool {
      * Execute the given <code>{@link java.lang.Runnable}</code> in the next
      * available <code>Thread</code>.
      * </p>
-     *
+     * <p>
      * <p>
      * The implementation of this interface should not throw exceptions unless
      * there is a serious problem (i.e. a serious misconfiguration). If there
@@ -73,7 +72,7 @@ public interface ThreadPool {
      * <code>runInThread(Runnable)</code> can be called before returning
      * false.
      * </p>
-     *
+     * <p>
      * <p>The implementation of this method should block until there is at
      * least one available thread.</p>
      *
@@ -86,7 +85,7 @@ public interface ThreadPool {
      * Must be called before the <code>ThreadPool</code> is
      * used, in order to give the it a chance to initialize.
      * </p>
-     * 
+     * <p>
      * <p>Typically called by the <code>SchedulerFactory</code>.</p>
      */
     void initialize() throws SchedulerConfigException;

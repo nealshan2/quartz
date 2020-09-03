@@ -22,17 +22,17 @@ import org.quartz.TriggerKey;
 import org.quartz.utils.Key;
 
 /**
- * Matches on the complete key being equal (both name and group). 
- *  
+ * Matches on the complete key being equal (both name and group).
+ *
  * @author jhouse
  */
 public class EverythingMatcher<T extends Key<?>> implements Matcher<T> {
-  
+
     private static final long serialVersionUID = 202300056681974058L;
-    
+
     protected EverythingMatcher() {
     }
-    
+
     /**
      * Create an EverythingMatcher that matches all jobs.
      */
@@ -46,16 +46,16 @@ public class EverythingMatcher<T extends Key<?>> implements Matcher<T> {
     public static EverythingMatcher<TriggerKey> allTriggers() {
         return new EverythingMatcher<TriggerKey>();
     }
-    
+
     public boolean isMatch(T key) {
         return true;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null)
             return false;
-        
+
         return obj.getClass().equals(getClass());
     }
 
@@ -64,5 +64,5 @@ public class EverythingMatcher<T extends Key<?>> implements Matcher<T> {
         return getClass().getName().hashCode();
     }
 
-    
+
 }

@@ -29,7 +29,7 @@ import org.quartz.SchedulerException;
  * preventing garbage collection, and allowing 'global' lookups - all within a
  * ClassLoader space.
  * </p>
- * 
+ *
  * @author James House
  */
 public class SchedulerRepository {

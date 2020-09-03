@@ -29,7 +29,7 @@ import org.quartz.spi.TriggerFiredBundle;
  * to be used within the <class>{@link org.quartz.core.QuartzScheduler}
  * </code> instance.
  * </p>
- * 
+ *
  * @author James House
  */
 public class StdJobRunShellFactory implements JobRunShellFactory {

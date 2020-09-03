@@ -31,20 +31,20 @@ import java.sql.SQLException;
  * <p>
  * This is a driver delegate for Intersystems Caché database.
  * </p>
- * 
+ * <p>
  * <p>
  * Works with the Oracle table creation scripts / schema.
  * </p>
- * 
+ *
  * @author Franck Routier
  * @author <a href="mailto:alci@mecadu.org">Franck Routier</a>
  */
 public class CacheDelegate extends StdJDBCDelegate {
-        
+
     //---------------------------------------------------------------------------
     // protected methods that can be overridden by subclasses
     //---------------------------------------------------------------------------
-  
+
     /**
      * Sets the designated parameter to the byte array of the given
      * <code>ByteArrayOutputStream</code>. Will set parameter value to null if the
@@ -56,7 +56,7 @@ public class CacheDelegate extends StdJDBCDelegate {
     @Override
     protected void setBytes(PreparedStatement ps, int index, ByteArrayOutputStream baos) throws SQLException {
         ps.setObject(index, ((baos == null) ? null : baos.toByteArray()), java.sql.Types.BLOB);
-    } 
+    }
 
     /**
      * {@inheritDoc}
@@ -76,7 +76,7 @@ public class CacheDelegate extends StdJDBCDelegate {
                     InputStream binaryInput = blob.getBinaryStream();
                     if (binaryInput == null) {
                         return null;
-                    } else if (binaryInput instanceof ByteArrayInputStream && ((ByteArrayInputStream) binaryInput).available() == 0 ) {
+                    } else if (binaryInput instanceof ByteArrayInputStream && ((ByteArrayInputStream) binaryInput).available() == 0) {
                         return null;
                     } else {
                         ObjectInputStream in = new ObjectInputStream(binaryInput);
@@ -111,9 +111,9 @@ public class CacheDelegate extends StdJDBCDelegate {
             return getObjectFromBlob(rs, colName);
         }
     }
-    
+
     private static class BlobFreeingStream extends InputStream {
-        
+
         private final Blob source;
         private final InputStream delegate;
 

@@ -23,39 +23,55 @@ import javax.sql.DataSource;
  * <p>
  * <code>ConnectionProvider</code>s supporting pooling of connections.
  * </p>
- *
+ * <p>
  * <p>
  * Implementations must pool connections.
  * </p>
  *
+ * @author Ludovic Orban
  * @see DBConnectionManager
  * @see ConnectionProvider
- * @author Ludovic Orban
  */
 public interface PoolingConnectionProvider extends ConnectionProvider {
 
-    /** The pooling provider. */
+    /**
+     * The pooling provider.
+     */
     String POOLING_PROVIDER = "provider";
 
-    /** The c3p0 pooling provider. */
+    /**
+     * The c3p0 pooling provider.
+     */
     String POOLING_PROVIDER_C3P0 = "c3p0";
 
-    /** The Hikari pooling provider. */
+    /**
+     * The Hikari pooling provider.
+     */
     String POOLING_PROVIDER_HIKARICP = "hikaricp";
 
-    /** The JDBC database driver. */
+    /**
+     * The JDBC database driver.
+     */
     String DB_DRIVER = "driver";
 
-    /** The JDBC database URL. */
+    /**
+     * The JDBC database URL.
+     */
     String DB_URL = "URL";
 
-    /** The database user name. */
+    /**
+     * The database user name.
+     */
     String DB_USER = "user";
 
-    /** The database user password. */
+    /**
+     * The database user password.
+     */
     String DB_PASSWORD = "password";
 
-    /** The maximum number of database connections to have in the pool.  Default is 10. */
+    /**
+     * The maximum number of database connections to have in the pool.  Default is 10.
+     */
     String DB_MAX_CONNECTIONS = "maxConnections";
 
     /**
@@ -64,7 +80,9 @@ public interface PoolingConnectionProvider extends ConnectionProvider {
      */
     String DB_VALIDATION_QUERY = "validationQuery";
 
-    /** Default maximum number of database connections in the pool. */
+    /**
+     * Default maximum number of database connections in the pool.
+     */
     int DEFAULT_DB_MAX_CONNECTIONS = 10;
 
 

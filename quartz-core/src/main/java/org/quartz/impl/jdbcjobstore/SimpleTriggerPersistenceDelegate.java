@@ -44,7 +44,7 @@ public class SimpleTriggerPersistenceDelegate implements TriggerPersistenceDeleg
     }
 
     public boolean canHandleTriggerType(OperableTrigger trigger) {
-        return ((trigger instanceof SimpleTriggerImpl) && !((SimpleTriggerImpl)trigger).hasAdditionalProperties());
+        return ((trigger instanceof SimpleTriggerImpl) && !((SimpleTriggerImpl) trigger).hasAdditionalProperties());
     }
 
     public int deleteExtendedTriggerProperties(Connection conn, TriggerKey triggerKey) throws SQLException {
@@ -63,10 +63,10 @@ public class SimpleTriggerPersistenceDelegate implements TriggerPersistenceDeleg
 
     public int insertExtendedTriggerProperties(Connection conn, OperableTrigger trigger, String state, JobDetail jobDetail) throws SQLException, IOException {
 
-        SimpleTrigger simpleTrigger = (SimpleTrigger)trigger;
-        
+        SimpleTrigger simpleTrigger = (SimpleTrigger) trigger;
+
         PreparedStatement ps = null;
-        
+
         try {
             ps = conn.prepareStatement(Util.rtp(INSERT_SIMPLE_TRIGGER, tablePrefix, schedNameLiteral));
             ps.setString(1, trigger.getKey().getName());
@@ -85,28 +85,28 @@ public class SimpleTriggerPersistenceDelegate implements TriggerPersistenceDeleg
 
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             ps = conn.prepareStatement(Util.rtp(SELECT_SIMPLE_TRIGGER, tablePrefix, schedNameLiteral));
             ps.setString(1, triggerKey.getName());
             ps.setString(2, triggerKey.getGroup());
             rs = ps.executeQuery();
-    
+
             if (rs.next()) {
                 int repeatCount = rs.getInt(COL_REPEAT_COUNT);
                 long repeatInterval = rs.getLong(COL_REPEAT_INTERVAL);
                 int timesTriggered = rs.getInt(COL_TIMES_TRIGGERED);
 
                 SimpleScheduleBuilder sb = SimpleScheduleBuilder.simpleSchedule()
-                    .withRepeatCount(repeatCount)
-                    .withIntervalInMilliseconds(repeatInterval);
-                
-                String[] statePropertyNames = { "timesTriggered" };
-                Object[] statePropertyValues = { timesTriggered };
-                
+                        .withRepeatCount(repeatCount)
+                        .withIntervalInMilliseconds(repeatInterval);
+
+                String[] statePropertyNames = {"timesTriggered"};
+                Object[] statePropertyValues = {timesTriggered};
+
                 return new TriggerPropertyBundle(sb, statePropertyNames, statePropertyValues);
             }
-            
+
             throw new IllegalStateException("No record found for selection of Trigger with key: '" + triggerKey + "' and statement: " + Util.rtp(SELECT_SIMPLE_TRIGGER, tablePrefix, schedNameLiteral));
         } finally {
             Util.closeResultSet(rs);
@@ -116,8 +116,8 @@ public class SimpleTriggerPersistenceDelegate implements TriggerPersistenceDeleg
 
     public int updateExtendedTriggerProperties(Connection conn, OperableTrigger trigger, String state, JobDetail jobDetail) throws SQLException, IOException {
 
-        SimpleTrigger simpleTrigger = (SimpleTrigger)trigger;
-        
+        SimpleTrigger simpleTrigger = (SimpleTrigger) trigger;
+
         PreparedStatement ps = null;
 
         try {

@@ -36,30 +36,29 @@ import org.quartz.utils.ClassUtils;
  * <p>
  * Conveys the detail properties of a given <code>Job</code> instance.
  * </p>
- * 
+ * <p>
  * <p>
  * Quartz does not store an actual instance of a <code>Job</code> class, but
  * instead allows you to define an instance of one, through the use of a <code>JobDetail</code>.
  * </p>
- * 
+ * <p>
  * <p>
  * <code>Job</code>s have a name and group associated with them, which
  * should uniquely identify them within a single <code>{@link Scheduler}</code>.
  * </p>
- * 
+ * <p>
  * <p>
  * <code>Trigger</code>s are the 'mechanism' by which <code>Job</code>s
  * are scheduled. Many <code>Trigger</code>s can point to the same <code>Job</code>,
  * but a single <code>Trigger</code> can only point to one <code>Job</code>.
  * </p>
- * 
+ *
+ * @author James House
+ * @author Sharada Jambula
  * @see Job
  * @see StatefulJob
  * @see JobDataMap
  * @see Trigger
- * 
- * @author James House
- * @author Sharada Jambula
  */
 @SuppressWarnings("deprecation")
 public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail {
@@ -103,7 +102,7 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
      * Create a <code>JobDetail</code> with no specified name or group, and
      * the default settings of all the other properties.
      * </p>
-     * 
+     * <p>
      * <p>
      * Note that the {@link #setName(String)},{@link #setGroup(String)}and
      * {@link #setJobClass(Class)}methods must be called before the job can be
@@ -116,14 +115,12 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
 
     /**
      * <p>
-     * Create a <code>JobDetail</code> with the given name, given class, default group, 
+     * Create a <code>JobDetail</code> with the given name, given class, default group,
      * and the default settings of all the other properties.
      * </p>
-     * 
-     * @exception IllegalArgumentException
-     *              if name is null or empty, or the group is an empty string.
-     *              
-     * @deprecated use {@link JobBuilder}              
+     *
+     * @throws IllegalArgumentException if name is null or empty, or the group is an empty string.
+     * @deprecated use {@link JobBuilder}
      */
     public JobDetailImpl(String name, Class<? extends Job> jobClass) {
         this(name, null, jobClass);
@@ -131,16 +128,13 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
 
     /**
      * <p>
-     * Create a <code>JobDetail</code> with the given name, group and class, 
+     * Create a <code>JobDetail</code> with the given name, group and class,
      * and the default settings of all the other properties.
      * </p>
-     * 
+     *
      * @param group if <code>null</code>, Scheduler.DEFAULT_GROUP will be used.
-     * 
-     * @exception IllegalArgumentException
-     *              if name is null or empty, or the group is an empty string.
-     *              
-     * @deprecated use {@link JobBuilder}              
+     * @throws IllegalArgumentException if name is null or empty, or the group is an empty string.
+     * @deprecated use {@link JobBuilder}
      */
     public JobDetailImpl(String name, String group, Class<? extends Job> jobClass) {
         setName(name);
@@ -153,16 +147,13 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
      * Create a <code>JobDetail</code> with the given name, and group, and
      * the given settings of all the other properties.
      * </p>
-     * 
+     *
      * @param group if <code>null</code>, Scheduler.DEFAULT_GROUP will be used.
-     * 
-     * @exception IllegalArgumentException
-     *              if name is null or empty, or the group is an empty string.
-     *              
-     * @deprecated use {@link JobBuilder}              
+     * @throws IllegalArgumentException if name is null or empty, or the group is an empty string.
+     * @deprecated use {@link JobBuilder}
      */
     public JobDetailImpl(String name, String group, Class<? extends Job> jobClass,
-                     boolean durability, boolean recover) {
+                         boolean durability, boolean recover) {
         setName(name);
         setGroup(group);
         setJobClass(jobClass);
@@ -191,9 +182,8 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
      * <p>
      * Set the name of this <code>Job</code>.
      * </p>
-     * 
-     * @exception IllegalArgumentException
-     *              if name is null or empty.
+     *
+     * @throws IllegalArgumentException if name is null or empty.
      */
     public void setName(String name) {
         if (name == null || name.trim().length() == 0) {
@@ -217,11 +207,9 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
      * <p>
      * Set the group of this <code>Job</code>.
      * </p>
-     * 
+     *
      * @param group if <code>null</code>, Scheduler.DEFAULT_GROUP will be used.
-     * 
-     * @exception IllegalArgumentException
-     *              if the group is an empty string.
+     * @throws IllegalArgumentException if the group is an empty string.
      */
     public void setGroup(String group) {
         if (group != null && group.trim().length() == 0) {
@@ -251,17 +239,17 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
      * @see org.quartz.JobDetailI#getKey()
      */
     public JobKey getKey() {
-        if(key == null) {
-            if(getName() == null)
+        if (key == null) {
+            if (getName() == null)
                 return null;
             key = new JobKey(getName(), getGroup());
         }
 
         return key;
     }
-    
+
     public void setKey(JobKey key) {
-        if(key == null)
+        if (key == null)
             throw new IllegalArgumentException("Key cannot be null!");
 
         setName(key.getName());
@@ -298,9 +286,8 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
      * <p>
      * Set the instance of <code>Job</code> that will be executed.
      * </p>
-     * 
-     * @exception IllegalArgumentException
-     *              if jobClass is null or the class is not a <code>Job</code>.
+     *
+     * @throws IllegalArgumentException if jobClass is null or the class is not a <code>Job</code>.
      */
     public void setJobClass(Class<? extends Job> jobClass) {
         if (jobClass == null) {
@@ -339,7 +326,7 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
      * Set whether or not the <code>Job</code> should remain stored after it
      * is orphaned (no <code>{@link Trigger}s</code> point to it).
      * </p>
-     * 
+     * <p>
      * <p>
      * If not explicitly set, the default value is <code>false</code>.
      * </p>
@@ -354,11 +341,11 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
      * the <code>Job</code> if a 'recovery' or 'fail-over' situation is
      * encountered.
      * </p>
-     * 
+     * <p>
      * <p>
      * If not explicitly set, the default value is <code>false</code>.
      * </p>
-     * 
+     *
      * @see JobExecutionContext#isRecovering()
      */
     public void setRequestsRecovery(boolean shouldRecover) {
@@ -384,7 +371,7 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
      * @return whether the associated Job class carries the {@link DisallowConcurrentExecution} annotation.
      */
     public boolean isConcurrentExectionDisallowed() {
-        
+
         return ClassUtils.isAnnotationPresent(jobClass, DisallowConcurrentExecution.class);
     }
 
@@ -404,8 +391,8 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
     public String toString() {
         return "JobDetail '" + getFullName() + "':  jobClass: '"
                 + ((getJobClass() == null) ? null : getJobClass().getName())
-                + " concurrentExectionDisallowed: " + isConcurrentExectionDisallowed() 
-                + " persistJobDataAfterExecution: " + isPersistJobDataAfterExecution() 
+                + " concurrentExectionDisallowed: " + isConcurrentExectionDisallowed()
+                + " persistJobDataAfterExecution: " + isPersistJobDataAfterExecution()
                 + " isDurable: " + isDurable() + " requestsRecovers: " + requestsRecovery();
     }
 
@@ -417,13 +404,13 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
 
         JobDetail other = (JobDetail) obj;
 
-        if(other.getKey() == null || getKey() == null)
+        if (other.getKey() == null || getKey() == null)
             return false;
-        
+
         if (!other.getKey().equals(getKey())) {
             return false;
         }
-            
+
         return true;
     }
 
@@ -432,7 +419,7 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
         JobKey key = getKey();
         return key == null ? 0 : getKey().hashCode();
     }
-    
+
     @Override
     public Object clone() {
         JobDetailImpl copy;
@@ -450,12 +437,12 @@ public class JobDetailImpl implements Cloneable, java.io.Serializable, JobDetail
 
     public JobBuilder getJobBuilder() {
         JobBuilder b = JobBuilder.newJob()
-            .ofType(getJobClass())
-            .requestRecovery(requestsRecovery())
-            .storeDurably(isDurable())
-            .usingJobData(getJobDataMap())
-            .withDescription(getDescription())
-            .withIdentity(getKey());
+                .ofType(getJobClass())
+                .requestRecovery(requestsRecovery())
+                .storeDurably(isDurable())
+                .usingJobData(getJobDataMap())
+                .withDescription(getDescription())
+                .withIdentity(getKey());
         return b;
     }
 }

@@ -28,13 +28,12 @@ import static org.quartz.impl.matchers.GroupMatcher.anyTriggerGroup;
 
 /**
  * Unit test for CronScheduleBuilder.
- * 
- * @author jhouse
  *
+ * @author jhouse
  */
 public class GroupMatcherTest extends TestCase {
-	
-	public void testAnyGroupMatchers() {
+
+    public void testAnyGroupMatchers() {
 
         TriggerKey tKey = triggerKey("booboo", "baz");
         JobKey jKey = jobKey("frumpwomp", "bazoo");
@@ -45,6 +44,6 @@ public class GroupMatcherTest extends TestCase {
         Assert.assertTrue("Expected match on trigger group", tgm.isMatch(tKey));
         Assert.assertTrue("Expected match on job group", jgm.isMatch(jKey));
 
-	}
+    }
 
 }

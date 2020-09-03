@@ -14,7 +14,7 @@
  * under the License.
  * 
  */
- 
+
 package org.quartz.examples.example6;
 
 import java.util.Date;
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * A job dumb job that will throw a job execution exception
  * </p>
- * 
+ *
  * @author Bill Kratzer
  */
 @PersistJobDataAfterExecution
@@ -54,12 +54,11 @@ public class BadJob2 implements Job {
      * Called by the <code>{@link org.quartz.Scheduler}</code> when a <code>{@link org.quartz.Trigger}</code>
      * fires that is associated with the <code>Job</code>.
      * </p>
-     * 
-     * @throws JobExecutionException
-     *           if there is an exception while executing the job.
+     *
+     * @throws JobExecutionException if there is an exception while executing the job.
      */
     public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+            throws JobExecutionException {
         JobKey jobKey = context.getJobDetail().getKey();
         _log.info("---" + jobKey + " executing at " + new Date());
 
@@ -71,8 +70,8 @@ public class BadJob2 implements Job {
             calculation = 4815 / zero;
         } catch (Exception e) {
             _log.info("--- Error in job!");
-            JobExecutionException e2 = 
-                new JobExecutionException(e);
+            JobExecutionException e2 =
+                    new JobExecutionException(e);
             // Quartz will automatically unschedule
             // all triggers associated with this job
             // so that it does not run again

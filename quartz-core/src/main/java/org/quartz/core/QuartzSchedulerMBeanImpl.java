@@ -61,12 +61,12 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
     private final static SampledStatistics NULL_SAMPLED_STATISTICS = new NullSampledStatisticsImpl();
 
     static {
-        final String[] notifTypes = new String[] { SCHEDULER_STARTED,
-                SCHEDULER_PAUSED, SCHEDULER_SHUTDOWN, };
+        final String[] notifTypes = new String[]{SCHEDULER_STARTED,
+                SCHEDULER_PAUSED, SCHEDULER_SHUTDOWN,};
         final String name = Notification.class.getName();
         final String description = "QuartzScheduler JMX Event";
-        NOTIFICATION_INFO = new MBeanNotificationInfo[] { new MBeanNotificationInfo(
-                notifTypes, name, description), };
+        NOTIFICATION_INFO = new MBeanNotificationInfo[]{new MBeanNotificationInfo(
+                notifTypes, name, description),};
     }
 
     /**
@@ -81,7 +81,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
 
     /**
      * QuartzSchedulerMBeanImpl
-     * 
+     *
      * @throws NotCompliantMBeanException
      */
     protected QuartzSchedulerMBeanImpl(QuartzScheduler scheduler)
@@ -143,14 +143,14 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         String setterName = "set" + Character.toUpperCase(attribute.charAt(0)) + attribute.substring(1);
         Class<?>[] argTypes = {value.getClass()};
         Method setter = findMethod(target.getClass(), setterName, argTypes);
-        if(setter != null) {
+        if (setter != null) {
             setter.invoke(target, value);
         } else {
             throw new Exception("Unable to find setter for attribute '" + attribute
                     + "' and value '" + value + "'");
         }
     }
-    
+
     private static Class<?> getWrapperIfPrimitive(Class<?> c) {
         Class<?> result = c;
         try {
@@ -162,17 +162,17 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         }
         return result;
     }
-    
+
     private static Method findMethod(Class<?> targetType, String methodName,
-            Class<?>[] argTypes) throws IntrospectionException {
+                                     Class<?>[] argTypes) throws IntrospectionException {
         BeanInfo beanInfo = Introspector.getBeanInfo(targetType);
         if (beanInfo != null) {
-            for(MethodDescriptor methodDesc: beanInfo.getMethodDescriptors()) {
+            for (MethodDescriptor methodDesc : beanInfo.getMethodDescriptors()) {
                 Method method = methodDesc.getMethod();
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 if (methodName.equals(method.getName()) && argTypes.length == parameterTypes.length) {
                     boolean matchedArgTypes = true;
-                    for (int i = 0; i < argTypes.length; i++) { 
+                    for (int i = 0; i < argTypes.length; i++) {
                         if (getWrapperIfPrimitive(argTypes[i]) != parameterTypes[i]) {
                             matchedArgTypes = false;
                             break;
@@ -186,9 +186,9 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         }
         return null;
     }
-    
+
     public void scheduleBasicJob(Map<String, Object> jobDetailInfo,
-            Map<String, Object> triggerInfo) throws Exception {
+                                 Map<String, Object> triggerInfo) throws Exception {
         try {
             JobDetail jobDetail = JobDetailSupport.newJobDetail(jobDetailInfo);
             OperableTrigger trigger = TriggerSupport.newTrigger(triggerInfo);
@@ -202,135 +202,135 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
     }
 
     public void scheduleJob(Map<String, Object> abstractJobInfo,
-            Map<String, Object> abstractTriggerInfo) throws Exception {
+                            Map<String, Object> abstractTriggerInfo) throws Exception {
         try {
             String triggerClassName = (String) abstractTriggerInfo.remove("triggerClass");
-            if(triggerClassName == null) {
+            if (triggerClassName == null) {
                 throw new IllegalArgumentException("No triggerClass specified");
             }
             Class<?> triggerClass = Class.forName(triggerClassName);
             Trigger trigger = (Trigger) triggerClass.newInstance();
-            
+
             String jobDetailClassName = (String) abstractJobInfo.remove("jobDetailClass");
-            if(jobDetailClassName == null) {
+            if (jobDetailClassName == null) {
                 throw new IllegalArgumentException("No jobDetailClass specified");
             }
             Class<?> jobDetailClass = Class.forName(jobDetailClassName);
             JobDetail jobDetail = (JobDetail) jobDetailClass.newInstance();
-            
+
             String jobClassName = (String) abstractJobInfo.remove("jobClass");
-            if(jobClassName == null) {
+            if (jobClassName == null) {
                 throw new IllegalArgumentException("No jobClass specified");
             }
             Class<?> jobClass = Class.forName(jobClassName);
             abstractJobInfo.put("jobClass", jobClass);
-            
-            for(Map.Entry<String, Object> entry : abstractTriggerInfo.entrySet()) {
+
+            for (Map.Entry<String, Object> entry : abstractTriggerInfo.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                if("jobDataMap".equals(key)) {
-                    value = new JobDataMap((Map<?, ?>)value);
+                if ("jobDataMap".equals(key)) {
+                    value = new JobDataMap((Map<?, ?>) value);
                 }
                 invokeSetter(trigger, key, value);
             }
-            
-            for(Map.Entry<String, Object> entry : abstractJobInfo.entrySet()) {
+
+            for (Map.Entry<String, Object> entry : abstractJobInfo.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                if("jobDataMap".equals(key)) {
-                    value = new JobDataMap((Map<?, ?>)value);
+                if ("jobDataMap".equals(key)) {
+                    value = new JobDataMap((Map<?, ?>) value);
                 }
                 invokeSetter(jobDetail, key, value);
             }
-    
-            AbstractTrigger<?> at = (AbstractTrigger<?>)trigger;
+
+            AbstractTrigger<?> at = (AbstractTrigger<?>) trigger;
             at.setKey(new TriggerKey(at.getName(), at.getGroup()));
-            
+
             Date startDate = at.getStartTime();
-            if(startDate == null || startDate.before(new Date())) {
+            if (startDate == null || startDate.before(new Date())) {
                 at.setStartTime(new Date());
             }
-            
+
             scheduler.deleteJob(jobDetail.getKey());
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (Exception e) {
             throw newPlainException(e);
         }
     }
-    
+
     public void scheduleJob(String jobName, String jobGroup,
-            Map<String, Object> abstractTriggerInfo) throws Exception {
+                            Map<String, Object> abstractTriggerInfo) throws Exception {
         try {
             JobKey jobKey = new JobKey(jobName, jobGroup);
             JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-            if(jobDetail == null) {
+            if (jobDetail == null) {
                 throw new IllegalArgumentException("No such job '" + jobKey + "'");
             }
-            
+
             String triggerClassName = (String) abstractTriggerInfo.remove("triggerClass");
-            if(triggerClassName == null) {
+            if (triggerClassName == null) {
                 throw new IllegalArgumentException("No triggerClass specified");
             }
             Class<?> triggerClass = Class.forName(triggerClassName);
             Trigger trigger = (Trigger) triggerClass.newInstance();
-            
-            for(Map.Entry<String, Object> entry : abstractTriggerInfo.entrySet()) {
+
+            for (Map.Entry<String, Object> entry : abstractTriggerInfo.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                if("jobDataMap".equals(key)) {
-                    value = new JobDataMap((Map<?, ?>)value);
+                if ("jobDataMap".equals(key)) {
+                    value = new JobDataMap((Map<?, ?>) value);
                 }
                 invokeSetter(trigger, key, value);
             }
-            
-            AbstractTrigger<?> at = (AbstractTrigger<?>)trigger;
+
+            AbstractTrigger<?> at = (AbstractTrigger<?>) trigger;
             at.setKey(new TriggerKey(at.getName(), at.getGroup()));
-            
+
             Date startDate = at.getStartTime();
-            if(startDate == null || startDate.before(new Date())) {
+            if (startDate == null || startDate.before(new Date())) {
                 at.setStartTime(new Date());
             }
-            
+
             scheduler.scheduleJob(trigger);
         } catch (Exception e) {
             throw newPlainException(e);
         }
     }
-    
-    public void addJob(Map<String, Object> abstractJobInfo,    boolean replace) throws Exception {
+
+    public void addJob(Map<String, Object> abstractJobInfo, boolean replace) throws Exception {
         try {
             String jobDetailClassName = (String) abstractJobInfo.remove("jobDetailClass");
-            if(jobDetailClassName == null) {
+            if (jobDetailClassName == null) {
                 throw new IllegalArgumentException("No jobDetailClass specified");
             }
             Class<?> jobDetailClass = Class.forName(jobDetailClassName);
             JobDetail jobDetail = (JobDetail) jobDetailClass.newInstance();
-            
+
             String jobClassName = (String) abstractJobInfo.remove("jobClass");
-            if(jobClassName == null) {
+            if (jobClassName == null) {
                 throw new IllegalArgumentException("No jobClass specified");
             }
             Class<?> jobClass = Class.forName(jobClassName);
             abstractJobInfo.put("jobClass", jobClass);
-            
-            for(Map.Entry<String, Object> entry : abstractJobInfo.entrySet()) {
+
+            for (Map.Entry<String, Object> entry : abstractJobInfo.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                if("jobDataMap".equals(key)) {
-                    value = new JobDataMap((Map<?, ?>)value);
+                if ("jobDataMap".equals(key)) {
+                    value = new JobDataMap((Map<?, ?>) value);
                 }
                 invokeSetter(jobDetail, key, value);
             }
-    
+
             scheduler.addJob(jobDetail, replace);
         } catch (Exception e) {
             throw newPlainException(e);
         }
     }
-    
+
     private Exception newPlainException(Exception e) {
         String type = e.getClass().getName();
-        if(type.startsWith("java.") || type.startsWith("javax.")) {
+        if (type.startsWith("java.") || type.startsWith("javax.")) {
             return e;
         } else {
             Exception result = new Exception(e.getMessage());
@@ -338,11 +338,11 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
             return result;
         }
     }
-    
+
     public void deleteCalendar(String calendarName) throws Exception {
         try {
             scheduler.deleteCalendar(calendarName);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw newPlainException(e);
         }
     }
@@ -355,7 +355,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         }
     }
 
-    public List<String> getCalendarNames()    throws Exception {
+    public List<String> getCalendarNames() throws Exception {
         try {
             return scheduler.getCalendarNames();
         } catch (Exception e) {
@@ -364,7 +364,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
     }
 
     public CompositeData getJobDetail(String jobName, String jobGroupName)
-      throws Exception {
+            throws Exception {
         try {
             JobDetail jobDetail = scheduler.getJobDetail(jobKey(jobName, jobGroupName));
             return JobDetailSupport.toCompositeData(jobDetail);
@@ -373,7 +373,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         }
     }
 
-    public List<String> getJobGroupNames()    throws Exception {
+    public List<String> getJobGroupNames() throws Exception {
         try {
             return scheduler.getJobGroupNames();
         } catch (Exception e) {
@@ -384,7 +384,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
     public List<String> getJobNames(String groupName) throws Exception {
         try {
             List<String> jobNames = new ArrayList<String>();
-            for(JobKey key: scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))) {
+            for (JobKey key : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))) {
                 jobNames.add(key.getName());
             }
             return jobNames;
@@ -414,7 +414,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         }
     }
 
-    public List<String> getTriggerGroupNames()    throws Exception {
+    public List<String> getTriggerGroupNames() throws Exception {
         try {
             return scheduler.getTriggerGroupNames();
         } catch (Exception e) {
@@ -425,7 +425,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
     public List<String> getTriggerNames(String groupName) throws Exception {
         try {
             List<String> triggerNames = new ArrayList<String>();
-            for(TriggerKey key: scheduler.getTriggerKeys(GroupMatcher.triggerGroupEquals(groupName))) {
+            for (TriggerKey key : scheduler.getTriggerKeys(GroupMatcher.triggerGroupEquals(groupName))) {
                 triggerNames.add(key.getName());
             }
             return triggerNames;
@@ -470,7 +470,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
     }
 
     public Date scheduleJob(String jobName, String jobGroup,
-            String triggerName, String triggerGroup) throws Exception {
+                            String triggerName, String triggerGroup) throws Exception {
         try {
             JobKey jobKey = jobKey(jobName, jobGroup);
             JobDetail jobDetail = scheduler.getJobDetail(jobKey);
@@ -496,9 +496,9 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         }
     }
 
-   public void clear() throws Exception {
-       try {
-           scheduler.clear();
+    public void clear() throws Exception {
+        try {
+            scheduler.clear();
         } catch (Exception e) {
             throw newPlainException(e);
         }
@@ -567,7 +567,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
             throw newPlainException(e);
         }
     }
-    
+
     public void pauseJobGroup(String jobGroup) throws Exception {
         pauseJobs(GroupMatcher.<JobKey>groupEquals(jobGroup));
     }
@@ -603,7 +603,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
             throw newPlainException(e);
         }
     }
-    
+
     public void pauseTriggerGroup(String triggerGroup) throws Exception {
         pauseTriggers(GroupMatcher.<TriggerKey>groupEquals(triggerGroup));
     }
@@ -691,7 +691,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
             throw newPlainException(e);
         }
     }
-    
+
     public void resumeTriggerGroup(String triggerGroup) throws Exception {
         resumeTriggers(GroupMatcher.<TriggerKey>groupEquals(triggerGroup));
     }
@@ -728,7 +728,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
             throw newPlainException(e);
         }
     }
-    
+
     // ScheduleListener
 
     public void jobAdded(JobDetail jobDetail) {
@@ -752,11 +752,11 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         map.put("triggerGroup", triggerKey.getGroup());
         sendNotification(JOB_UNSCHEDULED, map);
     }
-    
+
     public void schedulingDataCleared() {
         sendNotification(SCHEDULING_DATA_CLEARED);
     }
-    
+
     public void jobPaused(JobKey jobKey) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("jobName", jobKey.getName());
@@ -770,7 +770,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         map.put("jobGroup", jobGroup);
         sendNotification(JOBS_PAUSED, map);
     }
-    
+
     public void jobsResumed(String jobGroup) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("jobName", null);
@@ -784,7 +784,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         map.put("jobGroup", jobKey.getGroup());
         sendNotification(JOBS_RESUMED, map);
     }
-    
+
     public void schedulerError(String msg, SchedulerException cause) {
         sendNotification(SCHEDULER_ERROR, cause.getMessage());
     }
@@ -792,7 +792,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
     public void schedulerStarted() {
         sendNotification(SCHEDULER_STARTED);
     }
-    
+
     //not doing anything, just like schedulerShuttingdown
     public void schedulerStarting() {
     }
@@ -827,7 +827,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
 
     public void triggerPaused(TriggerKey triggerKey) {
         Map<String, String> map = new HashMap<String, String>();
-        if(triggerKey != null) {
+        if (triggerKey != null) {
             map.put("triggerName", triggerKey.getName());
             map.put("triggerGroup", triggerKey.getGroup());
         }
@@ -843,13 +843,13 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
 
     public void triggerResumed(TriggerKey triggerKey) {
         Map<String, String> map = new HashMap<String, String>();
-        if(triggerKey != null) {
+        if (triggerKey != null) {
             map.put("triggerName", triggerKey.getName());
             map.put("triggerGroup", triggerKey.getGroup());
         }
         sendNotification(TRIGGERS_RESUMED, map);
     }
-    
+
     // JobListener
 
     public String getName() {
@@ -875,7 +875,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
     }
 
     public void jobWasExecuted(JobExecutionContext context,
-            JobExecutionException jobException) {
+                               JobExecutionException jobException) {
         try {
             sendNotification(JOB_WAS_EXECUTED, JobExecutionContextSupport
                     .toCompositeData(context));
@@ -888,7 +888,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
 
     /**
      * sendNotification
-     * 
+     *
      * @param eventType
      */
     public void sendNotification(String eventType) {
@@ -897,7 +897,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
 
     /**
      * sendNotification
-     * 
+     *
      * @param eventType
      * @param data
      */
@@ -907,7 +907,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
 
     /**
      * sendNotification
-     * 
+     *
      * @param eventType
      * @param data
      * @param msg
@@ -936,10 +936,10 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
 
     /**
      * @see javax.management.NotificationBroadcaster#addNotificationListener(javax.management.NotificationListener,
-     *      javax.management.NotificationFilter, java.lang.Object)
+     * javax.management.NotificationFilter, java.lang.Object)
      */
     public void addNotificationListener(NotificationListener notif,
-            NotificationFilter filter, Object callBack) {
+                                        NotificationFilter filter, Object callBack) {
         emitter.addNotificationListener(notif, filter, callBack);
     }
 
@@ -960,10 +960,10 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
 
     /**
      * @see javax.management.NotificationEmitter#removeNotificationListener(javax.management.NotificationListener,
-     *      javax.management.NotificationFilter, java.lang.Object)
+     * javax.management.NotificationFilter, java.lang.Object)
      */
     public void removeNotificationListener(NotificationListener notif,
-            NotificationFilter filter, Object callBack)
+                                           NotificationFilter filter, Object callBack)
             throws ListenerNotFoundException {
         emitter.removeNotificationListener(notif, filter, callBack);
     }
@@ -975,12 +975,11 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
     public void setSampledStatisticsEnabled(boolean enabled) {
         if (enabled != this.sampledStatisticsEnabled) {
             this.sampledStatisticsEnabled = enabled;
-            if(enabled) {
+            if (enabled) {
                 this.sampledStatistics = new SampledStatisticsImpl(scheduler);
-            }
-            else {
-                 this.sampledStatistics.shutdown(); 
-                 this.sampledStatistics = NULL_SAMPLED_STATISTICS;
+            } else {
+                this.sampledStatistics.shutdown();
+                this.sampledStatistics = NULL_SAMPLED_STATISTICS;
             }
             sendNotification(SAMPLED_STATISTICS_ENABLED, Boolean.valueOf(enabled));
         }

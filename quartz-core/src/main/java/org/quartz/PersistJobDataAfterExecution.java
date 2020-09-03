@@ -26,15 +26,14 @@ import java.lang.annotation.Target;
 /**
  * An annotation that marks a {@link Job} class as one that makes updates to its
  * {@link JobDataMap} during execution, and wishes the scheduler to re-store the
- * <code>JobDataMap</code> when execution completes. 
- *   
+ * <code>JobDataMap</code> when execution completes.
+ * <p>
  * <p>Jobs that are marked with this annotation should also seriously consider
  * using the {@link DisallowConcurrentExecution} annotation, to avoid data
  * storage race conditions with concurrently executing job instances.</p>
  *
- * @see DisallowConcurrentExecution
- * 
  * @author jhouse
+ * @see DisallowConcurrentExecution
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

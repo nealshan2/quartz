@@ -30,18 +30,16 @@ import org.quartz.spi.OperableTrigger;
 /**
  * Persist a DailyTimeIntervalTrigger by converting internal fields to and from
  * SimplePropertiesTriggerProperties.
- * 
+ *
+ * @author Zemian Deng <saltnlight5@gmail.com>
  * @see DailyTimeIntervalScheduleBuilder
  * @see DailyTimeIntervalTrigger
- * 
  * @since 2.1.0
- * 
- * @author Zemian Deng <saltnlight5@gmail.com>
  */
 public class DailyTimeIntervalTriggerPersistenceDelegate extends SimplePropertiesTriggerPersistenceDelegateSupport {
 
     public boolean canHandleTriggerType(OperableTrigger trigger) {
-        return ((trigger instanceof DailyTimeIntervalTrigger) && !((DailyTimeIntervalTriggerImpl)trigger).hasAdditionalProperties());
+        return ((trigger instanceof DailyTimeIntervalTrigger) && !((DailyTimeIntervalTriggerImpl) trigger).hasAdditionalProperties());
     }
 
     public String getHandledTriggerTypeDiscriminator() {
@@ -50,13 +48,13 @@ public class DailyTimeIntervalTriggerPersistenceDelegate extends SimplePropertie
 
     @Override
     protected SimplePropertiesTriggerProperties getTriggerProperties(OperableTrigger trigger) {
-        DailyTimeIntervalTriggerImpl dailyTrigger = (DailyTimeIntervalTriggerImpl)trigger;
+        DailyTimeIntervalTriggerImpl dailyTrigger = (DailyTimeIntervalTriggerImpl) trigger;
         SimplePropertiesTriggerProperties props = new SimplePropertiesTriggerProperties();
-        
+
         props.setInt1(dailyTrigger.getRepeatInterval());
         props.setString1(dailyTrigger.getRepeatIntervalUnit().name());
         props.setInt2(dailyTrigger.getTimesTriggered());
-        
+
         Set<Integer> days = dailyTrigger.getDaysOfWeek();
         String daysStr = join(days, ",");
         props.setString2(daysStr);
@@ -79,9 +77,9 @@ public class DailyTimeIntervalTriggerPersistenceDelegate extends SimplePropertie
             timeOfDayBuffer.append(",,,");
         }
         props.setString3(timeOfDayBuffer.toString());
-        
+
         props.setLong1(dailyTrigger.getRepeatCount());
-        
+
         return props;
     }
 
@@ -89,10 +87,10 @@ public class DailyTimeIntervalTriggerPersistenceDelegate extends SimplePropertie
         StringBuilder sb = new StringBuilder();
         if (days == null || days.size() <= 0)
             return "";
-        
+
         Iterator<Integer> itr = days.iterator();
         sb.append(itr.next());
-        while(itr.hasNext()) {
+        while (itr.hasNext()) {
             sb.append(sep).append(itr.next());
         }
         return sb.toString();
@@ -100,7 +98,7 @@ public class DailyTimeIntervalTriggerPersistenceDelegate extends SimplePropertie
 
     @Override
     protected TriggerPropertyBundle getTriggerPropertyBundle(SimplePropertiesTriggerProperties props) {
-        int repeatCount = (int)props.getLong1();
+        int repeatCount = (int) props.getLong1();
         int interval = props.getInt1();
         String intervalUnitStr = props.getString1();
         String daysOfWeekStr = props.getString2();
@@ -111,7 +109,7 @@ public class DailyTimeIntervalTriggerPersistenceDelegate extends SimplePropertie
                 .dailyTimeIntervalSchedule()
                 .withInterval(interval, intervalUnit)
                 .withRepeatCount(repeatCount);
-                
+
         if (daysOfWeekStr != null) {
             Set<Integer> daysOfWeek = new HashSet<Integer>();
             String[] nums = daysOfWeekStr.split(",");
@@ -124,7 +122,7 @@ public class DailyTimeIntervalTriggerPersistenceDelegate extends SimplePropertie
         } else {
             scheduleBuilder.onDaysOfTheWeek(DailyTimeIntervalScheduleBuilder.ALL_DAYS_OF_THE_WEEK);
         }
-        
+
         if (timeOfDayStr != null) {
             String[] nums = timeOfDayStr.split(",");
             TimeOfDay startTimeOfDay;
@@ -152,10 +150,10 @@ public class DailyTimeIntervalTriggerPersistenceDelegate extends SimplePropertie
             scheduleBuilder.startingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(0, 0, 0));
             scheduleBuilder.endingDailyAt(TimeOfDay.hourMinuteAndSecondOfDay(23, 59, 59));
         }
-        
+
         int timesTriggered = props.getInt2();
-        String[] statePropertyNames = { "timesTriggered" };
-        Object[] statePropertyValues = { timesTriggered };
+        String[] statePropertyNames = {"timesTriggered"};
+        Object[] statePropertyValues = {timesTriggered};
 
         return new TriggerPropertyBundle(scheduleBuilder, statePropertyNames, statePropertyValues);
     }

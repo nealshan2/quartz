@@ -46,11 +46,10 @@ import org.quartz.spi.JobFactory;
  * proxies all method calls to the equivalent call on a given <code>QuartzScheduler</code>
  * instance.
  * </p>
- * 
- * @see org.quartz.Scheduler
- * @see org.quartz.core.QuartzScheduler
  *
  * @author James House
+ * @see org.quartz.Scheduler
+ * @see org.quartz.core.QuartzScheduler
  */
 public class StdScheduler implements Scheduler {
 
@@ -110,10 +109,10 @@ public class StdScheduler implements Scheduler {
 
     public SchedulerMetaData getMetaData() {
         return new SchedulerMetaData(getSchedulerName(),
-                getSchedulerInstanceId(), getClass(), false, isStarted(), 
-                isInStandbyMode(), isShutdown(), sched.runningSince(), 
-                sched.numJobsExecuted(), sched.getJobStoreClass(), 
-                sched.supportsPersistence(), sched.isClustered(), sched.getThreadPoolClass(), 
+                getSchedulerInstanceId(), getClass(), false, isStarted(),
+                isInStandbyMode(), isShutdown(), sched.runningSince(),
+                sched.numJobsExecuted(), sched.getJobStoreClass(),
+                sched.supportsPersistence(), sched.isClustered(), sched.getThreadPoolClass(),
                 sched.getThreadPoolSize(), sched.getVersion());
 
     }
@@ -160,25 +159,25 @@ public class StdScheduler implements Scheduler {
     public void standby() {
         sched.standby();
     }
-    
+
     /**
-     * Whether the scheduler has been started.  
-     * 
+     * Whether the scheduler has been started.
+     * <p>
      * <p>
      * Note: This only reflects whether <code>{@link #start()}</code> has ever
-     * been called on this Scheduler, so it will return <code>true</code> even 
-     * if the <code>Scheduler</code> is currently in standby mode or has been 
+     * been called on this Scheduler, so it will return <code>true</code> even
+     * if the <code>Scheduler</code> is currently in standby mode or has been
      * since shutdown.
      * </p>
-     * 
+     *
      * @see #start()
      * @see #isShutdown()
      * @see #isInStandbyMode()
-     */    
+     */
     public boolean isStarted() {
         return (sched.runningSince() != null);
     }
-    
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
@@ -238,14 +237,14 @@ public class StdScheduler implements Scheduler {
     public void clear() throws SchedulerException {
         sched.clear();
     }
-    
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
      * </p>
      */
     public Date scheduleJob(JobDetail jobDetail, Trigger trigger)
-        throws SchedulerException {
+            throws SchedulerException {
         return sched.scheduleJob(jobDetail, trigger);
     }
 
@@ -264,7 +263,7 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public void addJob(JobDetail jobDetail, boolean replace)
-        throws SchedulerException {
+            throws SchedulerException {
         sched.addJob(jobDetail, replace);
     }
 
@@ -283,21 +282,21 @@ public class StdScheduler implements Scheduler {
     }
 
     public void scheduleJob(JobDetail jobDetail, Set<? extends Trigger> triggersForJob, boolean replace) throws SchedulerException {
-        sched.scheduleJob(jobDetail,  triggersForJob, replace);
+        sched.scheduleJob(jobDetail, triggersForJob, replace);
     }
-    
+
     public boolean unscheduleJobs(List<TriggerKey> triggerKeys)
             throws SchedulerException {
         return sched.unscheduleJobs(triggerKeys);
-    }    
-    
+    }
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
      * </p>
      */
     public boolean deleteJob(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         return sched.deleteJob(jobKey);
     }
 
@@ -307,17 +306,17 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public boolean unscheduleJob(TriggerKey triggerKey)
-        throws SchedulerException {
+            throws SchedulerException {
         return sched.unscheduleJob(triggerKey);
     }
-    
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
      * </p>
      */
     public Date rescheduleJob(TriggerKey triggerKey,
-            Trigger newTrigger) throws SchedulerException {
+                              Trigger newTrigger) throws SchedulerException {
         return sched.rescheduleJob(triggerKey, newTrigger);
     }
 
@@ -327,17 +326,17 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public void triggerJob(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         triggerJob(jobKey, null);
     }
-    
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
      * </p>
      */
     public void triggerJob(JobKey jobKey, JobDataMap data)
-        throws SchedulerException {
+            throws SchedulerException {
         sched.triggerJob(jobKey, data);
     }
 
@@ -347,7 +346,7 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public void pauseTrigger(TriggerKey triggerKey)
-        throws SchedulerException {
+            throws SchedulerException {
         sched.pauseTrigger(triggerKey);
     }
 
@@ -366,17 +365,17 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public void pauseJob(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         sched.pauseJob(jobKey);
     }
 
-    /** 
+    /**
      * @see org.quartz.Scheduler#getPausedTriggerGroups()
      */
     public Set<String> getPausedTriggerGroups() throws SchedulerException {
         return sched.getPausedTriggerGroups();
     }
-    
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
@@ -392,7 +391,7 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public void resumeTrigger(TriggerKey triggerKey)
-        throws SchedulerException {
+            throws SchedulerException {
         sched.resumeTrigger(triggerKey);
     }
 
@@ -411,7 +410,7 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public void resumeJob(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         sched.resumeJob(jobKey);
     }
 
@@ -457,7 +456,7 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public List<? extends Trigger> getTriggersOfJob(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         return sched.getTriggersOfJob(jobKey);
     }
 
@@ -494,7 +493,7 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public JobDetail getJobDetail(JobKey jobKey)
-        throws SchedulerException {
+            throws SchedulerException {
         return sched.getJobDetail(jobKey);
     }
 
@@ -504,7 +503,7 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public Trigger getTrigger(TriggerKey triggerKey)
-        throws SchedulerException {
+            throws SchedulerException {
         return sched.getTrigger(triggerKey);
     }
 
@@ -514,7 +513,7 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public TriggerState getTriggerState(TriggerKey triggerKey)
-        throws SchedulerException {
+            throws SchedulerException {
         return sched.getTriggerState(triggerKey);
     }
 
@@ -522,10 +521,10 @@ public class StdScheduler implements Scheduler {
      * Reset the current state of the identified <code>{@link Trigger}</code>
      * from {@link TriggerState#ERROR} to {@link TriggerState#NORMAL} or
      * {@link TriggerState#PAUSED} as appropriate.
-     *
+     * <p>
      * <p>Only affects triggers that are in ERROR state - if identified trigger is not
      * in that state then the result is a no-op.</p>
-     *
+     * <p>
      * <p>The result will be the trigger returning to the normal, waiting to
      * be fired state, unless the trigger's group has been paused, in which
      * case it will go into the PAUSED state.</p>
@@ -543,7 +542,7 @@ public class StdScheduler implements Scheduler {
      * </p>
      */
     public void addCalendar(String calName, Calendar calendar, boolean replace, boolean updateTriggers)
-        throws SchedulerException {
+            throws SchedulerException {
         sched.addCalendar(calName, calendar, replace, updateTriggers);
     }
 
@@ -582,8 +581,8 @@ public class StdScheduler implements Scheduler {
     public boolean checkExists(JobKey jobKey) throws SchedulerException {
         return sched.checkExists(jobKey);
     }
-    
-   
+
+
     /**
      * <p>
      * Calls the equivalent method on the 'proxied' <code>QuartzScheduler</code>.
@@ -599,7 +598,6 @@ public class StdScheduler implements Scheduler {
     ///
     ///////////////////////////////////////////////////////////////////////////
 
-    
 
     /**
      * @see org.quartz.Scheduler#setJobFactory(org.quartz.spi.JobFactory)
@@ -623,5 +621,5 @@ public class StdScheduler implements Scheduler {
         return sched.interrupt(fireInstanceId);
     }
 
-  
+
 }

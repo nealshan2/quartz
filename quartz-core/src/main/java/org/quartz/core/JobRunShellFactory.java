@@ -28,7 +28,7 @@ import org.quartz.spi.TriggerFiredBundle;
  * Responsible for creating the instances of <code>{@link JobRunShell}</code>
  * to be used within the <class>{@link QuartzScheduler}</code> instance.
  * </p>
- * 
+ *
  * @author James House
  */
 public interface JobRunShellFactory {
@@ -49,7 +49,7 @@ public interface JobRunShellFactory {
      * </p>
      */
     void initialize(Scheduler scheduler)
-        throws SchedulerConfigException;
+            throws SchedulerConfigException;
 
     /**
      * <p>

@@ -23,12 +23,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Base class for database based lock handlers for providing thread/resource locking 
- * in order to protect resources from being altered by multiple threads at the 
+ * Base class for database based lock handlers for providing thread/resource locking
+ * in order to protect resources from being altered by multiple threads at the
  * same time.
  */
 public abstract class DBSemaphore implements Semaphore, Constants,
-    StdJDBCConstants, TablePrefixAware {
+        StdJDBCConstants, TablePrefixAware {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -46,7 +46,7 @@ public abstract class DBSemaphore implements Semaphore, Constants,
     private String insertSql;
 
     private String tablePrefix;
-    
+
     private String schedName;
 
     private String expandedSQL;
@@ -91,45 +91,45 @@ public abstract class DBSemaphore implements Semaphore, Constants,
     /**
      * Execute the SQL that will lock the proper database row.
      */
-    protected abstract void executeSQL(Connection conn, String lockName, String theExpandedSQL, String theExpandedInsertSQL) 
-        throws LockException;
-    
+    protected abstract void executeSQL(Connection conn, String lockName, String theExpandedSQL, String theExpandedInsertSQL)
+            throws LockException;
+
     /**
      * Grants a lock on the identified resource to the calling thread (blocking
      * until it is available).
-     * 
+     *
      * @return true if the lock was obtained.
      */
     public boolean obtainLock(Connection conn, String lockName)
-        throws LockException {
+            throws LockException {
 
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug(
-                "Lock '" + lockName + "' is desired by: "
-                        + Thread.currentThread().getName());
+                    "Lock '" + lockName + "' is desired by: "
+                            + Thread.currentThread().getName());
         }
         if (!isLockOwner(lockName)) {
 
             executeSQL(conn, lockName, expandedSQL, expandedInsertSQL);
-            
-            if(log.isDebugEnabled()) {
+
+            if (log.isDebugEnabled()) {
                 log.debug(
-                    "Lock '" + lockName + "' given to: "
-                            + Thread.currentThread().getName());
+                        "Lock '" + lockName + "' given to: "
+                                + Thread.currentThread().getName());
             }
             getThreadLocks().add(lockName);
             //getThreadLocksObtainer().put(lockName, new
             // Exception("Obtainer..."));
-        } else if(log.isDebugEnabled()) {
+        } else if (log.isDebugEnabled()) {
             log.debug(
-                "Lock '" + lockName + "' Is already owned by: "
-                        + Thread.currentThread().getName());
+                    "Lock '" + lockName + "' Is already owned by: "
+                            + Thread.currentThread().getName());
         }
 
         return true;
     }
 
-       
+
     /**
      * Release the lock on the identified resource if it is held by the calling
      * thread.
@@ -137,19 +137,19 @@ public abstract class DBSemaphore implements Semaphore, Constants,
     public void releaseLock(String lockName) {
 
         if (isLockOwner(lockName)) {
-            if(getLog().isDebugEnabled()) {
+            if (getLog().isDebugEnabled()) {
                 getLog().debug(
-                    "Lock '" + lockName + "' returned by: "
-                            + Thread.currentThread().getName());
+                        "Lock '" + lockName + "' returned by: "
+                                + Thread.currentThread().getName());
             }
             getThreadLocks().remove(lockName);
             //getThreadLocksObtainer().remove(lockName);
         } else if (getLog().isDebugEnabled()) {
             getLog().warn(
-                "Lock '" + lockName + "' attempt to return by: "
-                        + Thread.currentThread().getName()
-                        + " -- but not owner!",
-                new Exception("stack-trace of wrongful returner"));
+                    "Lock '" + lockName + "' attempt to return by: "
+                            + Thread.currentThread().getName()
+                            + " -- but not owner!",
+                    new Exception("stack-trace of wrongful returner"));
         }
     }
 
@@ -176,7 +176,7 @@ public abstract class DBSemaphore implements Semaphore, Constants,
         if ((sql != null) && (sql.trim().length() != 0)) {
             this.sql = sql.trim();
         }
-        
+
         setExpandedSQL();
     }
 
@@ -184,7 +184,7 @@ public abstract class DBSemaphore implements Semaphore, Constants,
         if ((insertSql != null) && (insertSql.trim().length() != 0)) {
             this.insertSql = insertSql.trim();
         }
-        
+
         setExpandedSQL();
     }
 
@@ -194,10 +194,11 @@ public abstract class DBSemaphore implements Semaphore, Constants,
             expandedInsertSQL = Util.rtp(this.insertSql, getTablePrefix(), getSchedulerNameLiteral());
         }
     }
-    
+
     private String schedNameLiteral = null;
+
     protected String getSchedulerNameLiteral() {
-        if(schedNameLiteral == null)
+        if (schedNameLiteral == null)
             schedNameLiteral = "'" + schedName + "'";
         return schedNameLiteral;
     }
@@ -208,17 +209,17 @@ public abstract class DBSemaphore implements Semaphore, Constants,
 
     public void setSchedName(String schedName) {
         this.schedName = schedName;
-        
+
         setExpandedSQL();
     }
-    
+
     protected String getTablePrefix() {
         return tablePrefix;
     }
 
     public void setTablePrefix(String tablePrefix) {
         this.tablePrefix = tablePrefix;
-        
+
         setExpandedSQL();
     }
 }

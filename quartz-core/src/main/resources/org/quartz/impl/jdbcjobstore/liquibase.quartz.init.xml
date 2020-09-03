@@ -1,8 +1,8 @@
 <databaseChangeLog
-  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <property name="table_prefix" value="QRTZ_"/>
@@ -306,7 +306,8 @@
             <column name="BOOL_PROP_1" type="BOOLEAN"/>
             <column name="BOOL_PROP_2" type="BOOLEAN"/>
         </createTable>
-        <addPrimaryKey columnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP" tableName="${table_prefix}SIMPROP_TRIGGERS"/>
+        <addPrimaryKey columnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"
+                       tableName="${table_prefix}SIMPROP_TRIGGERS"/>
 
         <createTable tableName="${table_prefix}CRON_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -345,16 +346,37 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addPrimaryKey columnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP" tableName="${table_prefix}SIMPLE_TRIGGERS"/>
+        <addPrimaryKey columnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"
+                       tableName="${table_prefix}SIMPLE_TRIGGERS"/>
 
-        <addForeignKeyConstraint baseTableName="${table_prefix}TRIGGERS" constraintName="${table_prefix}TRIGGERS_SCHED_NAME_FKEY" baseColumnNames="SCHED_NAME, JOB_NAME, JOB_GROUP" referencedTableName="${table_prefix}JOB_DETAILS" referencedColumnNames="SCHED_NAME, JOB_NAME, JOB_GROUP"/>
+        <addForeignKeyConstraint baseTableName="${table_prefix}TRIGGERS"
+                                 constraintName="${table_prefix}TRIGGERS_SCHED_NAME_FKEY"
+                                 baseColumnNames="SCHED_NAME, JOB_NAME, JOB_GROUP"
+                                 referencedTableName="${table_prefix}JOB_DETAILS"
+                                 referencedColumnNames="SCHED_NAME, JOB_NAME, JOB_GROUP"/>
 
-        <addForeignKeyConstraint baseTableName="${table_prefix}SIMPLE_TRIGGERS" constraintName="${table_prefix}SIMPLE_TRIGGERS_SCHED_NAME_FKEY" baseColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP" referencedTableName="${table_prefix}TRIGGERS" referencedColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"/>
+        <addForeignKeyConstraint baseTableName="${table_prefix}SIMPLE_TRIGGERS"
+                                 constraintName="${table_prefix}SIMPLE_TRIGGERS_SCHED_NAME_FKEY"
+                                 baseColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"
+                                 referencedTableName="${table_prefix}TRIGGERS"
+                                 referencedColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"/>
 
-        <addForeignKeyConstraint baseTableName="${table_prefix}CRON_TRIGGERS" constraintName="${table_prefix}CRON_TRIGGERS_SCHED_NAME_FKEY" baseColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP" referencedTableName="${table_prefix}TRIGGERS" referencedColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"/>
+        <addForeignKeyConstraint baseTableName="${table_prefix}CRON_TRIGGERS"
+                                 constraintName="${table_prefix}CRON_TRIGGERS_SCHED_NAME_FKEY"
+                                 baseColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"
+                                 referencedTableName="${table_prefix}TRIGGERS"
+                                 referencedColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"/>
 
-        <addForeignKeyConstraint baseTableName="${table_prefix}SIMPROP_TRIGGERS" constraintName="${table_prefix}SIMPROP_TRIGGERS_SCHED_NAME_FKEY" baseColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP" referencedTableName="${table_prefix}TRIGGERS" referencedColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"/>
+        <addForeignKeyConstraint baseTableName="${table_prefix}SIMPROP_TRIGGERS"
+                                 constraintName="${table_prefix}SIMPROP_TRIGGERS_SCHED_NAME_FKEY"
+                                 baseColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"
+                                 referencedTableName="${table_prefix}TRIGGERS"
+                                 referencedColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"/>
 
-        <addForeignKeyConstraint baseTableName="${table_prefix}BLOB_TRIGGERS" constraintName="${table_prefix}BLOB_TRIGGERS_SCHED_NAME_FKEY" baseColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP" referencedTableName="${table_prefix}TRIGGERS" referencedColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"/>
+        <addForeignKeyConstraint baseTableName="${table_prefix}BLOB_TRIGGERS"
+                                 constraintName="${table_prefix}BLOB_TRIGGERS_SCHED_NAME_FKEY"
+                                 baseColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"
+                                 referencedTableName="${table_prefix}TRIGGERS"
+                                 referencedColumnNames="SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP"/>
     </changeSet>
 </databaseChangeLog>

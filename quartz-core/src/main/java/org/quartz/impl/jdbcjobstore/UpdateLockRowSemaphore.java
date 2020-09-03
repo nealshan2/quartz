@@ -24,12 +24,12 @@ import java.sql.SQLException;
  * Provide thread/resource locking in order to protect
  * resources from being altered by multiple threads at the same time using
  * a db row update.
- * 
+ * <p>
  * <p>
  * <b>Note:</b> This Semaphore implementation is useful for databases that do
  * not support row locking via "SELECT FOR UPDATE" type syntax, for example
  * Microsoft SQLServer (MSSQL).
- * </p> 
+ * </p>
  */
 public class UpdateLockRowSemaphore extends DBSemaphore {
 
@@ -41,17 +41,17 @@ public class UpdateLockRowSemaphore extends DBSemaphore {
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      */
 
-    public static final String UPDATE_FOR_LOCK = 
-        "UPDATE " + TABLE_PREFIX_SUBST + TABLE_LOCKS + 
-        " SET " + COL_LOCK_NAME + " = " + COL_LOCK_NAME +
-        " WHERE " + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST
-        + " AND " + COL_LOCK_NAME + " = ? ";
+    public static final String UPDATE_FOR_LOCK =
+            "UPDATE " + TABLE_PREFIX_SUBST + TABLE_LOCKS +
+                    " SET " + COL_LOCK_NAME + " = " + COL_LOCK_NAME +
+                    " WHERE " + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST
+                    + " AND " + COL_LOCK_NAME + " = ? ";
 
 
     public static final String INSERT_LOCK = "INSERT INTO "
-        + TABLE_PREFIX_SUBST + TABLE_LOCKS + "(" + COL_SCHEDULER_NAME + ", " + COL_LOCK_NAME + ") VALUES (" 
-        + SCHED_NAME_SUBST + ", ?)"; 
-    
+            + TABLE_PREFIX_SUBST + TABLE_LOCKS + "(" + COL_SCHEDULER_NAME + ", " + COL_LOCK_NAME + ") VALUES ("
+            + SCHED_NAME_SUBST + ", ?)";
+
     private static final int RETRY_COUNT = 2;
 
     /*
@@ -102,7 +102,7 @@ public class UpdateLockRowSemaphore extends DBSemaphore {
         }
         throw new LockException("Failure obtaining db row lock: " + lastFailure.getMessage(), lastFailure);
     }
-    
+
     protected String getUpdateLockRowSQL() {
         return getSQL();
     }
@@ -127,10 +127,10 @@ public class UpdateLockRowSemaphore extends DBSemaphore {
         PreparedStatement ps = conn.prepareStatement(sql);
         try {
             ps.setString(1, lockName);
-            if(ps.executeUpdate() != 1) {
+            if (ps.executeUpdate() != 1) {
                 throw new SQLException(Util.rtp(
-                    "No row exists, and one could not be inserted in table " + TABLE_PREFIX_SUBST + TABLE_LOCKS + 
-                    " for lock named: " + lockName, getTablePrefix(), getSchedulerNameLiteral()));
+                        "No row exists, and one could not be inserted in table " + TABLE_PREFIX_SUBST + TABLE_LOCKS +
+                                " for lock named: " + lockName, getTablePrefix(), getSchedulerNameLiteral()));
             }
         } finally {
             ps.close();

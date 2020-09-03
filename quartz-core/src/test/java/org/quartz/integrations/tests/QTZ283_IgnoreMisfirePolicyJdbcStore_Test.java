@@ -36,81 +36,81 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 public class QTZ283_IgnoreMisfirePolicyJdbcStore_Test extends QuartzDatabaseTestSupport {
 
-  private static final long DURATION_OF_FIRST_SCHEDULING = 10L;
-  private static final Logger LOG = LoggerFactory.getLogger(QTZ283_IgnoreMisfirePolicyJdbcStore_Test.class);
-  private static final int INTERVAL_IN_SECONDS = 5;
+    private static final long DURATION_OF_FIRST_SCHEDULING = 10L;
+    private static final Logger LOG = LoggerFactory.getLogger(QTZ283_IgnoreMisfirePolicyJdbcStore_Test.class);
+    private static final int INTERVAL_IN_SECONDS = 5;
 
-  @Override
-  protected Properties createSchedulerProperties() {
-    Properties properties = new Properties();
-    properties.put("org.quartz.scheduler.instanceName", "TestScheduler");
-    properties.put("org.quartz.scheduler.instanceId", "AUTO");
-    properties.put("org.quartz.scheduler.skipUpdateCheck", "true");
-    properties.put("org.quartz.threadPool.class", "org.quartz.simpl.SimpleThreadPool");
-    properties.put("org.quartz.threadPool.threadCount", "12");
-    properties.put("org.quartz.threadPool.threadPriority", "5");
-    properties.put("org.quartz.jobStore.misfireThreshold", "10000");
-    properties.put("org.quartz.jobStore.class", "org.quartz.impl.jdbcjobstore.JobStoreTX");
-    properties.put("org.quartz.jobStore.driverDelegateClass", "org.quartz.impl.jdbcjobstore.StdJDBCDelegate");
-    properties.put("org.quartz.jobStore.useProperties", "true");
-    properties.put("org.quartz.jobStore.dataSource", "myDS");
-    properties.put("org.quartz.jobStore.tablePrefix", "QRTZ_");
-    properties.put("org.quartz.jobStore.isClustered", "false");
-    properties.put("org.quartz.dataSource.myDS.driver", "org.apache.derby.jdbc.ClientDriver");
-    properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzDerbyUtilities.DATABASE_CONNECTION_PREFIX);
-    properties.put("org.quartz.dataSource.myDS.user", "quartz");
-    properties.put("org.quartz.dataSource.myDS.password", "quartz");
-    properties.put("org.quartz.dataSource.myDS.maxConnections", "5");
-    return properties;
-  }
-
-  @Override
- 	protected void afterSchedulerInit() throws Exception {
-
-
-    LOG.info("------- Scheduling Job  -------------------");
-
-    // define the jobs and tie them to our HelloJob class
-    JobDetail job1 = newJob(HelloJob.class).withIdentity("job1", "group1").build();
-
-    // trigger should have started the even minute before now
-    // due to its ignore policy, it will be triggered
-    Date startTime1 = DateBuilder.evenMinuteDateBefore(null);
-    SimpleTrigger oldtriggerMisfirePolicyIgnore = newTrigger()
-        .withIdentity("trigger1", "group1")
-        .startAt(startTime1)
-        .withSchedule(
-            simpleSchedule().withIntervalInSeconds(INTERVAL_IN_SECONDS)
-                .repeatForever()
-                .withMisfireHandlingInstructionIgnoreMisfires())
-        .build();
-
-    if (scheduler.checkExists(job1.getKey())) {
-      // the job already exists in jdbcjobstore; let's reschedule it
-      scheduler.rescheduleJob(oldtriggerMisfirePolicyIgnore.getKey(), oldtriggerMisfirePolicyIgnore);
-    } else {
-      scheduler.scheduleJob(job1, oldtriggerMisfirePolicyIgnore);
+    @Override
+    protected Properties createSchedulerProperties() {
+        Properties properties = new Properties();
+        properties.put("org.quartz.scheduler.instanceName", "TestScheduler");
+        properties.put("org.quartz.scheduler.instanceId", "AUTO");
+        properties.put("org.quartz.scheduler.skipUpdateCheck", "true");
+        properties.put("org.quartz.threadPool.class", "org.quartz.simpl.SimpleThreadPool");
+        properties.put("org.quartz.threadPool.threadCount", "12");
+        properties.put("org.quartz.threadPool.threadPriority", "5");
+        properties.put("org.quartz.jobStore.misfireThreshold", "10000");
+        properties.put("org.quartz.jobStore.class", "org.quartz.impl.jdbcjobstore.JobStoreTX");
+        properties.put("org.quartz.jobStore.driverDelegateClass", "org.quartz.impl.jdbcjobstore.StdJDBCDelegate");
+        properties.put("org.quartz.jobStore.useProperties", "true");
+        properties.put("org.quartz.jobStore.dataSource", "myDS");
+        properties.put("org.quartz.jobStore.tablePrefix", "QRTZ_");
+        properties.put("org.quartz.jobStore.isClustered", "false");
+        properties.put("org.quartz.dataSource.myDS.driver", "org.apache.derby.jdbc.ClientDriver");
+        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzDerbyUtilities.DATABASE_CONNECTION_PREFIX);
+        properties.put("org.quartz.dataSource.myDS.user", "quartz");
+        properties.put("org.quartz.dataSource.myDS.password", "quartz");
+        properties.put("org.quartz.dataSource.myDS.maxConnections", "5");
+        return properties;
     }
 
-    // Start up the scheduler (nothing can actually run until the
-    // scheduler has been started)
-    scheduler.start();
+    @Override
+    protected void afterSchedulerInit() throws Exception {
 
-    LOG.info("------- Scheduler Started -----------------");
 
-    // wait long enough so that the scheduler as an opportunity to
-    // run the job!
-    try {
-      Thread.sleep(DURATION_OF_FIRST_SCHEDULING * 1000L);
-    } catch (Exception e) {
-      e.printStackTrace();
+        LOG.info("------- Scheduling Job  -------------------");
+
+        // define the jobs and tie them to our HelloJob class
+        JobDetail job1 = newJob(HelloJob.class).withIdentity("job1", "group1").build();
+
+        // trigger should have started the even minute before now
+        // due to its ignore policy, it will be triggered
+        Date startTime1 = DateBuilder.evenMinuteDateBefore(null);
+        SimpleTrigger oldtriggerMisfirePolicyIgnore = newTrigger()
+                .withIdentity("trigger1", "group1")
+                .startAt(startTime1)
+                .withSchedule(
+                        simpleSchedule().withIntervalInSeconds(INTERVAL_IN_SECONDS)
+                                .repeatForever()
+                                .withMisfireHandlingInstructionIgnoreMisfires())
+                .build();
+
+        if (scheduler.checkExists(job1.getKey())) {
+            // the job already exists in jdbcjobstore; let's reschedule it
+            scheduler.rescheduleJob(oldtriggerMisfirePolicyIgnore.getKey(), oldtriggerMisfirePolicyIgnore);
+        } else {
+            scheduler.scheduleJob(job1, oldtriggerMisfirePolicyIgnore);
+        }
+
+        // Start up the scheduler (nothing can actually run until the
+        // scheduler has been started)
+        scheduler.start();
+
+        LOG.info("------- Scheduler Started -----------------");
+
+        // wait long enough so that the scheduler as an opportunity to
+        // run the job!
+        try {
+            Thread.sleep(DURATION_OF_FIRST_SCHEDULING * 1000L);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-  }
 
-  @Test
-  public void checkOldTriggerGetsFired() throws SQLException {
-    BigDecimal misfirePolicyIgnoreTimesTriggered = JdbcQuartzDerbyUtilities.timesTriggered("trigger1", "group1");
-    assertThat("The old trigger has never been fired, even if the policy is ignore", misfirePolicyIgnoreTimesTriggered,
-        not(equalTo(BigDecimal.ZERO)));
-  }
+    @Test
+    public void checkOldTriggerGetsFired() throws SQLException {
+        BigDecimal misfirePolicyIgnoreTimesTriggered = JdbcQuartzDerbyUtilities.timesTriggered("trigger1", "group1");
+        assertThat("The old trigger has never been fired, even if the policy is ignore", misfirePolicyIgnoreTimesTriggered,
+                not(equalTo(BigDecimal.ZERO)));
+    }
 }

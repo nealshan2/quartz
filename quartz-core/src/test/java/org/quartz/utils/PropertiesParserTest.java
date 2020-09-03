@@ -31,9 +31,9 @@ public class PropertiesParserTest extends TestCase {
         // Test that an empty property does not cause an exception
         Properties props = new Properties();
         props.put("x.y.z", "");
-        
+
         PropertiesParser propertiesParser = new PropertiesParser(props);
-        Properties propGroup = propertiesParser.getPropertyGroup("x.y", true, new String[] {});
+        Properties propGroup = propertiesParser.getPropertyGroup("x.y", true, new String[]{});
         assertEquals("", propGroup.getProperty("z"));
     }
 }

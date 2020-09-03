@@ -25,12 +25,11 @@ import java.lang.annotation.Target;
 
 /**
  * An annotation that marks a {@link Job} class as one that must not have multiple
- * instances executed concurrently (where instance is based-upon a {@link JobDetail} 
+ * instances executed concurrently (where instance is based-upon a {@link JobDetail}
  * definition - or in other words based upon a {@link JobKey}).
  *
- * @see PersistJobDataAfterExecution
- * 
  * @author jhouse
+ * @see PersistJobDataAfterExecution
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

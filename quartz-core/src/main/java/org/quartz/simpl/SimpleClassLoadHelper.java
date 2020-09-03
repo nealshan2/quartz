@@ -26,14 +26,13 @@ import java.io.InputStream;
 
 /**
  * A <code>ClassLoadHelper</code> that simply calls <code>Class.forName(..)</code>.
- * 
+ *
+ * @author jhouse
+ * @author pl47ypus
  * @see org.quartz.spi.ClassLoadHelper
  * @see org.quartz.simpl.ThreadContextClassLoadHelper
  * @see org.quartz.simpl.CascadingClassLoadHelper
  * @see org.quartz.simpl.LoadingLoaderClassLoadHelper
- * 
- * @author jhouse
- * @author pl47ypus
  */
 public class SimpleClassLoadHelper implements ClassLoadHelper {
 
@@ -69,6 +68,7 @@ public class SimpleClassLoadHelper implements ClassLoadHelper {
     /**
      * Finds a resource with a given name. This method returns null if no
      * resource with this name is found.
+     *
      * @param name name of the desired resource
      * @return a java.net.URL object
      */
@@ -79,6 +79,7 @@ public class SimpleClassLoadHelper implements ClassLoadHelper {
     /**
      * Finds a resource with a given name. This method returns null if no
      * resource with this name is found.
+     *
      * @param name name of the desired resource
      * @return a java.io.InputStream object
      */
@@ -102,9 +103,9 @@ public class SimpleClassLoadHelper implements ClassLoadHelper {
             Method mthd = ClassLoader.class.getDeclaredMethod(
                     "getCallerClassLoader", new Class<?>[0]);
             // Make the method accessible.
-            AccessibleObject.setAccessible(new AccessibleObject[] {mthd}, true);
+            AccessibleObject.setAccessible(new AccessibleObject[]{mthd}, true);
             // Try to get the caller's class-loader
-            return (ClassLoader)mthd.invoke(cl, new Object[0]);
+            return (ClassLoader) mthd.invoke(cl, new Object[0]);
         } catch (Throwable all) {
             // Use this class' class-loader
             return this.getClass().getClassLoader();

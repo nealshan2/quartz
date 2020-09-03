@@ -28,7 +28,7 @@ public class JobDetailTest extends TestCase {
     public class SomePersistentJob implements Job {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
-       }
+        }
     }
 
     public class SomeExtendedPersistentJob extends SomePersistentJob {
@@ -67,10 +67,10 @@ public class JobDetailTest extends TestCase {
     public void testClone() {
         JobDetailImpl jobDetail = new JobDetailImpl();
         jobDetail.setName("hi");
-        
-        JobDetail clonedJobDetail = (JobDetail)jobDetail.clone();
+
+        JobDetail clonedJobDetail = (JobDetail) jobDetail.clone();
         assertEquals(clonedJobDetail, jobDetail);
-        
+
     }
 
     public void testAnnotationDetection() {

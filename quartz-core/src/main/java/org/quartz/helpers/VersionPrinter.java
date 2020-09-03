@@ -24,7 +24,7 @@ import org.quartz.core.QuartzScheduler;
  * <p>
  * Prints the version of Quartz on stdout.
  * </p>
- * 
+ *
  * @author James House
  */
 public class VersionPrinter {

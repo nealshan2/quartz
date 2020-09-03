@@ -20,25 +20,25 @@ import org.quartz.Matcher;
 import org.quartz.utils.Key;
 
 /**
- * Matches using an OR operator on two Matcher operands. 
- *  
+ * Matches using an OR operator on two Matcher operands.
+ *
  * @author jhouse
  */
 public class OrMatcher<T extends Key<?>> implements Matcher<T> {
-  
+
     private static final long serialVersionUID = -2867392824539403712L;
 
     protected Matcher<T> leftOperand;
     protected Matcher<T> rightOperand;
-    
+
     protected OrMatcher(Matcher<T> leftOperand, Matcher<T> rightOperand) {
-        if(leftOperand == null || rightOperand == null)
+        if (leftOperand == null || rightOperand == null)
             throw new IllegalArgumentException("Two non-null operands required!");
-        
+
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
     }
-    
+
     /**
      * Create an OrMatcher that depends upon the result of at least one of the given matchers.
      */

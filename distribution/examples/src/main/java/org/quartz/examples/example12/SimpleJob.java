@@ -14,7 +14,7 @@
  * under the License.
  * 
  */
- 
+
 package org.quartz.examples.example12;
 
 import java.util.Date;
@@ -30,7 +30,7 @@ import org.quartz.JobKey;
  * <p>
  * A dumb implementation of Job, for unittesting purposes.
  * </p>
- * 
+ *
  * @author James House
  */
 public class SimpleJob implements Job {
@@ -52,12 +52,11 @@ public class SimpleJob implements Job {
      * <code>{@link org.quartz.Trigger}</code> fires that is associated with
      * the <code>Job</code>.
      * </p>
-     * 
-     * @throws JobExecutionException
-     *             if there is an exception while executing the job.
+     *
+     * @throws JobExecutionException if there is an exception while executing the job.
      */
     public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+            throws JobExecutionException {
 
         // This job simply prints out its job name and the
         // date and time that it is running
@@ -69,6 +68,5 @@ public class SimpleJob implements Job {
         _log.info("SimpleJob: msg: " + message);
     }
 
-    
 
 }

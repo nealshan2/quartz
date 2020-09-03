@@ -35,12 +35,12 @@ import org.quartz.utils.ClassUtils;
  * unless the job class has the {@link ExecuteInJTATransaction}
  * annotation in which case it will create a {@link JTAJobRunShell}.
  * </p>
- * 
+ * <p>
  * <p>
  * This implementation does not re-use any objects, it simply makes a new
  * JTAJobRunShell each time <code>borrowJobRunShell()</code> is called.
  * </p>
- * 
+ *
  * @author James House
  */
 public class JTAAnnotationAwareJobRunShellFactory implements JobRunShellFactory {
@@ -84,7 +84,7 @@ public class JTAAnnotationAwareJobRunShellFactory implements JobRunShellFactory 
      * </p>
      */
     public void initialize(Scheduler sched)
-        throws SchedulerConfigException {
+            throws SchedulerConfigException {
         this.scheduler = sched;
     }
 
@@ -98,7 +98,7 @@ public class JTAAnnotationAwareJobRunShellFactory implements JobRunShellFactory 
     public JobRunShell createJobRunShell(TriggerFiredBundle bundle)
             throws SchedulerException {
         ExecuteInJTATransaction jtaAnnotation = ClassUtils.getAnnotation(bundle.getJobDetail().getJobClass(), ExecuteInJTATransaction.class);
-        if(jtaAnnotation == null)
+        if (jtaAnnotation == null)
             return new JobRunShell(scheduler, bundle);
         else {
             int timeout = jtaAnnotation.timeout();

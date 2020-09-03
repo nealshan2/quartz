@@ -24,24 +24,24 @@ import org.quartz.SchedulerException;
 public class JobExecutionContextSupport {
     private static final String COMPOSITE_TYPE_NAME = "JobExecutionContext";
     private static final String COMPOSITE_TYPE_DESCRIPTION = "Job Execution Instance Details";
-    private static final String[] ITEM_NAMES = new String[] { "schedulerName",
+    private static final String[] ITEM_NAMES = new String[]{"schedulerName",
             "triggerName", "triggerGroup", "jobName", "jobGroup", "jobDataMap",
             "calendarName", "recovering", "refireCount", "fireTime",
             "scheduledFireTime", "previousFireTime", "nextFireTime",
-            "jobRunTime", "fireInstanceId" };
-    private static final String[] ITEM_DESCRIPTIONS = new String[] {
+            "jobRunTime", "fireInstanceId"};
+    private static final String[] ITEM_DESCRIPTIONS = new String[]{
             "schedulerName", "triggerName", "triggerGroup", "jobName",
             "jobGroup", "jobDataMap", "calendarName", "recovering",
             "refireCount", "fireTime", "scheduledFireTime", "previousFireTime",
-            "nextFireTime", "jobRunTime", "fireInstanceId" };
-    private static final OpenType[] ITEM_TYPES = new OpenType[] { STRING,
+            "nextFireTime", "jobRunTime", "fireInstanceId"};
+    private static final OpenType[] ITEM_TYPES = new OpenType[]{STRING,
             STRING, STRING, STRING, STRING, JobDataMapSupport.TABULAR_TYPE,
-            STRING, BOOLEAN, INTEGER, DATE, DATE, DATE, DATE, LONG, STRING };
+            STRING, BOOLEAN, INTEGER, DATE, DATE, DATE, DATE, LONG, STRING};
     private static final CompositeType COMPOSITE_TYPE;
     private static final String TABULAR_TYPE_NAME = "JobExecutionContextArray";
     private static final String TABULAR_TYPE_DESCRIPTION = "Array of composite JobExecutionContext";
-    private static final String[] INDEX_NAMES = new String[] { "schedulerName",
-            "triggerName", "triggerGroup", "jobName", "jobGroup", "fireTime" };
+    private static final String[] INDEX_NAMES = new String[]{"schedulerName",
+            "triggerName", "triggerGroup", "jobName", "jobGroup", "fireTime"};
     private static final TabularType TABULAR_TYPE;
 
     static {
@@ -63,7 +63,7 @@ public class JobExecutionContextSupport {
             throws SchedulerException {
         try {
             return new CompositeDataSupport(COMPOSITE_TYPE, ITEM_NAMES,
-                    new Object[] {
+                    new Object[]{
                             jec.getScheduler().getSchedulerName(),
                             jec.getTrigger().getKey().getName(),
                             jec.getTrigger().getKey().getGroup(),
@@ -77,7 +77,7 @@ public class JobExecutionContextSupport {
                             jec.getFireTime(), jec.getScheduledFireTime(),
                             jec.getPreviousFireTime(), jec.getNextFireTime(),
                             jec.getJobRunTime(),
-                            jec.getFireInstanceId() });
+                            jec.getFireInstanceId()});
         } catch (OpenDataException e) {
             throw new RuntimeException(e);
         }

@@ -23,15 +23,14 @@ package org.quartz;
  * <code>{@link org.quartz.JobDetail}</code> executes. In general,
  * applications that use a <code>Scheduler</code> will not have use for this
  * mechanism.
- * 
+ *
+ * @author James House
  * @see ListenerManager#addJobListener(JobListener, Matcher)
  * @see Matcher
  * @see Job
  * @see JobExecutionContext
  * @see JobExecutionException
  * @see TriggerListener
- * 
- * @author James House
  */
 public interface JobListener {
 
@@ -56,12 +55,12 @@ public interface JobListener {
      * is about to be executed (an associated <code>{@link Trigger}</code>
      * has occurred).
      * </p>
-     * 
+     * <p>
      * <p>
      * This method will not be invoked if the execution of the Job was vetoed
      * by a <code>{@link TriggerListener}</code>.
      * </p>
-     * 
+     *
      * @see #jobExecutionVetoed(JobExecutionContext)
      */
     void jobToBeExecuted(JobExecutionContext context);
@@ -70,15 +69,15 @@ public interface JobListener {
      * <p>
      * Called by the <code>{@link Scheduler}</code> when a <code>{@link org.quartz.JobDetail}</code>
      * was about to be executed (an associated <code>{@link Trigger}</code>
-     * has occurred), but a <code>{@link TriggerListener}</code> vetoed it's 
+     * has occurred), but a <code>{@link TriggerListener}</code> vetoed it's
      * execution.
      * </p>
-     * 
+     *
      * @see #jobToBeExecuted(JobExecutionContext)
      */
     void jobExecutionVetoed(JobExecutionContext context);
 
-    
+
     /**
      * <p>
      * Called by the <code>{@link Scheduler}</code> after a <code>{@link org.quartz.JobDetail}</code>
@@ -87,6 +86,6 @@ public interface JobListener {
      * </p>
      */
     void jobWasExecuted(JobExecutionContext context,
-            JobExecutionException jobException);
+                        JobExecutionException jobException);
 
 }

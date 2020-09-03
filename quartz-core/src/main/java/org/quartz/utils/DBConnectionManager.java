@@ -26,15 +26,14 @@ import java.util.HashMap;
  * Manages a collection of ConnectionProviders, and provides transparent access
  * to their connections.
  * </p>
- * 
+ *
+ * @author James House
+ * @author Sharada Jambula
+ * @author Mohammad Rezaei
  * @see ConnectionProvider
  * @see PoolingConnectionProvider
  * @see JNDIConnectionProvider
  * @see org.quartz.utils.weblogic.WeblogicConnectionProvider
- * 
- * @author James House
- * @author Sharada Jambula
- * @author Mohammad Rezaei
  */
 public class DBConnectionManager {
 
@@ -72,7 +71,6 @@ public class DBConnectionManager {
      * <p>
      * Private constructor
      * </p>
-     *  
      */
     private DBConnectionManager() {
     }
@@ -86,17 +84,16 @@ public class DBConnectionManager {
      */
 
     public void addConnectionProvider(String dataSourceName,
-            ConnectionProvider provider) {
+                                      ConnectionProvider provider) {
         this.providers.put(dataSourceName, provider);
     }
 
     /**
      * Get a database connection from the DataSource with the given name.
-     * 
+     *
      * @return a database connection
-     * @exception SQLException
-     *              if an error occurs, or there is no DataSource with the
-     *              given name.
+     * @throws SQLException if an error occurs, or there is no DataSource with the
+     *                      given name.
      */
     public Connection getConnection(String dsName) throws SQLException {
         ConnectionProvider provider = providers.get(dsName);
@@ -110,7 +107,7 @@ public class DBConnectionManager {
 
     /**
      * Get the class instance.
-     * 
+     *
      * @return an instance of this class
      */
     public static DBConnectionManager getInstance() {
@@ -123,14 +120,13 @@ public class DBConnectionManager {
      * Shuts down database connections from the DataSource with the given name,
      * if applicable for the underlying provider.
      *
-     * @exception SQLException
-     *              if an error occurs, or there is no DataSource with the
-     *              given name.
+     * @throws SQLException if an error occurs, or there is no DataSource with the
+     *                      given name.
      */
     public void shutdown(String dsName) throws SQLException {
 
         ConnectionProvider provider = (ConnectionProvider) providers
-        .get(dsName);
+                .get(dsName);
         if (provider == null) {
             throw new SQLException("There is no DataSource named '"
                     + dsName + "'");

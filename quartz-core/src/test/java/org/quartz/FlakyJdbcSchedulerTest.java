@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +45,7 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{{0f, 0f, 0f}, {0.2f, 0f, 0f}, {0f, 0.2f, 0f}, {0f, 0f, 0.2f}, {0.2f, 0.2f, 0.2f}});
     }
-    
+
     private final Random rndm;
     private final float createFailureProb;
     private final float preCommitFailureProb;
@@ -89,7 +90,7 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
                         .newTrigger()
                         .withIdentity("triggerName" + i, "triggerGroup")
                         .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1)
-                        .withRepeatCount(execCount - 1)).build();
+                                .withRepeatCount(execCount - 1)).build();
 
                 if (!scheduler.checkExists(jobDetail.getKey())) {
                     scheduler.scheduleJob(jobDetail, trigger);
@@ -145,7 +146,7 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
             throw new SQLException("FlakyConnection failed on you post-commit.");
         }
     }
-    
+
     private class FlakyConnectionProvider implements ConnectionProvider {
 
         private final Thread safeThread;
@@ -163,7 +164,7 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
                 return DBConnectionManager.getInstance().getConnection(delegateName);
             } else {
                 createFailure();
-                return (Connection) Proxy.newProxyInstance(Connection.class.getClassLoader(), new Class[] {Connection.class},
+                return (Connection) Proxy.newProxyInstance(Connection.class.getClassLoader(), new Class[]{Connection.class},
                         new FlakyConnectionInvocationHandler(DBConnectionManager.getInstance().getConnection(delegateName)));
             }
         }
@@ -188,7 +189,7 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
         public FlakyConnectionInvocationHandler(Connection delegate) {
             this.delegate = delegate;
         }
-        
+
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             if ("commit".equals(method.getName())) {

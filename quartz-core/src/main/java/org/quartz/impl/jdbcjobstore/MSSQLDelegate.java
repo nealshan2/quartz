@@ -30,7 +30,7 @@ import org.slf4j.Logger;
  * <p>
  * This is a driver delegate for the MSSQL JDBC driver.
  * </p>
- * 
+ *
  * @author <a href="mailto:jeff@binaryfeed.org">Jeffrey Wescott</a>
  */
 public class MSSQLDelegate extends StdJDBCDelegate {
@@ -45,23 +45,19 @@ public class MSSQLDelegate extends StdJDBCDelegate {
      * special handling for BLOBs. The default implementation uses standard
      * JDBC <code>java.sql.Blob</code> operations.
      * </p>
-     * 
-     * @param rs
-     *          the result set, already queued to the correct row
-     * @param colName
-     *          the column name for the BLOB
+     *
+     * @param rs      the result set, already queued to the correct row
+     * @param colName the column name for the BLOB
      * @return the deserialized Object from the ResultSet BLOB
-     * @throws ClassNotFoundException
-     *           if a class found during deserialization cannot be found
-     * @throws IOException
-     *           if deserialization causes an error
+     * @throws ClassNotFoundException if a class found during deserialization cannot be found
+     * @throws IOException            if deserialization causes an error
      */
-    @Override           
+    @Override
     protected Object getObjectFromBlob(ResultSet rs, String colName)
-        throws ClassNotFoundException, IOException, SQLException {
+            throws ClassNotFoundException, IOException, SQLException {
         InputStream binaryInput = rs.getBinaryStream(colName);
 
-        if(binaryInput == null || binaryInput.available() == 0) {
+        if (binaryInput == null || binaryInput.available() == 0) {
             return null;
         }
 
@@ -77,9 +73,9 @@ public class MSSQLDelegate extends StdJDBCDelegate {
         return obj;
     }
 
-    @Override           
+    @Override
     protected Object getJobDataFromBlob(ResultSet rs, String colName)
-        throws ClassNotFoundException, IOException, SQLException {
+            throws ClassNotFoundException, IOException, SQLException {
         if (canUseProperties()) {
             InputStream binaryInput = rs.getBinaryStream(colName);
             return binaryInput;

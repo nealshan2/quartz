@@ -23,8 +23,8 @@ import org.quartz.spi.JobStore;
 
 public class JdbcJobStoreTest extends AbstractJobStoreTest {
 
-	private HashMap<String, JobStoreSupport> stores = new HashMap<String, JobStoreSupport>();
-	
+    private HashMap<String, JobStoreSupport> stores = new HashMap<String, JobStoreSupport>();
+
     public void testNothing() {
         // nothing
     }
@@ -41,7 +41,7 @@ public class JdbcJobStoreTest extends AbstractJobStoreTest {
             jdbcJobStore.setUseDBLocks(true);
 
             stores.put(name, jdbcJobStore);
-            
+
             return jdbcJobStore;
         } catch (SQLException e) {
             throw new AssertionError(e);
@@ -51,9 +51,9 @@ public class JdbcJobStoreTest extends AbstractJobStoreTest {
     @Override
     protected void destroyJobStore(String name) {
         try {
-        	JobStoreSupport jdbcJobStore = stores.remove(name);
-        	jdbcJobStore.shutdown();
-        	
+            JobStoreSupport jdbcJobStore = stores.remove(name);
+            jdbcJobStore.shutdown();
+
             JdbcQuartzTestUtilities.destroyDatabase(name);
         } catch (SQLException e) {
             throw new AssertionError(e);

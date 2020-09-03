@@ -14,7 +14,7 @@
  * under the License.
  * 
  */
- package org.quartz.examples.example14;
+package org.quartz.examples.example14;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class TriggerEchoJob implements Job {
 
     /**
      * Empty constructor for job initilization
-     *
+     * <p>
      * <p>
      * Quartz requires a public empty constructor so that the
      * scheduler can instantiate the class whenever it needs.
@@ -47,12 +47,11 @@ public class TriggerEchoJob implements Job {
      * <code>{@link org.quartz.Trigger}</code> fires that is associated with
      * the <code>Job</code>.
      * </p>
-     * 
-     * @throws JobExecutionException
-     *             if there is an exception while executing the job.
+     *
+     * @throws JobExecutionException if there is an exception while executing the job.
      */
     public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+            throws JobExecutionException {
         LOG.info("TRIGGER: " + context.getTrigger().getKey());
     }
 

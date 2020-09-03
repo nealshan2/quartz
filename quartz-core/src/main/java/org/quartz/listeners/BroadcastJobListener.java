@@ -26,18 +26,16 @@ import org.quartz.JobListener;
 /**
  * Holds a List of references to JobListener instances and broadcasts all
  * events to them (in order).
- *
+ * <p>
  * <p>The broadcasting behavior of this listener to delegate listeners may be
  * more convenient than registering all of the listeners directly with the
  * Scheduler, and provides the flexibility of easily changing which listeners
  * get notified.</p>
  *
- *
+ * @author James House (jhouse AT revolition DOT net)
  * @see #addListener(org.quartz.JobListener)
  * @see #removeListener(org.quartz.JobListener)
  * @see #removeListener(String)
- *
- * @author James House (jhouse AT revolition DOT net)
  */
 public class BroadcastJobListener implements JobListener {
 
@@ -46,13 +44,13 @@ public class BroadcastJobListener implements JobListener {
 
     /**
      * Construct an instance with the given name.
-     *
+     * <p>
      * (Remember to add some delegate listeners!)
      *
      * @param name the name of this instance
      */
     public BroadcastJobListener(String name) {
-        if(name == null) {
+        if (name == null) {
             throw new IllegalArgumentException("Listener name cannot be null!");
         }
         this.name = name;
@@ -62,7 +60,7 @@ public class BroadcastJobListener implements JobListener {
     /**
      * Construct an instance with the given name, and List of listeners.
      *
-     * @param name the name of this instance
+     * @param name      the name of this instance
      * @param listeners the initial List of JobListeners to broadcast to.
      */
     public BroadcastJobListener(String name, List<JobListener> listeners) {
@@ -84,9 +82,9 @@ public class BroadcastJobListener implements JobListener {
 
     public boolean removeListener(String listenerName) {
         Iterator<JobListener> itr = listeners.iterator();
-        while(itr.hasNext()) {
+        while (itr.hasNext()) {
             JobListener jl = itr.next();
-            if(jl.getName().equals(listenerName)) {
+            if (jl.getName().equals(listenerName)) {
                 itr.remove();
                 return true;
             }
@@ -101,7 +99,7 @@ public class BroadcastJobListener implements JobListener {
     public void jobToBeExecuted(JobExecutionContext context) {
 
         Iterator<JobListener> itr = listeners.iterator();
-        while(itr.hasNext()) {
+        while (itr.hasNext()) {
             JobListener jl = itr.next();
             jl.jobToBeExecuted(context);
         }
@@ -110,7 +108,7 @@ public class BroadcastJobListener implements JobListener {
     public void jobExecutionVetoed(JobExecutionContext context) {
 
         Iterator<JobListener> itr = listeners.iterator();
-        while(itr.hasNext()) {
+        while (itr.hasNext()) {
             JobListener jl = itr.next();
             jl.jobExecutionVetoed(context);
         }
@@ -119,7 +117,7 @@ public class BroadcastJobListener implements JobListener {
     public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
 
         Iterator<JobListener> itr = listeners.iterator();
-        while(itr.hasNext()) {
+        while (itr.hasNext()) {
             JobListener jl = itr.next();
             jl.jobWasExecuted(context, jobException);
         }

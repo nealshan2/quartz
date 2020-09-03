@@ -23,7 +23,7 @@ import java.io.InputStream;
 /**
  * An interface for classes wishing to provide the service of loading classes
  * and resources within the scheduler...
- * 
+ *
  * @author jhouse
  * @author pl47ypus
  */
@@ -53,7 +53,7 @@ public interface ClassLoadHelper {
      * @throws ClassNotFoundException if the class can be found in the classpath.
      */
     <T> Class<? extends T> loadClass(String name, Class<T> clazz) throws ClassNotFoundException;
-    
+
     /**
      * Finds a resource with a given name. This method returns null if no
      * resource with this name is found.

@@ -29,24 +29,23 @@ import org.quartz.spi.ClassLoadHelper;
  * types that are found in this package in its attempts to load a class, when
  * one scheme is found to work, it is promoted to the scheme that will be used
  * first the next time a class is loaded (in order to improve performance).
- * 
+ * <p>
  * <p>
  * This approach is used because of the wide variance in class loader behavior
- * between the various environments in which Quartz runs (e.g. disparate 
+ * between the various environments in which Quartz runs (e.g. disparate
  * application servers, stand-alone, mobile devices, etc.).  Because of this
- * disparity, Quartz ran into difficulty with a one class-load style fits-all 
- * design.  Thus, this class loader finds the approach that works, then 
- * 'remembers' it.  
+ * disparity, Quartz ran into difficulty with a one class-load style fits-all
+ * design.  Thus, this class loader finds the approach that works, then
+ * 'remembers' it.
  * </p>
- * 
+ *
+ * @author jhouse
+ * @author pl47ypus
  * @see org.quartz.spi.ClassLoadHelper
  * @see org.quartz.simpl.LoadingLoaderClassLoadHelper
  * @see org.quartz.simpl.SimpleClassLoadHelper
  * @see org.quartz.simpl.ThreadContextClassLoadHelper
  * @see org.quartz.simpl.InitThreadContextClassLoadHelper
- * 
- * @author jhouse
- * @author pl47ypus
  */
 public class CascadingClassLoadHelper implements ClassLoadHelper {
 
@@ -83,8 +82,8 @@ public class CascadingClassLoadHelper implements ClassLoadHelper {
         loadHelpers.add(new SimpleClassLoadHelper());
         loadHelpers.add(new ThreadContextClassLoadHelper());
         loadHelpers.add(new InitThreadContextClassLoadHelper());
-        
-        for(ClassLoadHelper loadHelper: loadHelpers) {
+
+        for (ClassLoadHelper loadHelper : loadHelpers) {
             loadHelper.initialize();
         }
     }
@@ -120,11 +119,10 @@ public class CascadingClassLoadHelper implements ClassLoadHelper {
 
         if (clazz == null) {
             if (throwable instanceof ClassNotFoundException) {
-                throw (ClassNotFoundException)throwable;
-            } 
-            else {
-                throw new ClassNotFoundException( String.format( "Unable to load class %s by any known loaders.", name), throwable);
-            } 
+                throw (ClassNotFoundException) throwable;
+            } else {
+                throw new ClassNotFoundException(String.format("Unable to load class %s by any known loaders.", name), throwable);
+            }
         }
 
         bestCandidate = loadHelper;
@@ -137,10 +135,11 @@ public class CascadingClassLoadHelper implements ClassLoadHelper {
             throws ClassNotFoundException {
         return (Class<? extends T>) loadClass(name);
     }
-    
+
     /**
      * Finds a resource with a given name. This method returns null if no
      * resource with this name is found.
+     *
      * @param name name of the desired resource
      * @return a java.net.URL object
      */
@@ -150,10 +149,9 @@ public class CascadingClassLoadHelper implements ClassLoadHelper {
 
         if (bestCandidate != null) {
             result = bestCandidate.getResource(name);
-            if(result == null) {
-              bestCandidate = null;
-            }
-            else {
+            if (result == null) {
+                bestCandidate = null;
+            } else {
                 return result;
             }
         }
@@ -177,6 +175,7 @@ public class CascadingClassLoadHelper implements ClassLoadHelper {
     /**
      * Finds a resource with a given name. This method returns null if no
      * resource with this name is found.
+     *
      * @param name name of the desired resource
      * @return a java.io.InputStream object
      */
@@ -186,10 +185,9 @@ public class CascadingClassLoadHelper implements ClassLoadHelper {
 
         if (bestCandidate != null) {
             result = bestCandidate.getResourceAsStream(name);
-            if(result == null) {
+            if (result == null) {
                 bestCandidate = null;
-            }
-            else {
+            } else {
                 return result;
             }
         }

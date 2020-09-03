@@ -42,95 +42,95 @@ import org.quartz.simpl.SimpleThreadPool;
 import org.quartz.spi.JobStore;
 
 /**
- *
  * @author cdennis
  */
 public class QTZ385Test {
-  
-  private static final Method TRIGGERS_FIRED;
-  static {
-    try {
-      TRIGGERS_FIRED = JobStore.class.getDeclaredMethod("triggersFired", new Class[] {List.class});
-    } catch (NoSuchMethodException e) {
-      throw new AssertionError(e);
-    }
-  }
 
-  @Test
-  public void testShutdownOrdering() throws SchedulerException, SQLException, InterruptedException, BrokenBarrierException {
-    JdbcQuartzTestUtilities.createDatabase("testShutdownOrdering");
-    try {
-      final CyclicBarrier barrier = new CyclicBarrier(2);
-      final JobStoreTX realJobStore = new JobStoreTX();
-      realJobStore.setDataSource("testShutdownOrdering");
-      realJobStore.setInstanceId("SINGLE_NODE_TEST");
-      realJobStore.setInstanceName("testShutdownOrdering");
+    private static final Method TRIGGERS_FIRED;
 
-      JobStore evilJobStore = (JobStore) Proxy.newProxyInstance(JobStore.class.getClassLoader(), new Class[] {JobStore.class}, new InvocationHandler() {
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-          if (TRIGGERS_FIRED.equals(method)) {
-            Object result = method.invoke(realJobStore, args);
-            barrier.await();
-            try {
-              barrier.await(1, TimeUnit.SECONDS);
-            } catch (Exception e) {
-              //ignore
-            }
-            return result;
-          } else {
-            return method.invoke(realJobStore, args);
-          }
+    static {
+        try {
+            TRIGGERS_FIRED = JobStore.class.getDeclaredMethod("triggersFired", new Class[]{List.class});
+        } catch (NoSuchMethodException e) {
+            throw new AssertionError(e);
         }
-      });
-
-      DirectSchedulerFactory factory = DirectSchedulerFactory.getInstance();
-      factory.createScheduler(new SimpleThreadPool(1, Thread.NORM_PRIORITY), evilJobStore);
-      Scheduler scheduler = factory.getScheduler();
-      try {
-        scheduler.scheduleJob(JobBuilder.newJob(HelloJob.class).withIdentity("test").requestRecovery().build(), 
-                TriggerBuilder.newTrigger().withIdentity("test").withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(1)).build());
-        scheduler.start();
-        barrier.await();
-      } finally {
-        scheduler.shutdown(true);
-      }
-
-      try {
-        barrier.await(1, TimeUnit.SECONDS);
-      } catch (Exception e) {
-        //ignore
-      }
-      
-      
-      final AtomicBoolean recoveredJob = new AtomicBoolean(false);
-      factory.createScheduler(new SimpleThreadPool(1, Thread.NORM_PRIORITY), realJobStore);
-      Scheduler recovery = factory.getScheduler();
-      try {
-        recovery.getListenerManager().addJobListener(new JobListenerSupport() {
-
-          @Override
-          public String getName() {
-            return QTZ385Test.class.getSimpleName();
-          }
-
-          @Override
-          public void jobToBeExecuted(JobExecutionContext context) {
-            if (context.isRecovering()) {
-              recoveredJob.set(true);
-            }
-          }
-        });
-        recovery.start();
-        Thread.sleep(1000);
-        Assert.assertFalse(recoveredJob.get());
-      } finally {
-        recovery.shutdown(true);
-      }
-    } finally {
-      JdbcQuartzTestUtilities.destroyDatabase("testShutdownOrdering");
     }
-  }
-  
-  
+
+    @Test
+    public void testShutdownOrdering() throws SchedulerException, SQLException, InterruptedException, BrokenBarrierException {
+        JdbcQuartzTestUtilities.createDatabase("testShutdownOrdering");
+        try {
+            final CyclicBarrier barrier = new CyclicBarrier(2);
+            final JobStoreTX realJobStore = new JobStoreTX();
+            realJobStore.setDataSource("testShutdownOrdering");
+            realJobStore.setInstanceId("SINGLE_NODE_TEST");
+            realJobStore.setInstanceName("testShutdownOrdering");
+
+            JobStore evilJobStore = (JobStore) Proxy.newProxyInstance(JobStore.class.getClassLoader(), new Class[]{JobStore.class}, new InvocationHandler() {
+                @Override
+                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                    if (TRIGGERS_FIRED.equals(method)) {
+                        Object result = method.invoke(realJobStore, args);
+                        barrier.await();
+                        try {
+                            barrier.await(1, TimeUnit.SECONDS);
+                        } catch (Exception e) {
+                            //ignore
+                        }
+                        return result;
+                    } else {
+                        return method.invoke(realJobStore, args);
+                    }
+                }
+            });
+
+            DirectSchedulerFactory factory = DirectSchedulerFactory.getInstance();
+            factory.createScheduler(new SimpleThreadPool(1, Thread.NORM_PRIORITY), evilJobStore);
+            Scheduler scheduler = factory.getScheduler();
+            try {
+                scheduler.scheduleJob(JobBuilder.newJob(HelloJob.class).withIdentity("test").requestRecovery().build(),
+                        TriggerBuilder.newTrigger().withIdentity("test").withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(1)).build());
+                scheduler.start();
+                barrier.await();
+            } finally {
+                scheduler.shutdown(true);
+            }
+
+            try {
+                barrier.await(1, TimeUnit.SECONDS);
+            } catch (Exception e) {
+                //ignore
+            }
+
+
+            final AtomicBoolean recoveredJob = new AtomicBoolean(false);
+            factory.createScheduler(new SimpleThreadPool(1, Thread.NORM_PRIORITY), realJobStore);
+            Scheduler recovery = factory.getScheduler();
+            try {
+                recovery.getListenerManager().addJobListener(new JobListenerSupport() {
+
+                    @Override
+                    public String getName() {
+                        return QTZ385Test.class.getSimpleName();
+                    }
+
+                    @Override
+                    public void jobToBeExecuted(JobExecutionContext context) {
+                        if (context.isRecovering()) {
+                            recoveredJob.set(true);
+                        }
+                    }
+                });
+                recovery.start();
+                Thread.sleep(1000);
+                Assert.assertFalse(recoveredJob.get());
+            } finally {
+                recovery.shutdown(true);
+            }
+        } finally {
+            JdbcQuartzTestUtilities.destroyDatabase("testShutdownOrdering");
+        }
+    }
+
+
 }

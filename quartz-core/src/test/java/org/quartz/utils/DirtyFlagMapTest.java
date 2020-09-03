@@ -34,7 +34,7 @@ public class DirtyFlagMapTest extends TestCase {
     public void testClear() {
         DirtyFlagMap<String, String> dirtyFlagMap = new DirtyFlagMap<String, String>();
         assertFalse(dirtyFlagMap.isDirty());
-        
+
         dirtyFlagMap.clear();
         assertFalse(dirtyFlagMap.isDirty());
         dirtyFlagMap.put("X", "Y");
@@ -42,25 +42,25 @@ public class DirtyFlagMapTest extends TestCase {
         dirtyFlagMap.clear();
         assertTrue(dirtyFlagMap.isDirty());
     }
-    
+
     public void testPut() {
         DirtyFlagMap<String, String> dirtyFlagMap = new DirtyFlagMap<String, String>();
         dirtyFlagMap.put("a", "Y");
         assertTrue(dirtyFlagMap.isDirty());
     }
-    
+
     public void testRemove() {
         DirtyFlagMap<String, String> dirtyFlagMap = new DirtyFlagMap<String, String>();
         dirtyFlagMap.put("a", "Y");
         dirtyFlagMap.clearDirtyFlag();
-        
+
         dirtyFlagMap.remove("b");
         assertFalse(dirtyFlagMap.isDirty());
 
         dirtyFlagMap.remove("a");
         assertTrue(dirtyFlagMap.isDirty());
     }
-    
+
     public void testEntrySetRemove() {
         DirtyFlagMap<String, String> dirtyFlagMap = new DirtyFlagMap<String, String>();
         Set<Map.Entry<String, String>> entrySet = dirtyFlagMap.entrySet();
@@ -86,7 +86,7 @@ public class DirtyFlagMapTest extends TestCase {
         entrySet.retainAll(Collections.EMPTY_LIST);
         assertTrue(dirtyFlagMap.isDirty());
     }
-    
+
     public void testEntrySetRemoveAll() {
         DirtyFlagMap<String, String> dirtyFlagMap = new DirtyFlagMap<String, String>();
         Set<Map.Entry<String, String>> entrySet = dirtyFlagMap.entrySet();
@@ -99,7 +99,7 @@ public class DirtyFlagMapTest extends TestCase {
         entrySet.removeAll(Collections.singletonList(entrySet.iterator().next()));
         assertTrue(dirtyFlagMap.isDirty());
     }
-    
+
     public void testEntrySetClear() {
         DirtyFlagMap<String, String> dirtyFlagMap = new DirtyFlagMap<String, String>();
         Set<Map.Entry<String, String>> entrySet = dirtyFlagMap.entrySet();
@@ -109,7 +109,7 @@ public class DirtyFlagMapTest extends TestCase {
         dirtyFlagMap.clearDirtyFlag();
         entrySet.clear();
         assertTrue(dirtyFlagMap.isDirty());
-    }        
+    }
 
     @SuppressWarnings("unchecked")
     public void testEntrySetIterator() {
@@ -120,14 +120,14 @@ public class DirtyFlagMapTest extends TestCase {
         dirtyFlagMap.put("c", "C");
         dirtyFlagMap.clearDirtyFlag();
         Iterator<?> entrySetIter = entrySet.iterator();
-        Map.Entry<?, ?> entryToBeRemoved = (Map.Entry<?, ?>)entrySetIter.next();
-        String removedKey = (String)entryToBeRemoved.getKey();
+        Map.Entry<?, ?> entryToBeRemoved = (Map.Entry<?, ?>) entrySetIter.next();
+        String removedKey = (String) entryToBeRemoved.getKey();
         entrySetIter.remove();
         assertEquals(2, dirtyFlagMap.size());
         assertTrue(dirtyFlagMap.isDirty());
         assertFalse(dirtyFlagMap.containsKey(removedKey));
         dirtyFlagMap.clearDirtyFlag();
-        Map.Entry<?, String> entry = (Map.Entry<?, String>)entrySetIter.next();
+        Map.Entry<?, String> entry = (Map.Entry<?, String>) entrySetIter.next();
         entry.setValue("BB");
         assertTrue(dirtyFlagMap.isDirty());
         assertTrue(dirtyFlagMap.containsValue("BB"));
@@ -143,7 +143,7 @@ public class DirtyFlagMapTest extends TestCase {
         dirtyFlagMap.clearDirtyFlag();
         Object[] array = entrySet.toArray();
         assertEquals(3, array.length);
-        Map.Entry<?, String> entry = (Map.Entry<?, String>)array[0];
+        Map.Entry<?, String> entry = (Map.Entry<?, String>) array[0];
         entry.setValue("BB");
         assertTrue(dirtyFlagMap.isDirty());
         assertTrue(dirtyFlagMap.containsValue("BB"));
@@ -157,14 +157,14 @@ public class DirtyFlagMapTest extends TestCase {
         dirtyFlagMap.put("b", "B");
         dirtyFlagMap.put("c", "C");
         dirtyFlagMap.clearDirtyFlag();
-        Object[] array = entrySet.toArray(new Map.Entry[] {});
+        Object[] array = entrySet.toArray(new Map.Entry[]{});
         assertEquals(3, array.length);
-        Map.Entry<?, String> entry = (Map.Entry<?, String>)array[0];
+        Map.Entry<?, String> entry = (Map.Entry<?, String>) array[0];
         entry.setValue("BB");
         assertTrue(dirtyFlagMap.isDirty());
         assertTrue(dirtyFlagMap.containsValue("BB"));
     }
-    
+
     public void testKeySetClear() {
         DirtyFlagMap<String, String> dirtyFlagMap = new DirtyFlagMap<String, String>();
         Set<?> keySet = dirtyFlagMap.keySet();
@@ -175,8 +175,8 @@ public class DirtyFlagMapTest extends TestCase {
         keySet.clear();
         assertTrue(dirtyFlagMap.isDirty());
         assertEquals(0, dirtyFlagMap.size());
-    }    
-        
+    }
+
     public void testValuesClear() {
         DirtyFlagMap<String, String> dirtyFlagMap = new DirtyFlagMap<String, String>();
         Collection<?> values = dirtyFlagMap.values();
@@ -187,5 +187,5 @@ public class DirtyFlagMapTest extends TestCase {
         values.clear();
         assertTrue(dirtyFlagMap.isDirty());
         assertEquals(0, dirtyFlagMap.size());
-    }    
+    }
 }

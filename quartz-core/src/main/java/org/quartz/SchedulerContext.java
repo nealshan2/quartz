@@ -27,21 +27,20 @@ import org.quartz.utils.StringKeyDirtyFlagMap;
  * Holds context/environment data that can be made available to Jobs as they
  * are executed. This feature is much like the ServletContext feature when
  * working with J2EE servlets.
- * 
+ * <p>
  * <p>
  * Future versions of Quartz may make distinctions on how it propagates
- * data in <code>SchedulerContext</code> between instances of proxies to a 
+ * data in <code>SchedulerContext</code> between instances of proxies to a
  * single scheduler instance - i.e. if Quartz is being used via RMI.
  * </p>
- *  
- * @see Scheduler#getContext
- * 
+ *
  * @author James House
+ * @see Scheduler#getContext
  */
 public class SchedulerContext extends StringKeyDirtyFlagMap implements Serializable {
-  
+
     private static final long serialVersionUID = -6659641334616491764L;
-  
+
     /**
      * Create an empty <code>SchedulerContext</code>.
      */
@@ -55,7 +54,7 @@ public class SchedulerContext extends StringKeyDirtyFlagMap implements Serializa
     public SchedulerContext(Map<?, ?> map) {
         this();
         @SuppressWarnings("unchecked") // param must be a String key map.
-        Map<String, ?> mapTyped = (Map<String, ?>)map;
+                Map<String, ?> mapTyped = (Map<String, ?>) map;
         putAll(mapTyped);
     }
 }

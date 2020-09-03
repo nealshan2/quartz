@@ -25,40 +25,39 @@ import org.quartz.utils.StringKeyDirtyFlagMap;
 
 /**
  * Holds state information for <code>Job</code> instances.
- * 
+ * <p>
  * <p>
  * <code>JobDataMap</code> instances are stored once when the <code>Job</code>
  * is added to a scheduler. They are also re-persisted after every execution of
  * jobs annotated with <code>@PersistJobDataAfterExecution</code>.
  * </p>
- * 
  * <p>
- * <code>JobDataMap</code> instances can also be stored with a 
+ * <p>
+ * <code>JobDataMap</code> instances can also be stored with a
  * <code>Trigger</code>.  This can be useful in the case where you have a Job
- * that is stored in the scheduler for regular/repeated use by multiple 
+ * that is stored in the scheduler for regular/repeated use by multiple
  * Triggers, yet with each independent triggering, you want to supply the
- * Job with different data inputs.  
+ * Job with different data inputs.
  * </p>
- * 
  * <p>
- * The <code>JobExecutionContext</code> passed to a Job at execution time 
+ * <p>
+ * The <code>JobExecutionContext</code> passed to a Job at execution time
  * also contains a convenience <code>JobDataMap</code> that is the result
  * of merging the contents of the trigger's JobDataMap (if any) over the
- * Job's JobDataMap (if any).  
+ * Job's JobDataMap (if any).
  * </p>
- *
+ * <p>
  * <p>
  * Update since 2.2.4 - We keep an dirty flag for this map so that whenever you modify(add/delete) any of the entries,
  * it will set to "true". However if you create new instance using an exising map with {@link #JobDataMap(Map)}, then
  * the dirty flag will NOT be set to "true" until you modify the instance.
  * </p>
- * 
+ *
+ * @author James House
  * @see Job
  * @see PersistJobDataAfterExecution
  * @see Trigger
  * @see JobExecutionContext
- * 
- * @author James House
  */
 public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
 
@@ -89,7 +88,7 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
     public JobDataMap(Map<?, ?> map) {
         this();
         @SuppressWarnings("unchecked") // casting to keep API compatible and avoid compiler errors/warnings.
-        Map<String, Object> mapTyped = (Map<String, Object>)map;
+                Map<String, Object> mapTyped = (Map<String, Object>) map;
         putAll(mapTyped);
 
         // When constructing a new data map from another existing map, we should NOT mark dirty flag as true
@@ -253,9 +252,8 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>int</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public int getIntFromString(String key) {
         Object obj = get(key);
@@ -267,27 +265,25 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>int</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String or Integer.
+     *
+     * @throws ClassCastException if the identified object is not a String or Integer.
      */
     public int getIntValue(String key) {
         Object obj = get(key);
 
-        if(obj instanceof String) {
+        if (obj instanceof String) {
             return getIntFromString(key);
         } else {
             return getInt(key);
         }
     }
-    
+
     /**
      * <p>
      * Retrieve the identified <code>int</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public Integer getIntegerFromString(String key) {
         Object obj = get(key);
@@ -299,9 +295,8 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>boolean</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public boolean getBooleanValueFromString(String key) {
         Object obj = get(key);
@@ -311,17 +306,16 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
 
     /**
      * <p>
-     * Retrieve the identified <code>boolean</code> value from the 
+     * Retrieve the identified <code>boolean</code> value from the
      * <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String or Boolean.
+     *
+     * @throws ClassCastException if the identified object is not a String or Boolean.
      */
     public boolean getBooleanValue(String key) {
         Object obj = get(key);
 
-        if(obj instanceof String) {
+        if (obj instanceof String) {
             return getBooleanValueFromString(key);
         } else {
             return getBoolean(key);
@@ -332,9 +326,8 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>Boolean</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public Boolean getBooleanFromString(String key) {
         Object obj = get(key);
@@ -346,9 +339,8 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>char</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public char getCharFromString(String key) {
         Object obj = get(key);
@@ -360,9 +352,8 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>Character</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public Character getCharacterFromString(String key) {
         Object obj = get(key);
@@ -374,9 +365,8 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>double</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public double getDoubleValueFromString(String key) {
         Object obj = get(key);
@@ -388,14 +378,13 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>double</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String or Double.
+     *
+     * @throws ClassCastException if the identified object is not a String or Double.
      */
     public double getDoubleValue(String key) {
         Object obj = get(key);
 
-        if(obj instanceof String) {
+        if (obj instanceof String) {
             return getDoubleValueFromString(key);
         } else {
             return getDouble(key);
@@ -406,9 +395,8 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>Double</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public Double getDoubleFromString(String key) {
         Object obj = get(key);
@@ -420,9 +408,8 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>float</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public float getFloatValueFromString(String key) {
         Object obj = get(key);
@@ -434,27 +421,25 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>float</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String or Float.
+     *
+     * @throws ClassCastException if the identified object is not a String or Float.
      */
     public float getFloatValue(String key) {
         Object obj = get(key);
 
-        if(obj instanceof String) {
+        if (obj instanceof String) {
             return getFloatValueFromString(key);
         } else {
             return getFloat(key);
         }
     }
-    
+
     /**
      * <p>
      * Retrieve the identified <code>Float</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public Float getFloatFromString(String key) {
         Object obj = get(key);
@@ -466,9 +451,8 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>long</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public long getLongValueFromString(String key) {
         Object obj = get(key);
@@ -480,27 +464,25 @@ public class JobDataMap extends StringKeyDirtyFlagMap implements Serializable {
      * <p>
      * Retrieve the identified <code>long</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String or Long.
+     *
+     * @throws ClassCastException if the identified object is not a String or Long.
      */
     public long getLongValue(String key) {
         Object obj = get(key);
 
-        if(obj instanceof String) {
+        if (obj instanceof String) {
             return getLongValueFromString(key);
         } else {
             return getLong(key);
         }
     }
-    
+
     /**
      * <p>
      * Retrieve the identified <code>Long</code> value from the <code>JobDataMap</code>.
      * </p>
-     * 
-     * @throws ClassCastException
-     *           if the identified object is not a String.
+     *
+     * @throws ClassCastException if the identified object is not a String.
      */
     public Long getLongFromString(String key) {
         Object obj = get(key);

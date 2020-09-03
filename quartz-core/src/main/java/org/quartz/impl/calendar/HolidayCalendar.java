@@ -31,20 +31,20 @@ import org.quartz.Calendar;
  * This implementation of the Calendar stores a list of holidays (full days
  * that are excluded from scheduling).
  * </p>
- * 
+ * <p>
  * <p>
  * The implementation DOES take the year into consideration, so if you want to
  * exclude July 4th for the next 10 years, you need to add 10 entries to the
  * exclude list.
  * </p>
- * 
+ *
  * @author Sharada Jambula
  * @author Juergen Donnerstag
  */
 public class HolidayCalendar extends BaseCalendar implements Calendar,
         Serializable {
     static final long serialVersionUID = -7590908752291814693L;
-    
+
     // A sorted set to store the holidays
     private TreeSet<Date> dates = new TreeSet<Date>();
 
@@ -69,13 +69,13 @@ public class HolidayCalendar extends BaseCalendar implements Calendar,
         clone.dates = new TreeSet<Date>(dates);
         return clone;
     }
-    
+
     /**
      * <p>
      * Determine whether the given time (in milliseconds) is 'included' by the
      * Calendar.
      * </p>
-     * 
+     * <p>
      * <p>
      * Note that this Calendar is only has full-day precision.
      * </p>
@@ -96,7 +96,7 @@ public class HolidayCalendar extends BaseCalendar implements Calendar,
      * Determine the next time (in milliseconds) that is 'included' by the
      * Calendar after the given time.
      * </p>
-     * 
+     * <p>
      * <p>
      * Note that this Calendar is only has full-day precision.
      * </p>

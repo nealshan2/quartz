@@ -24,7 +24,7 @@ import java.util.Iterator;
 
 /**
  * Reports JobSchedulingDataLoader validation exceptions.
- * 
+ *
  * @author <a href="mailto:bonhamcm@thirdeyeconsulting.com">Chris Bonham</a>
  */
 public class ValidationException extends Exception {
@@ -58,9 +58,8 @@ public class ValidationException extends Exception {
 
     /**
      * Constructor for ValidationException.
-     * 
-     * @param message
-     *          exception message.
+     *
+     * @param message exception message.
      */
     public ValidationException(String message) {
         super(message);
@@ -68,9 +67,8 @@ public class ValidationException extends Exception {
 
     /**
      * Constructor for ValidationException.
-     * 
-     * @param errors
-     *          collection of validation exceptions.
+     *
+     * @param errors collection of validation exceptions.
      */
     public ValidationException(Collection<Exception> errors) {
         this();
@@ -78,15 +76,13 @@ public class ValidationException extends Exception {
                 .unmodifiableCollection(validationExceptions);
         initCause(errors.iterator().next());
     }
-    
+
 
     /**
      * Constructor for ValidationException.
-     * 
-     * @param message
-     *          exception message.
-     * @param errors
-     *          collection of validation exceptions.
+     *
+     * @param message exception message.
+     * @param errors  collection of validation exceptions.
      */
     public ValidationException(String message, Collection<Exception> errors) {
         this(message);
@@ -105,7 +101,7 @@ public class ValidationException extends Exception {
 
     /**
      * Returns collection of errors.
-     * 
+     *
      * @return collection of errors.
      */
     public Collection<Exception> getValidationExceptions() {
@@ -114,12 +110,14 @@ public class ValidationException extends Exception {
 
     /**
      * Returns the detail message string.
-     * 
+     *
      * @return the detail message string.
      */
     @Override
     public String getMessage() {
-        if (getValidationExceptions().size() == 0) { return super.getMessage(); }
+        if (getValidationExceptions().size() == 0) {
+            return super.getMessage();
+        }
 
         StringBuffer sb = new StringBuffer();
 
@@ -139,6 +137,6 @@ public class ValidationException extends Exception {
 
         return sb.toString();
     }
-    
-    
+
+
 }

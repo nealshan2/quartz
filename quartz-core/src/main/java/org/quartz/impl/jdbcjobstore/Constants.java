@@ -23,7 +23,7 @@ package org.quartz.impl.jdbcjobstore;
  * org.quartz.impl.jdbcjobstore.DriverDelegate}</code>
  * class that needs to use the constants contained herein.
  * </p>
- * 
+ *
  * @author <a href="mailto:jeff@binaryfeed.org">Jeffrey Wescott</a>
  * @author James House
  */
@@ -59,9 +59,9 @@ public interface Constants {
     String TABLE_SCHEDULER_STATE = "SCHEDULER_STATE";
 
     // TABLE_JOB_DETAILS columns names
-    
+
     String COL_SCHEDULER_NAME = "SCHED_NAME";
-    
+
     String COL_JOB_NAME = "JOB_NAME";
 
     String COL_JOB_GROUP = "JOB_GROUP";
@@ -126,7 +126,7 @@ public interface Constants {
     String COL_FIRED_TIME = "FIRED_TIME";
 
     String COL_SCHED_TIME = "SCHED_TIME";
-    
+
     String COL_ENTRY_ID = "ENTRY_ID";
 
     String COL_ENTRY_STATE = "STATE";
@@ -167,8 +167,8 @@ public interface Constants {
     String STATE_DELETED = "DELETED";
 
     /**
-     * @deprecated Whether a trigger has misfired is no longer a state, but 
-     * rather now identified dynamically by whether the trigger's next fire 
+     * @deprecated Whether a trigger has misfired is no longer a state, but
+     * rather now identified dynamically by whether the trigger's next fire
      * time is more than the misfire threshold time in the past.
      */
     String STATE_MISFIRED = "MISFIRED";
@@ -176,19 +176,29 @@ public interface Constants {
     String ALL_GROUPS_PAUSED = "_$_ALL_GROUPS_PAUSED_$_";
 
     // TRIGGER TYPES
-    /** Simple Trigger type. */
+    /**
+     * Simple Trigger type.
+     */
     String TTYPE_SIMPLE = "SIMPLE";
 
-    /** Cron Trigger type. */
+    /**
+     * Cron Trigger type.
+     */
     String TTYPE_CRON = "CRON";
 
-    /** Calendar Interval Trigger type. */
+    /**
+     * Calendar Interval Trigger type.
+     */
     String TTYPE_CAL_INT = "CAL_INT";
 
-    /** Daily Time Interval Trigger type. */
+    /**
+     * Daily Time Interval Trigger type.
+     */
     String TTYPE_DAILY_TIME_INT = "DAILY_I";
 
-    /** A general blob Trigger type. */
+    /**
+     * A general blob Trigger type.
+     */
     String TTYPE_BLOB = "BLOB";
 }
 

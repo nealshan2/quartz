@@ -29,7 +29,7 @@ import org.quartz.Calendar;
  * base class for more sophisticated one's. It merely implements the base
  * functionality required by each Calendar.
  * </p>
- *
+ * <p>
  * <p>
  * Regarded as base functionality is the treatment of base calendars. Base
  * calendar allow you to chain (stack) as much calendars as you may need. For
@@ -38,10 +38,9 @@ import org.quartz.Calendar;
  * calendar for HolidayCalendar instance.
  * </p>
  *
- * @see org.quartz.Calendar
- *
  * @author Juergen Donnerstag
  * @author James House
+ * @see org.quartz.Calendar
  */
 public class BaseCalendar implements Calendar, Serializable, Cloneable {
 
@@ -63,7 +62,7 @@ public class BaseCalendar implements Calendar, Serializable, Cloneable {
 
     /**
      * @param timeZone The time zone to use for this Calendar, <code>null</code>
-     * if <code>{@link TimeZone#getDefault()}</code> should be used
+     *                 if <code>{@link TimeZone#getDefault()}</code> should be used
      */
     public BaseCalendar(TimeZone timeZone) {
         setTimeZone(timeZone);
@@ -71,7 +70,7 @@ public class BaseCalendar implements Calendar, Serializable, Cloneable {
 
     /**
      * @param timeZone The time zone to use for this Calendar, <code>null</code>
-     * if <code>{@link TimeZone#getDefault()}</code> should be used
+     *                 if <code>{@link TimeZone#getDefault()}</code> should be used
      */
     public BaseCalendar(Calendar baseCalendar, TimeZone timeZone) {
         setBaseCalendar(baseCalendar);
@@ -79,13 +78,13 @@ public class BaseCalendar implements Calendar, Serializable, Cloneable {
     }
 
     @Override
-    public Object clone()  {
+    public Object clone() {
         try {
             BaseCalendar clone = (BaseCalendar) super.clone();
             if (getBaseCalendar() != null) {
                 clone.baseCalendar = (Calendar) getBaseCalendar().clone();
             }
-            if(getTimeZone() != null)
+            if (getTimeZone() != null)
                 clone.timeZone = (TimeZone) getTimeZone().clone();
             return clone;
         } catch (CloneNotSupportedException ex) {
@@ -149,7 +148,7 @@ public class BaseCalendar implements Calendar, Serializable, Cloneable {
      * Sets the time zone for which this <code>Calendar</code> will be resolved.
      *
      * @param timeZone The time zone to use for this Calendar, <code>null</code>
-     * if <code>{@link TimeZone#getDefault()}</code> should be used
+     *                 if <code>{@link TimeZone#getDefault()}</code> should be used
      */
     public void setTimeZone(TimeZone timeZone) {
         this.timeZone = timeZone;
@@ -172,7 +171,9 @@ public class BaseCalendar implements Calendar, Serializable, Cloneable {
         }
 
         if (baseCalendar != null) {
-            if (baseCalendar.isTimeIncluded(timeStamp) == false) { return false; }
+            if (baseCalendar.isTimeIncluded(timeStamp) == false) {
+                return false;
+            }
         }
 
         return true;
@@ -219,9 +220,9 @@ public class BaseCalendar implements Calendar, Serializable, Cloneable {
      */
     protected java.util.Calendar createJavaCalendar() {
         return
-            (getTimeZone() == null) ?
-                java.util.Calendar.getInstance() :
-                java.util.Calendar.getInstance(getTimeZone());
+                (getTimeZone() == null) ?
+                        java.util.Calendar.getInstance() :
+                        java.util.Calendar.getInstance(getTimeZone());
     }
 
     /**
@@ -232,7 +233,7 @@ public class BaseCalendar implements Calendar, Serializable, Cloneable {
      * @param timeInMillis A time containing the desired date for the
      *                     start-of-day time
      * @return A <code>{@link java.util.Calendar}</code> set to the start of
-     *         the given day.
+     * the given day.
      */
     protected java.util.Calendar getStartOfDayJavaCalendar(long timeInMillis) {
         java.util.Calendar startOfDay = createJavaCalendar(timeInMillis);
@@ -251,7 +252,7 @@ public class BaseCalendar implements Calendar, Serializable, Cloneable {
      * @param timeInMillis a time containing the desired date for the
      *                     end-of-day time.
      * @return A <code>{@link java.util.Calendar}</code> set to the end of
-     *         the given day.
+     * the given day.
      */
     protected java.util.Calendar getEndOfDayJavaCalendar(long timeInMillis) {
         java.util.Calendar endOfDay = createJavaCalendar(timeInMillis);

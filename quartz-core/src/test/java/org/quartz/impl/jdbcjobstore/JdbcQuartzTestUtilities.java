@@ -34,6 +34,7 @@ public final class JdbcQuartzTestUtilities {
     private static final String DATABASE_DRIVER_CLASS = "org.apache.derby.jdbc.EmbeddedDriver";
     private static final String DATABASE_CONNECTION_PREFIX = "jdbc:derby:memory:";
     private static final List<String> DATABASE_SETUP_STATEMENTS;
+
     static {
         try {
             Class.forName(DATABASE_DRIVER_CLASS).newInstance();
@@ -111,7 +112,7 @@ public final class JdbcQuartzTestUtilities {
             throw new AssertionError(e);
         }
     }
-    
+
     static class DerbyEmbeddedConnectionProvider implements ConnectionProvider {
 
         private final String databaseName;
@@ -137,7 +138,7 @@ public final class JdbcQuartzTestUtilities {
         public void shutdown() throws SQLException {
             // nothing to do
         }
-        
+
         public void initialize() throws SQLException {
             // nothing to do
         }

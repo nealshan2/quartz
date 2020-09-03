@@ -27,20 +27,19 @@ import org.quartz.TriggerKey;
 import org.quartz.spi.OperableTrigger;
 
 /**
- * A base implementation of {@link TriggerPersistenceDelegate} that persists 
+ * A base implementation of {@link TriggerPersistenceDelegate} that persists
  * trigger fields in the "QRTZ_SIMPROP_TRIGGERS" table.  This allows extending
  * concrete classes to simply implement a couple methods that do the work of
  * getting/setting the trigger's fields, and creating the {@link ScheduleBuilder}
- * for the particular type of trigger. 
- * 
- * @see CalendarIntervalTriggerPersistenceDelegate for an example extension
- * 
+ * for the particular type of trigger.
+ *
  * @author jhouse
+ * @see CalendarIntervalTriggerPersistenceDelegate for an example extension
  */
 public abstract class SimplePropertiesTriggerPersistenceDelegateSupport implements TriggerPersistenceDelegate, StdJDBCConstants {
 
     protected static final String TABLE_SIMPLE_PROPERTIES_TRIGGERS = "SIMPROP_TRIGGERS";
-    
+
     protected static final String COL_STR_PROP_1 = "STR_PROP_1";
     protected static final String COL_STR_PROP_2 = "STR_PROP_2";
     protected static final String COL_STR_PROP_3 = "STR_PROP_3";
@@ -52,39 +51,39 @@ public abstract class SimplePropertiesTriggerPersistenceDelegateSupport implemen
     protected static final String COL_DEC_PROP_2 = "DEC_PROP_2";
     protected static final String COL_BOOL_PROP_1 = "BOOL_PROP_1";
     protected static final String COL_BOOL_PROP_2 = "BOOL_PROP_2";
-    
+
     protected static final String SELECT_SIMPLE_PROPS_TRIGGER = "SELECT *" + " FROM "
-        + TABLE_PREFIX_SUBST + TABLE_SIMPLE_PROPERTIES_TRIGGERS + " WHERE "
-        + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST
-        + " AND " + COL_TRIGGER_NAME + " = ? AND " + COL_TRIGGER_GROUP + " = ?";
+            + TABLE_PREFIX_SUBST + TABLE_SIMPLE_PROPERTIES_TRIGGERS + " WHERE "
+            + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST
+            + " AND " + COL_TRIGGER_NAME + " = ? AND " + COL_TRIGGER_GROUP + " = ?";
 
     protected static final String DELETE_SIMPLE_PROPS_TRIGGER = "DELETE FROM "
-        + TABLE_PREFIX_SUBST + TABLE_SIMPLE_PROPERTIES_TRIGGERS + " WHERE "
-        + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST
-        + " AND " + COL_TRIGGER_NAME + " = ? AND " + COL_TRIGGER_GROUP + " = ?";
+            + TABLE_PREFIX_SUBST + TABLE_SIMPLE_PROPERTIES_TRIGGERS + " WHERE "
+            + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST
+            + " AND " + COL_TRIGGER_NAME + " = ? AND " + COL_TRIGGER_GROUP + " = ?";
 
     protected static final String INSERT_SIMPLE_PROPS_TRIGGER = "INSERT INTO "
-        + TABLE_PREFIX_SUBST + TABLE_SIMPLE_PROPERTIES_TRIGGERS + " ("
-        + COL_SCHEDULER_NAME + ", "
-        + COL_TRIGGER_NAME + ", " + COL_TRIGGER_GROUP + ", "
-        + COL_STR_PROP_1 + ", " + COL_STR_PROP_2 + ", " + COL_STR_PROP_3 + ", "
-        + COL_INT_PROP_1 + ", " + COL_INT_PROP_2 + ", "
-        + COL_LONG_PROP_1 + ", " + COL_LONG_PROP_2 + ", "
-        + COL_DEC_PROP_1 + ", " + COL_DEC_PROP_2 + ", "
-        + COL_BOOL_PROP_1 + ", " + COL_BOOL_PROP_2 
-        + ") " + " VALUES(" + SCHED_NAME_SUBST + ", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + TABLE_PREFIX_SUBST + TABLE_SIMPLE_PROPERTIES_TRIGGERS + " ("
+            + COL_SCHEDULER_NAME + ", "
+            + COL_TRIGGER_NAME + ", " + COL_TRIGGER_GROUP + ", "
+            + COL_STR_PROP_1 + ", " + COL_STR_PROP_2 + ", " + COL_STR_PROP_3 + ", "
+            + COL_INT_PROP_1 + ", " + COL_INT_PROP_2 + ", "
+            + COL_LONG_PROP_1 + ", " + COL_LONG_PROP_2 + ", "
+            + COL_DEC_PROP_1 + ", " + COL_DEC_PROP_2 + ", "
+            + COL_BOOL_PROP_1 + ", " + COL_BOOL_PROP_2
+            + ") " + " VALUES(" + SCHED_NAME_SUBST + ", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     protected static final String UPDATE_SIMPLE_PROPS_TRIGGER = "UPDATE "
-        + TABLE_PREFIX_SUBST + TABLE_SIMPLE_PROPERTIES_TRIGGERS + " SET "
-        + COL_STR_PROP_1 + " = ?, " + COL_STR_PROP_2 + " = ?, " + COL_STR_PROP_3 + " = ?, "
-        + COL_INT_PROP_1 + " = ?, " + COL_INT_PROP_2 + " = ?, "
-        + COL_LONG_PROP_1 + " = ?, " + COL_LONG_PROP_2 + " = ?, "
-        + COL_DEC_PROP_1 + " = ?, " + COL_DEC_PROP_2 + " = ?, "
-        + COL_BOOL_PROP_1 + " = ?, " + COL_BOOL_PROP_2 
-        + " = ? WHERE " + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST
-        + " AND " + COL_TRIGGER_NAME
-        + " = ? AND " + COL_TRIGGER_GROUP + " = ?";
-    
+            + TABLE_PREFIX_SUBST + TABLE_SIMPLE_PROPERTIES_TRIGGERS + " SET "
+            + COL_STR_PROP_1 + " = ?, " + COL_STR_PROP_2 + " = ?, " + COL_STR_PROP_3 + " = ?, "
+            + COL_INT_PROP_1 + " = ?, " + COL_INT_PROP_2 + " = ?, "
+            + COL_LONG_PROP_1 + " = ?, " + COL_LONG_PROP_2 + " = ?, "
+            + COL_DEC_PROP_1 + " = ?, " + COL_DEC_PROP_2 + " = ?, "
+            + COL_BOOL_PROP_1 + " = ?, " + COL_BOOL_PROP_2
+            + " = ? WHERE " + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST
+            + " AND " + COL_TRIGGER_NAME
+            + " = ? AND " + COL_TRIGGER_GROUP + " = ?";
+
     protected String tablePrefix;
 
     protected String schedNameLiteral;
@@ -95,9 +94,9 @@ public abstract class SimplePropertiesTriggerPersistenceDelegateSupport implemen
     }
 
     protected abstract SimplePropertiesTriggerProperties getTriggerProperties(OperableTrigger trigger);
-    
+
     protected abstract TriggerPropertyBundle getTriggerPropertyBundle(SimplePropertiesTriggerProperties properties);
-    
+
     public int deleteExtendedTriggerProperties(Connection conn, TriggerKey triggerKey) throws SQLException {
         PreparedStatement ps = null;
 
@@ -115,9 +114,9 @@ public abstract class SimplePropertiesTriggerPersistenceDelegateSupport implemen
     public int insertExtendedTriggerProperties(Connection conn, OperableTrigger trigger, String state, JobDetail jobDetail) throws SQLException, IOException {
 
         SimplePropertiesTriggerProperties properties = getTriggerProperties(trigger);
-        
+
         PreparedStatement ps = null;
-        
+
         try {
             ps = conn.prepareStatement(Util.rtp(INSERT_SIMPLE_PROPS_TRIGGER, tablePrefix, schedNameLiteral));
             ps.setString(1, trigger.getKey().getName());
@@ -144,16 +143,16 @@ public abstract class SimplePropertiesTriggerPersistenceDelegateSupport implemen
 
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
         try {
             ps = conn.prepareStatement(Util.rtp(SELECT_SIMPLE_PROPS_TRIGGER, tablePrefix, schedNameLiteral));
             ps.setString(1, triggerKey.getName());
             ps.setString(2, triggerKey.getGroup());
             rs = ps.executeQuery();
-    
+
             if (rs.next()) {
                 SimplePropertiesTriggerProperties properties = new SimplePropertiesTriggerProperties();
-                    
+
                 properties.setString1(rs.getString(COL_STR_PROP_1));
                 properties.setString2(rs.getString(COL_STR_PROP_2));
                 properties.setString3(rs.getString(COL_STR_PROP_3));
@@ -165,10 +164,10 @@ public abstract class SimplePropertiesTriggerPersistenceDelegateSupport implemen
                 properties.setDecimal2(rs.getBigDecimal(COL_DEC_PROP_2));
                 properties.setBoolean1(rs.getBoolean(COL_BOOL_PROP_1));
                 properties.setBoolean2(rs.getBoolean(COL_BOOL_PROP_2));
-                
+
                 return getTriggerPropertyBundle(properties);
             }
-            
+
             throw new IllegalStateException("No record found for selection of Trigger with key: '" + triggerKey + "' and statement: " + Util.rtp(SELECT_SIMPLE_TRIGGER, tablePrefix, schedNameLiteral));
         } finally {
             Util.closeResultSet(rs);
@@ -179,7 +178,7 @@ public abstract class SimplePropertiesTriggerPersistenceDelegateSupport implemen
     public int updateExtendedTriggerProperties(Connection conn, OperableTrigger trigger, String state, JobDetail jobDetail) throws SQLException, IOException {
 
         SimplePropertiesTriggerProperties properties = getTriggerProperties(trigger);
-        
+
         PreparedStatement ps = null;
 
         try {

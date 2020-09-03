@@ -21,11 +21,11 @@ import org.quartz.utils.Key;
 
 /**
  * An abstract base class for some types of matchers.
- *  
+ *
  * @author jhouse
  */
 public abstract class StringMatcher<T extends Key<?>> implements Matcher<T> {
-  
+
     private static final long serialVersionUID = -2757924162611145836L;
 
     public enum StringOperatorName {
@@ -70,19 +70,19 @@ public abstract class StringMatcher<T extends Key<?>> implements Matcher<T> {
 
     protected String compareTo;
     protected StringOperatorName compareWith;
-    
+
     protected StringMatcher(String compareTo, StringOperatorName compareWith) {
-        if(compareTo == null)
+        if (compareTo == null)
             throw new IllegalArgumentException("CompareTo value cannot be null!");
-        if(compareWith == null)
+        if (compareWith == null)
             throw new IllegalArgumentException("CompareWith operator cannot be null!");
-        
+
         this.compareTo = compareTo;
         this.compareWith = compareWith;
     }
 
     protected abstract String getValue(T key);
-    
+
     public boolean isMatch(T key) {
 
         return compareWith.evaluate(getValue(key), compareTo);

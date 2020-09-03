@@ -24,7 +24,7 @@ import org.quartz.TriggerKey;
  * <p>
  * Conveys the state of a fired-trigger record.
  * </p>
- * 
+ *
  * @author James House
  */
 public class FiredTriggerRecord implements java.io.Serializable {
@@ -44,7 +44,7 @@ public class FiredTriggerRecord implements java.io.Serializable {
     private long fireTimestamp;
 
     private long scheduleTimestamp;
-    
+
     private String schedulerInstanceId;
 
     private TriggerKey triggerKey;
@@ -142,12 +142,12 @@ public class FiredTriggerRecord implements java.io.Serializable {
     public int getPriority() {
         return priority;
     }
-    
+
 
     public void setPriority(int priority) {
         this.priority = priority;
     }
-    
+
 
 }
 

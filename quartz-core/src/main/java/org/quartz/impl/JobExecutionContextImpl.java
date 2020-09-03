@@ -50,11 +50,11 @@ public class JobExecutionContextImpl implements java.io.Serializable, JobExecuti
     private Trigger trigger;
 
     private JobDetail jobDetail;
-    
+
     private JobDataMap jobDataMap;
 
     private transient Job job;
-    
+
     private Calendar calendar;
 
     private boolean recovering = false;
@@ -68,11 +68,11 @@ public class JobExecutionContextImpl implements java.io.Serializable, JobExecuti
     private Date prevFireTime;
 
     private Date nextFireTime;
-    
+
     private long jobRunTime = -1;
-    
+
     private Object result;
-    
+
     private HashMap<Object, Object> data = new HashMap<Object, Object>();
 
     /*
@@ -89,7 +89,7 @@ public class JobExecutionContextImpl implements java.io.Serializable, JobExecuti
      * </p>
      */
     public JobExecutionContextImpl(Scheduler scheduler,
-            TriggerFiredBundle firedBundle, Job job) {
+                                   TriggerFiredBundle firedBundle, Job job) {
         this.scheduler = scheduler;
         this.trigger = firedBundle.getTrigger();
         this.calendar = firedBundle.getCalendar();
@@ -100,7 +100,7 @@ public class JobExecutionContextImpl implements java.io.Serializable, JobExecuti
         this.scheduledFireTime = firedBundle.getScheduledFireTime();
         this.prevFireTime = firedBundle.getPrevFireTime();
         this.nextFireTime = firedBundle.getNextFireTime();
-        
+
         this.jobDataMap = new JobDataMap();
         this.jobDataMap.putAll(jobDetail.getJobDataMap());
         this.jobDataMap.putAll(trigger.getJobDataMap());
@@ -145,12 +145,12 @@ public class JobExecutionContextImpl implements java.io.Serializable, JobExecuti
     public TriggerKey getRecoveringTriggerKey() {
         if (isRecovering()) {
             return new TriggerKey(jobDataMap.getString(Scheduler.FAILED_JOB_ORIGINAL_TRIGGER_NAME),
-                                  jobDataMap.getString(Scheduler.FAILED_JOB_ORIGINAL_TRIGGER_GROUP));
+                    jobDataMap.getString(Scheduler.FAILED_JOB_ORIGINAL_TRIGGER_GROUP));
         } else {
             throw new IllegalStateException("Not a recovering job");
         }
     }
-    
+
     public void incrementRefireCount() {
         numRefires++;
     }
@@ -228,21 +228,21 @@ public class JobExecutionContextImpl implements java.io.Serializable, JobExecuti
     public Object getResult() {
         return result;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void setResult(Object result) {
         this.result = result;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public long getJobRunTime() {
         return jobRunTime;
     }
-    
+
     /**
      * @param jobRunTime The jobRunTime to set.
      */
@@ -256,7 +256,7 @@ public class JobExecutionContextImpl implements java.io.Serializable, JobExecuti
     public void put(Object key, Object value) {
         data.put(key, value);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -268,6 +268,6 @@ public class JobExecutionContextImpl implements java.io.Serializable, JobExecuti
      * {@inheritDoc}
      */
     public String getFireInstanceId() {
-        return ((OperableTrigger)trigger).getFireInstanceId();
+        return ((OperableTrigger) trigger).getFireInstanceId();
     }
 }

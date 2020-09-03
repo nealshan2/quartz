@@ -23,20 +23,20 @@ import org.quartz.JobExecutionContext;
 import org.quartz.Trigger.CompletedExecutionInstruction;
 
 /**
- * A helpful abstract base class for implementors of 
+ * A helpful abstract base class for implementors of
  * <code>{@link org.quartz.TriggerListener}</code>.
- * 
  * <p>
- * The methods in this class are empty so you only need to override the  
+ * <p>
+ * The methods in this class are empty so you only need to override the
  * subset for the <code>{@link org.quartz.TriggerListener}</code> events
  * you care about.
  * </p>
- * 
  * <p>
- * You are required to implement <code>{@link org.quartz.TriggerListener#getName()}</code> 
- * to return the unique name of your <code>TriggerListener</code>.  
+ * <p>
+ * You are required to implement <code>{@link org.quartz.TriggerListener#getName()}</code>
+ * to return the unique name of your <code>TriggerListener</code>.
  * </p>
- * 
+ *
  * @see org.quartz.TriggerListener
  */
 public abstract class TriggerListenerSupport implements TriggerListener {
@@ -61,8 +61,8 @@ public abstract class TriggerListenerSupport implements TriggerListener {
     }
 
     public void triggerComplete(
-        Trigger trigger,
-        JobExecutionContext context,
-        CompletedExecutionInstruction triggerInstructionCode) {
+            Trigger trigger,
+            JobExecutionContext context,
+            CompletedExecutionInstruction triggerInstructionCode) {
     }
 }

@@ -21,7 +21,7 @@ package org.quartz.impl.jdbcjobstore;
  * <p>
  * Conveys a scheduler-instance state record.
  * </p>
- * 
+ *
  * @author James House
  */
 public class SchedulerStateRecord implements java.io.Serializable {

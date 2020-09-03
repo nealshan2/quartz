@@ -34,14 +34,14 @@ import org.quartz.impl.StdSchedulerFactory;
  * A Servlet that can be used to initialize Quartz, if configured as a
  * load-on-startup servlet in a web application.
  * </p>
- *
+ * <p>
  * <p>Using this start-up servlet may be preferred to using the {@link QuartzInitializerListener}
  * in some situations - namely when you want to initialize more than one scheduler in the same
  * application.</p>
- *
+ * <p>
  * <p>
  * You'll want to add something like this to your WEB-INF/web.xml file:
- *
+ * <p>
  * <pre>
  *     &lt;servlet&gt;
  *         &lt;servlet-name&gt;
@@ -74,30 +74,30 @@ import org.quartz.impl.StdSchedulerFactory;
  *         &lt;/init-param&gt;
  *     &lt;/servlet&gt;
  * </pre>
- *
+ * <p>
  * </p>
  * <p>
  * The init parameter 'config-file' can be used to specify the path (and
  * filename) of your Quartz properties file. If you leave out this parameter,
  * the default ("quartz.properties") will be used.
  * </p>
- *
+ * <p>
  * <p>
  * The init parameter 'shutdown-on-unload' can be used to specify whether you
  * want scheduler.shutdown() called when the servlet is unloaded (usually when
  * the application server is being shutdown). Possible values are "true" or
  * "false". The default is "true".
  * </p>
- *
  * <p>
- * The init parameter 'wait-on-shutdown' has effect when 
+ * <p>
+ * The init parameter 'wait-on-shutdown' has effect when
  * 'shutdown-on-unload' is specified "true", and indicates whether you
  * want scheduler.shutdown(true) called when the listener is unloaded (usually when
  * the application server is being shutdown).  Passing "true" to the shutdown() call
- * causes the scheduler to wait for existing jobs to complete. Possible values are 
+ * causes the scheduler to wait for existing jobs to complete. Possible values are
  * "true" or "false". The default is "false".
  * </p>
- *
+ * <p>
  * <p>
  * The init parameter 'start-scheduler-on-load' can be used to specify whether
  * you want the scheduler.start() method called when the servlet is first loaded.
@@ -105,7 +105,7 @@ import org.quartz.impl.StdSchedulerFactory;
  * the scheduler begins to run and process jobs. Possible values are "true" or
  * "false". The default is "true", which means the scheduler is started.
  * </p>
- *
+ * <p>
  * A StdSchedulerFactory instance is stored into the ServletContext. You can gain access
  * to the factory from a ServletContext instance like this:
  * <br>
@@ -114,17 +114,17 @@ import org.quartz.impl.StdSchedulerFactory;
  *                .getAttribute(QuartzFactoryServlet.QUARTZ_FACTORY_KEY);</pre>
  * <p>
  * The init parameter 'servlet-context-factory-key' can be used to override the
- * name under which the StdSchedulerFactory is stored into the ServletContext, in 
- * which case you will want to use this name rather than 
+ * name under which the StdSchedulerFactory is stored into the ServletContext, in
+ * which case you will want to use this name rather than
  * <code>QuartzFactoryServlet.QUARTZ_FACTORY_KEY</code> in the above example.
  * </p>
- * 
+ *
  * <p>
- * The init parameter 'scheduler-context-servlet-context-key' if set, the 
+ * The init parameter 'scheduler-context-servlet-context-key' if set, the
  * ServletContext will be stored in the SchedulerContext under the given key
- * name (and will therefore be available to jobs during execution). 
+ * name (and will therefore be available to jobs during execution).
  * </p>
- * 
+ *
  * <p>
  * The init parameter 'start-delay-seconds' can be used to specify the amount
  * of time to wait after initializing the scheduler before scheduler.start()
@@ -140,7 +140,7 @@ import org.quartz.impl.StdSchedulerFactory;
 public class QuartzInitializerServlet extends HttpServlet {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -177,15 +177,15 @@ public class QuartzInitializerServlet extends HttpServlet {
             }
             String shutdownWaitPref = cfg.getInitParameter("wait-on-shutdown");
             if (shutdownPref != null) {
-                waitOnShutdown  = Boolean.valueOf(shutdownWaitPref).booleanValue();
+                waitOnShutdown = Boolean.valueOf(shutdownWaitPref).booleanValue();
             }
 
             factory = getSchedulerFactory(configFile);
-            
+
             // Always want to get the scheduler, even if it isn't starting, 
             // to make sure it is both initialized and registered.
             scheduler = factory.getScheduler();
-            
+
             // Should the Scheduler being started now or later
             String startOnLoad = cfg
                     .getInitParameter("start-scheduler-on-load");
@@ -193,9 +193,9 @@ public class QuartzInitializerServlet extends HttpServlet {
             int startDelay = 0;
             String startDelayS = cfg.getInitParameter("start-delay-seconds");
             try {
-                if(startDelayS != null && startDelayS.trim().length() > 0)
+                if (startDelayS != null && startDelayS.trim().length() > 0)
                     startDelay = Integer.parseInt(startDelayS);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 log("Cannot parse value of 'start-delay-seconds' to an integer: " + startDelayS + ", defaulting to 5 seconds.", e);
                 startDelay = 5;
             }
@@ -206,12 +206,11 @@ public class QuartzInitializerServlet extends HttpServlet {
              * compatability.
              */
             if (startOnLoad == null || (Boolean.valueOf(startOnLoad).booleanValue())) {
-                if(startDelay <= 0) {
+                if (startDelay <= 0) {
                     // Start now
                     scheduler.start();
                     log("Scheduler has been started...");
-                }
-                else {
+                } else {
                     // Start delayed
                     scheduler.startDelayed(startDelay);
                     log("Scheduler will start in " + startDelay + " seconds.");
@@ -224,12 +223,12 @@ public class QuartzInitializerServlet extends HttpServlet {
             if (factoryKey == null) {
                 factoryKey = QUARTZ_FACTORY_KEY;
             }
-            
+
             log("Storing the Quartz Scheduler Factory in the servlet context at key: "
                     + factoryKey);
             cfg.getServletContext().setAttribute(factoryKey, factory);
-            
-            
+
+
             String servletCtxtKey = cfg.getInitParameter("scheduler-context-servlet-context-key");
             if (servletCtxtKey != null) {
                 log("Storing the ServletContext in the scheduler context at key: "
@@ -276,13 +275,13 @@ public class QuartzInitializerServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         response.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         response.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
 

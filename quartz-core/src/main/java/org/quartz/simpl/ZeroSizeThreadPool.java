@@ -27,7 +27,7 @@ import org.quartz.spi.ThreadPool;
  * This is class is a simple implementation of a zero size thread pool, based on the
  * <code>{@link org.quartz.spi.ThreadPool}</code> interface.
  * </p>
- * 
+ * <p>
  * <p>
  * The pool has zero <code>Thread</code>s and does not grow or shrink based on demand.
  * Which means it is obviously not useful for most scenarios.  When it may be useful
@@ -36,10 +36,10 @@ import org.quartz.spi.ThreadPool;
  * instance only exists in order to schedule jobs, but which will never execute
  * jobs (e.g. will never have start() called on it).
  * </p>
- * 
+ * <p>
  * <p>
  * </p>
- * 
+ *
  * @author Wayne Fay
  */
 public class ZeroSizeThreadPool implements ThreadPool {

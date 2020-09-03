@@ -21,42 +21,41 @@ import org.quartz.utils.Key;
 
 /**
  * Uniquely identifies a {@link Trigger}.
- * 
+ * <p>
  * <p>Keys are composed of both a name and group, and the name must be unique
  * within the group.  If only a name is specified then the default group
- * name will be used.</p> 
- *
- *
+ * name will be used.</p>
+ * <p>
+ * <p>
  * <p>Quartz provides a builder-style API for constructing scheduling-related
  * entities via a Domain-Specific Language (DSL).  The DSL can best be
  * utilized through the usage of static imports of the methods on the classes
- * <code>TriggerBuilder</code>, <code>JobBuilder</code>, 
- * <code>DateBuilder</code>, <code>JobKey</code>, <code>TriggerKey</code> 
+ * <code>TriggerBuilder</code>, <code>JobBuilder</code>,
+ * <code>DateBuilder</code>, <code>JobKey</code>, <code>TriggerKey</code>
  * and the various <code>ScheduleBuilder</code> implementations.</p>
- * 
+ * <p>
  * <p>Client code can then use the DSL to write code such as this:</p>
  * <pre>
  *         JobDetail job = newJob(MyJob.class)
  *             .withIdentity("myJob")
  *             .build();
- *             
- *         Trigger trigger = newTrigger() 
+ *
+ *         Trigger trigger = newTrigger()
  *             .withIdentity(triggerKey("myTrigger", "myTriggerGroup"))
  *             .withSchedule(simpleSchedule()
  *                 .withIntervalInHours(1)
  *                 .repeatForever())
  *             .startAt(futureDate(10, MINUTES))
  *             .build();
- *         
+ *
  *         scheduler.scheduleJob(job, trigger);
  * <pre>
- *  
- * 
+ *
  * @see Trigger
  * @see Key#DEFAULT_GROUP
  */
 public final class TriggerKey extends Key<TriggerKey> {
-  
+
     private static final long serialVersionUID = 8070357886703449660L;
 
     public TriggerKey(String name) {
@@ -70,9 +69,9 @@ public final class TriggerKey extends Key<TriggerKey> {
     public static TriggerKey triggerKey(String name) {
         return new TriggerKey(name, null);
     }
-    
+
     public static TriggerKey triggerKey(String name, String group) {
         return new TriggerKey(name, group);
     }
-    
+
 }

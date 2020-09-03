@@ -32,6 +32,7 @@ import static org.quartz.integrations.tests.TrackingJob.SCHEDULED_TIMES_KEY;
 
 /**
  * A integration test for Quartz In-Memory Scheduler with Cron Trigger.
+ *
  * @author Zemian Deng
  */
 public class QuartzMemoryCronTriggerTest extends QuartzMemoryTestSupport {
@@ -47,16 +48,16 @@ public class QuartzMemoryCronTriggerTest extends QuartzMemoryTestSupport {
         scheduler.scheduleJob(jobDetail, trigger);
 
         for (int i = 0; i < 20 && scheduledTimes.size() < 3; i++) {
-          Thread.sleep(500);
+            Thread.sleep(500);
         }
         assertThat(scheduledTimes, hasSize(greaterThanOrEqualTo(3)));
 
         Long[] times = scheduledTimes.toArray(new Long[scheduledTimes.size()]);
-        
+
         long baseline = times[0];
         assertThat(baseline % 1000, is(0L));
         for (int i = 1; i < times.length; i++) {
-          assertThat(times[i], is(baseline + TimeUnit.SECONDS.toMillis(i)));
+            assertThat(times[i], is(baseline + TimeUnit.SECONDS.toMillis(i)));
         }
     }
 }

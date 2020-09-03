@@ -28,7 +28,7 @@ import static org.hamcrest.Matchers.is;
  */
 public class CronTriggerTest extends SerializationTestSupport {
 
-    private static final String[] VERSIONS = new String[] {"2.0"};
+    private static final String[] VERSIONS = new String[]{"2.0"};
 
     /**
      * Get the Quartz versions for which we should verify
@@ -38,7 +38,7 @@ public class CronTriggerTest extends SerializationTestSupport {
     protected String[] getVersions() {
         return VERSIONS;
     }
-    
+
     /**
      * Get the object to serialize when generating serialized file for future
      * tests, and against which to validate deserialized object.
@@ -47,7 +47,7 @@ public class CronTriggerTest extends SerializationTestSupport {
     protected Object getTargetObject() throws Exception {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("A", "B");
-        
+
         CronTriggerImpl t = new CronTriggerImpl();
         t.setName("test");
         t.setGroup("testGroup");
@@ -58,15 +58,15 @@ public class CronTriggerTest extends SerializationTestSupport {
 
         return t;
     }
-    
+
     /**
-     * Verify that the target object and the object we just deserialized 
+     * Verify that the target object and the object we just deserialized
      * match.
      */
     @Override
     protected void verifyMatch(Object target, Object deserialized) {
-        CronTriggerImpl targetCronTrigger = (CronTriggerImpl)target;
-        CronTriggerImpl deserializedCronTrigger = (CronTriggerImpl)deserialized;
+        CronTriggerImpl targetCronTrigger = (CronTriggerImpl) target;
+        CronTriggerImpl deserializedCronTrigger = (CronTriggerImpl) deserialized;
 
         assertNotNull(deserializedCronTrigger);
         assertEquals(targetCronTrigger.getName(), deserializedCronTrigger.getName());
@@ -80,8 +80,8 @@ public class CronTriggerTest extends SerializationTestSupport {
         assertEquals(targetCronTrigger.getJobDataMap(), deserializedCronTrigger.getJobDataMap());
         assertEquals(targetCronTrigger.getCronExpression(), deserializedCronTrigger.getCronExpression());
     }
-        
-    
+
+
     public void testClone() throws ParseException {
         CronTriggerImpl trigger = new CronTriggerImpl();
         trigger.setName("test");
@@ -89,12 +89,12 @@ public class CronTriggerTest extends SerializationTestSupport {
         trigger.setCronExpression("0 0 12 * * ?");
         CronTrigger trigger2 = (CronTrigger) trigger.clone();
 
-        assertEquals( "Cloning failed", trigger, trigger2 );
+        assertEquals("Cloning failed", trigger, trigger2);
 
         // equals() doesn't test the cron expression
-        assertEquals( "Cloning failed for the cron expression", 
-                      "0 0 12 * * ?", trigger2.getCronExpression()
-                    );
+        assertEquals("Cloning failed for the cron expression",
+                "0 0 12 * * ?", trigger2.getCronExpression()
+        );
     }
 
     // http://jira.opensymphony.com/browse/QUARTZ-558
@@ -104,7 +104,7 @@ public class CronTriggerTest extends SerializationTestSupport {
         trigger.setGroup("testGroup");
         CronTrigger trigger2 = (CronTrigger) trigger.clone();
 
-        assertEquals( "Cloning failed", trigger, trigger2 );
+        assertEquals("Cloning failed", trigger, trigger2);
     }
 
     public void testMisfireInstructionValidity() throws ParseException {
@@ -115,17 +115,15 @@ public class CronTriggerTest extends SerializationTestSupport {
             trigger.setMisfireInstruction(Trigger.MISFIRE_INSTRUCTION_SMART_POLICY);
             trigger.setMisfireInstruction(CronTrigger.MISFIRE_INSTRUCTION_DO_NOTHING);
             trigger.setMisfireInstruction(CronTrigger.MISFIRE_INSTRUCTION_FIRE_ONCE_NOW);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             fail("Unexpected exception while setting misfire instruction.");
         }
-        
+
         try {
             trigger.setMisfireInstruction(CronTrigger.MISFIRE_INSTRUCTION_DO_NOTHING + 1);
-            
+
             fail("Expected exception while setting invalid misfire instruction but did not get it.");
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
         }
     }
 
@@ -135,7 +133,7 @@ public class CronTriggerTest extends SerializationTestSupport {
                 Trigger.MISFIRE_INSTRUCTION_SMART_POLICY,
                 CronTrigger.MISFIRE_INSTRUCTION_DO_NOTHING,
                 CronTrigger.MISFIRE_INSTRUCTION_FIRE_ONCE_NOW)
-        ) {
+                ) {
             CronTriggerImpl trigger = new CronTriggerImpl();
             trigger.setCronExpression("0 0 12 * * ?");
             trigger.setMisfireInstruction(policy);

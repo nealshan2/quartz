@@ -25,14 +25,13 @@ import java.io.InputStream;
 /**
  * A <code>ClassLoadHelper</code> that uses either the loader of it's own
  * class (<code>this.getClass().getClassLoader().loadClass( .. )</code>).
- * 
+ *
+ * @author jhouse
+ * @author pl47ypus
  * @see org.quartz.spi.ClassLoadHelper
  * @see org.quartz.simpl.InitThreadContextClassLoadHelper
  * @see org.quartz.simpl.SimpleClassLoadHelper
  * @see org.quartz.simpl.CascadingClassLoadHelper
- * 
- * @author jhouse
- * @author pl47ypus
  */
 public class LoadingLoaderClassLoadHelper implements ClassLoadHelper {
 
@@ -68,6 +67,7 @@ public class LoadingLoaderClassLoadHelper implements ClassLoadHelper {
     /**
      * Finds a resource with a given name. This method returns null if no
      * resource with this name is found.
+     *
      * @param name name of the desired resource
      * @return a java.net.URL object
      */
@@ -78,6 +78,7 @@ public class LoadingLoaderClassLoadHelper implements ClassLoadHelper {
     /**
      * Finds a resource with a given name. This method returns null if no
      * resource with this name is found.
+     *
      * @param name name of the desired resource
      * @return a java.io.InputStream object
      */

@@ -29,10 +29,9 @@ import org.quartz.Calendar;
  * the week.  By default it excludes SATURDAY and SUNDAY.
  * </p>
  *
+ * @author Juergen Donnerstag
  * @see org.quartz.Calendar
  * @see org.quartz.impl.calendar.BaseCalendar
- *
- * @author Juergen Donnerstag
  */
 public class WeeklyCalendar extends BaseCalendar implements Calendar,
         Serializable {
@@ -128,13 +127,13 @@ public class WeeklyCalendar extends BaseCalendar implements Calendar,
      */
     public boolean areAllDaysExcluded() {
         return
-            isDayExcluded(java.util.Calendar.SUNDAY) &&
-            isDayExcluded(java.util.Calendar.MONDAY) &&
-            isDayExcluded(java.util.Calendar.TUESDAY) &&
-            isDayExcluded(java.util.Calendar.WEDNESDAY) &&
-            isDayExcluded(java.util.Calendar.THURSDAY) &&
-            isDayExcluded(java.util.Calendar.FRIDAY) &&
-            isDayExcluded(java.util.Calendar.SATURDAY);
+                isDayExcluded(java.util.Calendar.SUNDAY) &&
+                        isDayExcluded(java.util.Calendar.MONDAY) &&
+                        isDayExcluded(java.util.Calendar.TUESDAY) &&
+                        isDayExcluded(java.util.Calendar.WEDNESDAY) &&
+                        isDayExcluded(java.util.Calendar.THURSDAY) &&
+                        isDayExcluded(java.util.Calendar.FRIDAY) &&
+                        isDayExcluded(java.util.Calendar.SATURDAY);
     }
 
     /**
@@ -142,7 +141,7 @@ public class WeeklyCalendar extends BaseCalendar implements Calendar,
      * Determine whether the given time (in milliseconds) is 'included' by the
      * Calendar.
      * </p>
-     *
+     * <p>
      * <p>
      * Note that this Calendar is only has full-day precision.
      * </p>
@@ -155,7 +154,9 @@ public class WeeklyCalendar extends BaseCalendar implements Calendar,
 
         // Test the base calendar first. Only if the base calendar not already
         // excludes the time/date, continue evaluating this calendar instance.
-        if (super.isTimeIncluded(timeStamp) == false) { return false; }
+        if (super.isTimeIncluded(timeStamp) == false) {
+            return false;
+        }
 
         java.util.Calendar cl = createJavaCalendar(timeStamp);
         int wday = cl.get(java.util.Calendar.DAY_OF_WEEK);
@@ -169,7 +170,7 @@ public class WeeklyCalendar extends BaseCalendar implements Calendar,
      * Calendar after the given time. Return the original value if timeStamp is
      * included. Return 0 if all days are excluded.
      * </p>
-     *
+     * <p>
      * <p>
      * Note that this Calendar is only has full-day precision.
      * </p>

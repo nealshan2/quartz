@@ -21,11 +21,11 @@ package org.quartz;
 /**
  * An exception that is thrown to indicate that there has been a failure in the
  * scheduler's underlying persistence mechanism.
- * 
+ *
  * @author James House
  */
 public class JobPersistenceException extends SchedulerException {
-  
+
     private static final long serialVersionUID = -8924958757341995694L;
 
     /*

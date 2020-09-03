@@ -37,9 +37,9 @@ import org.slf4j.LoggerFactory;
  * <p>
  * To ensure proper cleanup of the InitalContext used to create/lookup
  * the UserTransaction, be sure to always call returnUserTransaction() when
- * you are done with the UserTransaction. 
+ * you are done with the UserTransaction.
  * </p>
- * 
+ *
  * @author James House
  */
 public class UserTransactionHelper {
@@ -107,18 +107,18 @@ public class UserTransactionHelper {
     public static UserTransaction lookupUserTransaction() throws SchedulerException {
         return new UserTransactionWithContext();
     }
-    
+
     /**
      * Return a UserTransaction that was retrieved via getUserTransaction().
-     * This will make sure that the InitalContext used to lookup/create the 
+     * This will make sure that the InitalContext used to lookup/create the
      * UserTransaction is properly cleaned up.
      */
     public static void returnUserTransaction(UserTransaction userTransaction) {
-        if ((userTransaction != null) && 
-            (userTransaction instanceof UserTransactionWithContext)) {
-            UserTransactionWithContext userTransactionWithContext = 
-                (UserTransactionWithContext)userTransaction;
-            
+        if ((userTransaction != null) &&
+                (userTransaction instanceof UserTransactionWithContext)) {
+            UserTransactionWithContext userTransactionWithContext =
+                    (UserTransactionWithContext) userTransaction;
+
             userTransactionWithContext.closeContext();
         }
     }
@@ -126,34 +126,34 @@ public class UserTransactionHelper {
 
     /**
      * This class wraps a UserTransaction with the InitialContext that was used
-     * to look it up, so that when the UserTransaction is returned to the 
+     * to look it up, so that when the UserTransaction is returned to the
      * UserTransactionHelper the InitialContext can be closed.
      */
     private static class UserTransactionWithContext implements UserTransaction {
         InitialContext context;
         UserTransaction userTransaction;
-        
+
         public UserTransactionWithContext() throws SchedulerException {
             try {
                 context = new InitialContext();
             } catch (Throwable t) {
                 throw new SchedulerException(
-                    "UserTransactionHelper failed to create InitialContext to lookup/create UserTransaction.", t);
+                        "UserTransactionHelper failed to create InitialContext to lookup/create UserTransaction.", t);
             }
-            
+
             try {
-                userTransaction = (UserTransaction)context.lookup(userTxURL);
+                userTransaction = (UserTransaction) context.lookup(userTxURL);
             } catch (Throwable t) {
                 closeContext();
                 throw new SchedulerException(
-                    "UserTransactionHelper could not lookup/create UserTransaction.",
-                    t);
+                        "UserTransactionHelper could not lookup/create UserTransaction.",
+                        t);
             }
-            
+
             if (userTransaction == null) {
                 closeContext();
                 throw new SchedulerException(
-                    "UserTransactionHelper could not lookup/create UserTransaction from the InitialContext.");
+                        "UserTransactionHelper could not lookup/create UserTransaction from the InitialContext.");
             }
         }
 
@@ -191,15 +191,15 @@ public class UserTransactionHelper {
         private static Logger getLog() {
             return LoggerFactory.getLogger(UserTransactionWithContext.class);
         }
-        
+
         // Wrapper methods that just delegate to the underlying UserTransaction
-        
+
         public void begin() throws NotSupportedException, SystemException {
             userTransaction.begin();
         }
 
         public void commit() throws RollbackException, HeuristicMixedException, HeuristicRollbackException, SecurityException, IllegalStateException, SystemException {
-            userTransaction.commit();        
+            userTransaction.commit();
         }
 
         public void rollback() throws IllegalStateException, SecurityException, SystemException {

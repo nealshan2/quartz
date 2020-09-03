@@ -34,16 +34,15 @@ import org.slf4j.LoggerFactory;
  * A <code>ConnectionProvider</code> that provides connections from a <code>DataSource</code>
  * that is managed by an application server, and made available via JNDI.
  * </p>
- * 
- * @see DBConnectionManager
- * @see ConnectionProvider
- * @see PoolingConnectionProvider
- * 
+ *
  * @author James House
  * @author Sharada Jambula
  * @author Mohammad Rezaei
  * @author Patrick Lightbody
  * @author Srinivas Venkatarangaiah
+ * @see DBConnectionManager
+ * @see ConnectionProvider
+ * @see PoolingConnectionProvider
  */
 public class JNDIConnectionProvider implements ConnectionProvider {
 
@@ -75,9 +74,8 @@ public class JNDIConnectionProvider implements ConnectionProvider {
 
     /**
      * Constructor
-     * 
-     * @param jndiUrl
-     *          The url for the datasource
+     *
+     * @param jndiUrl The url for the datasource
      */
     public JNDIConnectionProvider(String jndiUrl, boolean alwaysLookup) {
         this.url = jndiUrl;
@@ -87,15 +85,13 @@ public class JNDIConnectionProvider implements ConnectionProvider {
 
     /**
      * Constructor
-     * 
-     * @param jndiUrl
-     *          The URL for the DataSource
-     * @param jndiProps
-     *          The JNDI properties to use when establishing the InitialContext
-     *          for the lookup of the given URL.
+     *
+     * @param jndiUrl   The URL for the DataSource
+     * @param jndiProps The JNDI properties to use when establishing the InitialContext
+     *                  for the lookup of the given URL.
      */
     public JNDIConnectionProvider(String jndiUrl, Properties jndiProps,
-            boolean alwaysLookup) {
+                                  boolean alwaysLookup) {
         this.url = jndiUrl;
         this.props = jndiProps;
         this.alwaysLookup = alwaysLookup;
@@ -119,7 +115,7 @@ public class JNDIConnectionProvider implements ConnectionProvider {
         if (!isAlwaysLookup()) {
             Context ctx = null;
             try {
-                ctx = (props != null) ? new InitialContext(props) : new InitialContext(); 
+                ctx = (props != null) ? new InitialContext(props) : new InitialContext();
 
                 datasource = (DataSource) ctx.lookup(url);
             } catch (Exception e) {
@@ -127,7 +123,10 @@ public class JNDIConnectionProvider implements ConnectionProvider {
                         "Error looking up datasource: " + e.getMessage(), e);
             } finally {
                 if (ctx != null) {
-                    try { ctx.close(); } catch(Exception ignore) {}
+                    try {
+                        ctx.close();
+                    } catch (Exception ignore) {
+                    }
                 }
             }
         }
@@ -139,7 +138,7 @@ public class JNDIConnectionProvider implements ConnectionProvider {
             Object ds = this.datasource;
 
             if (ds == null || isAlwaysLookup()) {
-                ctx = (props != null) ? new InitialContext(props): new InitialContext(); 
+                ctx = (props != null) ? new InitialContext(props) : new InitialContext();
 
                 ds = ctx.lookup(url);
                 if (!isAlwaysLookup()) {
@@ -148,12 +147,12 @@ public class JNDIConnectionProvider implements ConnectionProvider {
             }
 
             if (ds == null) {
-                throw new SQLException( "There is no object at the JNDI URL '" + url + "'");
+                throw new SQLException("There is no object at the JNDI URL '" + url + "'");
             }
 
             if (ds instanceof XADataSource) {
                 return (((XADataSource) ds).getXAConnection().getConnection());
-            } else if (ds instanceof DataSource) { 
+            } else if (ds instanceof DataSource) {
                 return ((DataSource) ds).getConnection();
             } else {
                 throw new SQLException("Object at JNDI URL '" + url + "' is not a DataSource.");
@@ -165,7 +164,10 @@ public class JNDIConnectionProvider implements ConnectionProvider {
                             + e.getClass().getName() + ": " + e.getMessage());
         } finally {
             if (ctx != null) {
-                try { ctx.close(); } catch(Exception ignore) {}
+                try {
+                    ctx.close();
+                } catch (Exception ignore) {
+                }
             }
         }
     }

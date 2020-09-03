@@ -18,7 +18,7 @@ public interface QuartzSchedulerMBean {
     static final String JOB_DELETED = "jobDeleted";
     static final String JOB_SCHEDULED = "jobScheduled";
     static final String JOB_UNSCHEDULED = "jobUnscheduled";
-    
+
     static final String JOBS_PAUSED = "jobsPaused";
     static final String JOBS_RESUMED = "jobsResumed";
 
@@ -101,10 +101,10 @@ public interface QuartzSchedulerMBean {
     void standby();
 
     void clear() throws Exception;
-    
+
     /**
      * Schedule an existing job with an existing trigger.
-     * 
+     *
      * @param jobName
      * @param jobGroup
      * @param triggerName
@@ -113,61 +113,61 @@ public interface QuartzSchedulerMBean {
      * @throws Exception
      */
     Date scheduleJob(String jobName, String jobGroup,
-            String triggerName, String triggerGroup) throws Exception;
+                     String triggerName, String triggerGroup) throws Exception;
 
     /**
      * Schedules a job using the given Cron/Simple triggerInfo.
-     * 
+     * <p>
      * The triggerInfo and jobDetailInfo must contain well-known attribute values.
-     *     TriggerInfo attributes: name, group, description, calendarName, priority,
-     *       CronExpression | (startTime, endTime, repeatCount, repeatInterval) 
-     *     JobDetailInfo attributes: name, group, description, jobClass, jobDataMap, durability,
-     *       shouldRecover
+     * TriggerInfo attributes: name, group, description, calendarName, priority,
+     * CronExpression | (startTime, endTime, repeatCount, repeatInterval)
+     * JobDetailInfo attributes: name, group, description, jobClass, jobDataMap, durability,
+     * shouldRecover
      */
     void scheduleBasicJob(Map<String, Object> jobDetailInfo, Map<String, Object> triggerInfo)
             throws Exception;
 
     /**
      * Schedules an arbitrary job described by abstractJobInfo using a trigger specified by abstractTriggerInfo.
-     * 
+     * <p>
      * AbtractTriggerInfo and AbstractJobInfo must contain the following String attributes.
-     *     AbstractTriggerInfo: triggerClass, the fully-qualified class name of a concrete Trigger type
-     *     AbstractJobInfo: jobDetailClass, the fully-qualified class name of a concrete JobDetail type
-     *
+     * AbstractTriggerInfo: triggerClass, the fully-qualified class name of a concrete Trigger type
+     * AbstractJobInfo: jobDetailClass, the fully-qualified class name of a concrete JobDetail type
+     * <p>
      * If the Trigger and JobDetail can be successfully instantiated, the remaining attributes will be
      * reflectively applied to those instances. The remaining attributes are limited to the types:
-     *   Integer, Double, Float, String, Boolean, Date, Character, Map<String, Object>.
+     * Integer, Double, Float, String, Boolean, Date, Character, Map<String, Object>.
      * Maps are further limited to containing values from the same set of types, less Map itself.
-     * 
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     void scheduleJob(Map<String, Object> abstractJobInfo,
-            Map<String, Object> abstractTriggerInfo) throws Exception;
-    
+                     Map<String, Object> abstractTriggerInfo) throws Exception;
+
     /**
      * Schedules the specified job using a trigger described by abstractTriggerInfo, which must contain the
      * fully-qualified trigger class name under the key "triggerClass."  That trigger type must contain a
      * no-arg constructor and have public access. Other attributes are applied reflectively and are limited
      * to the types:
-     *   Integer, Double, Float, String, Boolean, Date, Character, Map<String, Object>.
+     * Integer, Double, Float, String, Boolean, Date, Character, Map<String, Object>.
      * Maps are limited to containing values from the same set of types, less Map itself.
-     * 
+     *
      * @param jobName
      * @param jobGroup
      * @param abstractTriggerInfo
      * @throws Exception
      */
     void scheduleJob(String jobName, String jobGroup,
-            Map<String, Object> abstractTriggerInfo) throws Exception;
-    
+                     Map<String, Object> abstractTriggerInfo) throws Exception;
+
     boolean unscheduleJob(String triggerName, String triggerGroup) throws Exception;
 
     boolean interruptJob(String jobName, String jobGroupName) throws Exception;
 
     boolean interruptJob(String fireInstanceId) throws Exception;
-    
+
     void triggerJob(String jobName, String jobGroupName,
-            Map<String, String> jobDataMap) throws Exception;
+                    Map<String, String> jobDataMap) throws Exception;
 
     boolean deleteJob(String jobName, String jobGroupName)
             throws Exception;
@@ -179,11 +179,11 @@ public interface QuartzSchedulerMBean {
      * class name under the key "jobDetailClass."  That JobDetail type must contain a no-arg constructor
      * and have public access. Other attributes are applied reflectively and are limited
      * to the types:
-     *   Integer, Double, Float, String, Boolean, Date, Character, Map<String, Object>.
+     * Integer, Double, Float, String, Boolean, Date, Character, Map<String, Object>.
      * Maps are limited to containing values from the same set of types, less Map itself.
-     * 
+     *
      * @param abstractJobInfo map of attributes defining job
-     * @param replace whether or not to replace a pre-existing job with the same key
+     * @param replace         whether or not to replace a pre-existing job with the same key
      * @throws Exception
      */
     void addJob(Map<String, Object> abstractJobInfo, boolean replace)
@@ -193,6 +193,7 @@ public interface QuartzSchedulerMBean {
 
     /**
      * Pause all jobs whose group starts with jobGroupPrefix
+     *
      * @throws Exception
      */
     void pauseJobsStartingWith(String jobGroupPrefix) throws Exception;
@@ -239,7 +240,7 @@ public interface QuartzSchedulerMBean {
 
     void pauseJob(String jobName, String groupName) throws Exception;
 
-    void resumeJob(String jobName, String jobGroupName)    throws Exception;
+    void resumeJob(String jobName, String jobGroupName) throws Exception;
 
     List<String> getTriggerGroupNames() throws Exception;
 

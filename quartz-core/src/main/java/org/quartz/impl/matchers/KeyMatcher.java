@@ -20,22 +20,22 @@ import org.quartz.Matcher;
 import org.quartz.utils.Key;
 
 /**
- * Matches on the complete key being equal (both name and group). 
- *  
+ * Matches on the complete key being equal (both name and group).
+ *
  * @author jhouse
  */
 public class KeyMatcher<T extends Key<?>> implements Matcher<T> {
-  
+
     private static final long serialVersionUID = 1230009869074992437L;
 
     protected T compareTo;
-    
+
     protected KeyMatcher(T compareTo) {
         this.compareTo = compareTo;
     }
-    
+
     /**
-     * Create a KeyMatcher that matches Keys that equal the given key. 
+     * Create a KeyMatcher that matches Keys that equal the given key.
      */
     public static <U extends Key<?>> KeyMatcher<U> keyEquals(U compareTo) {
         return new KeyMatcher<U>(compareTo);
@@ -75,5 +75,5 @@ public class KeyMatcher<T extends Key<?>> implements Matcher<T> {
             return false;
         return true;
     }
-    
+
 }

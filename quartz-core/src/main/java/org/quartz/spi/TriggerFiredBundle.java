@@ -27,13 +27,12 @@ import org.quartz.JobDetail;
  * A simple class (structure) used for returning execution-time data from the
  * JobStore to the <code>QuartzSchedulerThread</code>.
  * </p>
- * 
- * @see org.quartz.core.QuartzSchedulerThread
- * 
+ *
  * @author James House
+ * @see org.quartz.core.QuartzSchedulerThread
  */
 public class TriggerFiredBundle implements java.io.Serializable {
-  
+
     private static final long serialVersionUID = -6414106108306999265L;
 
     /*
@@ -69,8 +68,8 @@ public class TriggerFiredBundle implements java.io.Serializable {
      */
 
     public TriggerFiredBundle(JobDetail job, OperableTrigger trigger, Calendar cal,
-            boolean jobIsRecovering, Date fireTime, Date scheduledFireTime,
-            Date prevFireTime, Date nextFireTime) {
+                              boolean jobIsRecovering, Date fireTime, Date scheduledFireTime,
+                              Date prevFireTime, Date nextFireTime) {
         this.job = job;
         this.trigger = trigger;
         this.cal = cal;

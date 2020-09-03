@@ -17,6 +17,7 @@ package org.quartz;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+
 import junit.framework.TestCase;
 
 import org.quartz.core.QuartzScheduler;
@@ -36,10 +37,10 @@ public class VersionTest extends TestCase {
         Pattern suffix = Pattern.compile("(\\d+)(-\\w+)?");
         Matcher m = suffix.matcher(iter);
         if (m.matches()) {
-          assertNonNegativeInteger(m.group(1));
+            assertNonNegativeInteger(m.group(1));
         } else {
-          throw new RuntimeException(iter + " doesn't match pattern '(\\d+)(-\\w+)?'");
-        } 
+            throw new RuntimeException(iter + " doesn't match pattern '(\\d+)(-\\w+)?'");
+        }
 
     }
 
@@ -50,7 +51,8 @@ public class VersionTest extends TestCase {
         try {
             intVal = Integer.parseInt(s);
             parsed = true;
-        } catch (NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+        }
 
         assertTrue(parsed);
         assertTrue(intVal >= 0);

@@ -22,7 +22,7 @@ package org.quartz.impl.jdbcjobstore;
  * Exception class for when a driver delegate cannot be found for a given
  * configuration, or lack thereof.
  * </p>
- * 
+ *
  * @author <a href="mailto:jeff@binaryfeed.org">Jeffrey Wescott</a>
  */
 public class InvalidConfigurationException extends Exception {

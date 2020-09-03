@@ -26,33 +26,32 @@ import org.quartz.spi.JobFactory;
 import org.quartz.spi.TriggerFiredBundle;
 
 /**
- * The default JobFactory used by Quartz - simply calls 
+ * The default JobFactory used by Quartz - simply calls
  * <code>newInstance()</code> on the job class.
- * 
+ *
+ * @author jhouse
  * @see JobFactory
  * @see PropertySettingJobFactory
- * 
- * @author jhouse
  */
 public class SimpleJobFactory implements JobFactory {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    
+
     protected Logger getLog() {
         return log;
     }
-    
+
     public Job newJob(TriggerFiredBundle bundle, Scheduler Scheduler) throws SchedulerException {
 
         JobDetail jobDetail = bundle.getJobDetail();
         Class<? extends Job> jobClass = jobDetail.getJobClass();
         try {
-            if(log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug(
-                    "Producing instance of Job '" + jobDetail.getKey() + 
-                    "', class=" + jobClass.getName());
+                        "Producing instance of Job '" + jobDetail.getKey() +
+                                "', class=" + jobClass.getName());
             }
-            
+
             return jobClass.newInstance();
         } catch (Exception e) {
             SchedulerException se = new SchedulerException(

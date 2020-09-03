@@ -25,9 +25,9 @@ import org.quartz.spi.OperableTrigger;
 public class SimpleTriggerSupport {
     private static final String COMPOSITE_TYPE_NAME = "SimpleTrigger";
     private static final String COMPOSITE_TYPE_DESCRIPTION = "SimpleTrigger Details";
-    private static final String[] ITEM_NAMES = new String[] { "repeatCount", "repeatInterval", "timesTriggered" };
-    private static final String[] ITEM_DESCRIPTIONS = new String[] { "repeatCount", "repeatInterval", "timesTriggered" };
-    private static final OpenType[] ITEM_TYPES = new OpenType[] { INTEGER, LONG, INTEGER };
+    private static final String[] ITEM_NAMES = new String[]{"repeatCount", "repeatInterval", "timesTriggered"};
+    private static final String[] ITEM_DESCRIPTIONS = new String[]{"repeatCount", "repeatInterval", "timesTriggered"};
+    private static final OpenType[] ITEM_TYPES = new OpenType[]{INTEGER, LONG, INTEGER};
     private static final CompositeType COMPOSITE_TYPE;
     private static final String TABULAR_TYPE_NAME = "SimpleTrigger collection";
     private static final String TABULAR_TYPE_DESCRIPTION = "SimpleTrigger collection";
@@ -44,7 +44,7 @@ public class SimpleTriggerSupport {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static String[] getItemNames() {
         List<String> l = new ArrayList<String>(Arrays.asList(ITEM_NAMES));
         l.addAll(Arrays.asList(TriggerSupport.getItemNames()));
@@ -56,17 +56,17 @@ public class SimpleTriggerSupport {
         l.addAll(Arrays.asList(TriggerSupport.getItemDescriptions()));
         return l.toArray(new String[l.size()]);
     }
-    
+
     public static OpenType[] getItemTypes() {
         List<OpenType> l = new ArrayList<OpenType>(Arrays.asList(ITEM_TYPES));
         l.addAll(Arrays.asList(TriggerSupport.getItemTypes()));
         return l.toArray(new OpenType[l.size()]);
     }
-    
+
     public static CompositeData toCompositeData(SimpleTrigger trigger) {
         try {
             return new CompositeDataSupport(COMPOSITE_TYPE, ITEM_NAMES,
-                    new Object[] {
+                    new Object[]{
                             trigger.getRepeatCount(),
                             trigger.getRepeatInterval(),
                             trigger.getTimesTriggered(),
@@ -78,12 +78,12 @@ public class SimpleTriggerSupport {
                             JobDataMapSupport.toTabularData(trigger
                                     .getJobDataMap()),
                             trigger.getCalendarName(),
-                            ((OperableTrigger)trigger).getFireInstanceId(),
+                            ((OperableTrigger) trigger).getFireInstanceId(),
                             trigger.getMisfireInstruction(),
                             trigger.getPriority(), trigger.getStartTime(),
                             trigger.getEndTime(), trigger.getNextFireTime(),
                             trigger.getPreviousFireTime(),
-                            trigger.getFinalFireTime() });
+                            trigger.getFinalFireTime()});
         } catch (OpenDataException e) {
             throw new RuntimeException(e);
         }
@@ -100,7 +100,7 @@ public class SimpleTriggerSupport {
         }
         return tData;
     }
-    
+
     public static OperableTrigger newTrigger(CompositeData cData) throws ParseException {
         SimpleTriggerImpl result = new SimpleTriggerImpl();
         result.setRepeatCount(((Integer) cData.get("repeatCount")).intValue());
@@ -112,13 +112,13 @@ public class SimpleTriggerSupport {
 
     public static OperableTrigger newTrigger(Map<String, Object> attrMap) throws ParseException {
         SimpleTriggerImpl result = new SimpleTriggerImpl();
-        if(attrMap.containsKey("repeatCount")) {
+        if (attrMap.containsKey("repeatCount")) {
             result.setRepeatCount(((Integer) attrMap.get("repeatCount")).intValue());
         }
-        if(attrMap.containsKey("repeatInterval")) {
+        if (attrMap.containsKey("repeatInterval")) {
             result.setRepeatInterval(((Long) attrMap.get("repeatInterval")).longValue());
         }
-        if(attrMap.containsKey("timesTriggered")) {
+        if (attrMap.containsKey("timesTriggered")) {
             result.setTimesTriggered(((Integer) attrMap.get("timesTriggered")).intValue());
         }
         TriggerSupport.initializeTrigger(result, attrMap);

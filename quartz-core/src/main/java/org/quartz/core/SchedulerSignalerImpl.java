@@ -28,7 +28,7 @@ import org.quartz.spi.SchedulerSignaler;
 /**
  * An interface to be used by <code>JobStore</code> instances in order to
  * communicate signals back to the <code>QuartzScheduler</code>.
- * 
+ *
  * @author jhouse
  */
 public class SchedulerSignalerImpl implements SchedulerSignaler {
@@ -57,7 +57,7 @@ public class SchedulerSignalerImpl implements SchedulerSignaler {
     public SchedulerSignalerImpl(QuartzScheduler sched, QuartzSchedulerThread schedThread) {
         this.sched = sched;
         this.schedThread = schedThread;
-        
+
         log.info("Initialized Scheduler Signaller of type: " + getClass());
     }
 

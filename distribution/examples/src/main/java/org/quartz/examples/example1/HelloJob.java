@@ -14,7 +14,7 @@
  * under the License.
  * 
  */
- 
+
 package org.quartz.examples.example1;
 
 import java.util.Date;
@@ -29,7 +29,7 @@ import org.quartz.JobExecutionException;
  * <p>
  * This is just a simple job that says "Hello" to the world.
  * </p>
- * 
+ *
  * @author Bill Kratzer
  */
 public class HelloJob implements Job {
@@ -54,12 +54,11 @@ public class HelloJob implements Job {
      * <code>{@link org.quartz.Trigger}</code> fires that is associated with
      * the <code>Job</code>.
      * </p>
-     * 
-     * @throws JobExecutionException
-     *             if there is an exception while executing the job.
+     *
+     * @throws JobExecutionException if there is an exception while executing the job.
      */
     public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+            throws JobExecutionException {
 
         // Say Hello to the World and display the date/time
         _log.info("Hello World! - " + new Date());

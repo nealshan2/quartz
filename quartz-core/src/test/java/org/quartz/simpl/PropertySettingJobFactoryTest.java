@@ -27,15 +27,15 @@ import junit.framework.TestCase;
  * Unit test for PropertySettingJobFactory.
  */
 public class PropertySettingJobFactoryTest extends TestCase {
-    
+
     private PropertySettingJobFactory factory;
-    
+
     @Override
     protected void setUp() throws Exception {
         factory = new PropertySettingJobFactory();
-        factory.setThrowIfPropertyNotFound(true);    
+        factory.setThrowIfPropertyNotFound(true);
     }
-    
+
     public void testSetBeanPropsPrimatives() throws SchedulerException {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("intValue", Integer.valueOf(1));
@@ -43,15 +43,15 @@ public class PropertySettingJobFactoryTest extends TestCase {
         jobDataMap.put("floatValue", Float.valueOf(3.0f));
         jobDataMap.put("doubleValue", Double.valueOf(4.0));
         jobDataMap.put("booleanValue", Boolean.TRUE);
-        jobDataMap.put("shortValue", Short.valueOf(((short)5)));
+        jobDataMap.put("shortValue", Short.valueOf(((short) 5)));
         jobDataMap.put("charValue", 'a');
-        jobDataMap.put("byteValue", Byte.valueOf((byte)6));
+        jobDataMap.put("byteValue", Byte.valueOf((byte) 6));
         jobDataMap.put("stringValue", "S1");
         jobDataMap.put("mapValue", Collections.singletonMap("A", "B"));
-        
+
         TestBean myBean = new TestBean();
         factory.setBeanProps(myBean, jobDataMap);
-        
+
         assertEquals(1, myBean.getIntValue());
         assertEquals(2l, myBean.getLongValue());
         assertEquals(3.0f, myBean.getFloatValue(), 0.0001);
@@ -59,11 +59,11 @@ public class PropertySettingJobFactoryTest extends TestCase {
         assertTrue(myBean.getBooleanValue());
         assertEquals(5, myBean.getShortValue());
         assertEquals('a', myBean.getCharValue());
-        assertEquals((byte)6, myBean.getByteValue());
+        assertEquals((byte) 6, myBean.getByteValue());
         assertEquals("S1", myBean.getStringValue());
         assertTrue(myBean.getMapValue().containsKey("A"));
     }
-    
+
     public void testSetBeanPropsUnknownProperty() {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("bogusValue", Integer.valueOf(1));
@@ -73,7 +73,7 @@ public class PropertySettingJobFactoryTest extends TestCase {
         } catch (SchedulerException ignore) { // ignore 
         }
     }
-    
+
     public void testSetBeanPropsNullPrimative() {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("intValue", null);
@@ -84,7 +84,7 @@ public class PropertySettingJobFactoryTest extends TestCase {
             // ignore
         }
     }
-    
+
     public void testSetBeanPropsNullNonPrimative() throws SchedulerException {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("mapValue", null);
@@ -93,7 +93,7 @@ public class PropertySettingJobFactoryTest extends TestCase {
         factory.setBeanProps(testBean, jobDataMap);
         assertNull(testBean.getMapValue());
     }
-    
+
     public void testSetBeanPropsWrongPrimativeType() {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("intValue", new Float(7));
@@ -148,10 +148,10 @@ public class PropertySettingJobFactoryTest extends TestCase {
         jobDataMap.put("shortValue", "5");
         jobDataMap.put("charValue", "a");
         jobDataMap.put("byteValue", "6");
-        
+
         TestBean myBean = new TestBean();
         factory.setBeanProps(myBean, jobDataMap);
-        
+
         assertEquals(1, myBean.getIntValue());
         assertEquals(2l, myBean.getLongValue());
         assertEquals(3.0f, myBean.getFloatValue(), 0.0001);
@@ -159,7 +159,7 @@ public class PropertySettingJobFactoryTest extends TestCase {
         assertEquals(true, myBean.getBooleanValue());
         assertEquals(5, myBean.getShortValue());
         assertEquals('a', myBean.getCharValue());
-        assertEquals((byte)6, myBean.getByteValue());
+        assertEquals((byte) 6, myBean.getByteValue());
     }
 
     private static final class TestBean {
@@ -173,47 +173,47 @@ public class PropertySettingJobFactoryTest extends TestCase {
         private char charValue;
         private String stringValue;
         private Map<?, ?> mapValue;
-    
+
         public boolean getBooleanValue() {
             return booleanValue;
         }
-    
+
         @SuppressWarnings("unused")
         public void setBooleanValue(boolean booleanValue) {
             this.booleanValue = booleanValue;
         }
-    
+
         public double getDoubleValue() {
             return doubleValue;
         }
-    
+
         @SuppressWarnings("unused")
         public void setDoubleValue(double doubleValue) {
             this.doubleValue = doubleValue;
         }
-    
+
         public float getFloatValue() {
             return floatValue;
         }
-    
+
         @SuppressWarnings("unused")
         public void setFloatValue(float floatValue) {
             this.floatValue = floatValue;
         }
-   
+
         public int getIntValue() {
             return intValue;
         }
-    
+
         @SuppressWarnings("unused")
         public void setIntValue(int intValue) {
             this.intValue = intValue;
         }
-    
+
         public long getLongValue() {
             return longValue;
         }
-    
+
         @SuppressWarnings("unused")
         public void setLongValue(long longValue) {
             this.longValue = longValue;
@@ -222,15 +222,15 @@ public class PropertySettingJobFactoryTest extends TestCase {
         public Map<?, ?> getMapValue() {
             return mapValue;
         }
-    
+
         public void setMapValue(Map<?, ?> mapValue) {
             this.mapValue = mapValue;
         }
-    
+
         public String getStringValue() {
             return stringValue;
         }
-    
+
         @SuppressWarnings("unused")
         public void setStringValue(String stringValue) {
             this.stringValue = stringValue;

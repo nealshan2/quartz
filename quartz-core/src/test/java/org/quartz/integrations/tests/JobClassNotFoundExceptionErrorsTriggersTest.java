@@ -25,9 +25,12 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
 import org.hamcrest.core.Is;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
@@ -46,7 +49,7 @@ import static org.quartz.integrations.tests.TrackingJob.SCHEDULED_TIMES_KEY;
 public class JobClassNotFoundExceptionErrorsTriggersTest extends QuartzDatabaseTestSupport {
 
     private static final String BARRIER_KEY = "BARRIER";
-    
+
     public static class BadJob implements Job {
 
         public void execute(JobExecutionContext context) {
@@ -70,7 +73,7 @@ public class JobClassNotFoundExceptionErrorsTriggersTest extends QuartzDatabaseT
                 throw new JobExecutionException(ex);
             }
         }
-        
+
     }
 
     public static class SpecialClassLoadHelper extends CascadingClassLoadHelper {
@@ -84,7 +87,7 @@ public class JobClassNotFoundExceptionErrorsTriggersTest extends QuartzDatabaseT
             }
         }
     }
-    
+
     protected Properties createSchedulerProperties() {
         Properties properties = super.createSchedulerProperties();
         properties.put(PROP_SCHED_CLASS_LOAD_HELPER_CLASS, SpecialClassLoadHelper.class.getName());
@@ -103,7 +106,7 @@ public class JobClassNotFoundExceptionErrorsTriggersTest extends QuartzDatabaseT
         Trigger goodTrigger = TriggerBuilder.newTrigger().withIdentity("good").forJob(goodJob)
                 .startAt(new Date(now + 1))
                 .build();
-        
+
         Trigger badTrigger = TriggerBuilder.newTrigger().withIdentity("bad").forJob(badJob)
                 .startAt(new Date(now))
                 .build();
@@ -114,7 +117,7 @@ public class JobClassNotFoundExceptionErrorsTriggersTest extends QuartzDatabaseT
         scheduler.scheduleJobs(toSchedule, true);
 
         barrier.await(20, TimeUnit.SECONDS);
-        
+
         assertThat(scheduler.getTriggerState(badTrigger.getKey()), is(Trigger.TriggerState.ERROR));
     }
 }

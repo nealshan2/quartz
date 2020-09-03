@@ -19,15 +19,14 @@
 package org.quartz;
 
 /**
- * An exception that is thrown to indicate that a call to 
+ * An exception that is thrown to indicate that a call to
  * InterruptableJob.interrupt() failed without interrupting the Job.
- * 
- * @see org.quartz.InterruptableJob#interrupt()
- * 
+ *
  * @author James House
+ * @see org.quartz.InterruptableJob#interrupt()
  */
 public class UnableToInterruptJobException extends SchedulerException {
-  
+
     private static final long serialVersionUID = -490863760696463776L;
 
     /*
@@ -46,7 +45,7 @@ public class UnableToInterruptJobException extends SchedulerException {
     public UnableToInterruptJobException(String msg) {
         super(msg);
     }
-    
+
     /**
      * <p>
      * Create a <code>UnableToInterruptJobException</code> with the given cause.
@@ -55,5 +54,5 @@ public class UnableToInterruptJobException extends SchedulerException {
     public UnableToInterruptJobException(Throwable cause) {
         super(cause);
     }
-    
+
 }

@@ -24,7 +24,7 @@ import org.quartz.spi.InstanceIdGenerator;
 /**
  * The default InstanceIdGenerator used by Quartz when instance id is to be
  * automatically generated.  Instance id is of the form HOSTNAME + CURRENT_TIME.
- * 
+ *
  * @see InstanceIdGenerator
  * @see HostnameInstanceIdGenerator
  */

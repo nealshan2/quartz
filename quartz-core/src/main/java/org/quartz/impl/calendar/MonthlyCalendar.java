@@ -29,10 +29,9 @@ import org.quartz.Calendar;
  * any day of a month.
  * </p>
  *
+ * @author Juergen Donnerstag
  * @see org.quartz.Calendar
  * @see org.quartz.impl.calendar.BaseCalendar
- *
- * @author Juergen Donnerstag
  */
 public class MonthlyCalendar extends BaseCalendar implements Calendar,
         Serializable {
@@ -95,7 +94,7 @@ public class MonthlyCalendar extends BaseCalendar implements Calendar,
     public boolean isDayExcluded(int day) {
         if ((day < 1) || (day > MAX_DAYS_IN_MONTH)) {
             throw new IllegalArgumentException(
-                "The day parameter must be in the range of 1 to " + MAX_DAYS_IN_MONTH);
+                    "The day parameter must be in the range of 1 to " + MAX_DAYS_IN_MONTH);
         }
 
         return excludeDays[day - 1];
@@ -115,7 +114,7 @@ public class MonthlyCalendar extends BaseCalendar implements Calendar,
 
         if (days.length < MAX_DAYS_IN_MONTH) {
             throw new IllegalArgumentException(
-                "The days parameter must have a length of at least " + MAX_DAYS_IN_MONTH + " elements.");
+                    "The days parameter must have a length of at least " + MAX_DAYS_IN_MONTH + " elements.");
         }
 
         excludeDays = days;
@@ -133,7 +132,7 @@ public class MonthlyCalendar extends BaseCalendar implements Calendar,
     public void setDayExcluded(int day, boolean exclude) {
         if ((day < 1) || (day > MAX_DAYS_IN_MONTH)) {
             throw new IllegalArgumentException(
-                "The day parameter must be in the range of 1 to " + MAX_DAYS_IN_MONTH);
+                    "The day parameter must be in the range of 1 to " + MAX_DAYS_IN_MONTH);
         }
 
         excludeDays[day - 1] = exclude;
@@ -160,7 +159,7 @@ public class MonthlyCalendar extends BaseCalendar implements Calendar,
      * Determine whether the given time (in milliseconds) is 'included' by the
      * Calendar.
      * </p>
-     *
+     * <p>
      * <p>
      * Note that this Calendar is only has full-day precision.
      * </p>
@@ -173,7 +172,9 @@ public class MonthlyCalendar extends BaseCalendar implements Calendar,
 
         // Test the base calendar first. Only if the base calendar not already
         // excludes the time/date, continue evaluating this calendar instance.
-        if (super.isTimeIncluded(timeStamp) == false) { return false; }
+        if (super.isTimeIncluded(timeStamp) == false) {
+            return false;
+        }
 
         java.util.Calendar cl = createJavaCalendar(timeStamp);
         int day = cl.get(java.util.Calendar.DAY_OF_MONTH);
@@ -187,7 +188,7 @@ public class MonthlyCalendar extends BaseCalendar implements Calendar,
      * Calendar after the given time. Return the original value if timeStamp is
      * included. Return 0 if all days are excluded.
      * </p>
-     *
+     * <p>
      * <p>
      * Note that this Calendar is only has full-day precision.
      * </p>

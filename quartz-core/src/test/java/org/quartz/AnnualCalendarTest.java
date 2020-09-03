@@ -26,9 +26,9 @@ import org.quartz.impl.calendar.AnnualCalendar;
  * Unit test for AnnualCalendar serialization backwards compatibility.
  */
 public class AnnualCalendarTest extends SerializationTestSupport {
-    private static final String[] VERSIONS = new String[] {"1.5.1"};
-    
-    private static final TimeZone EST_TIME_ZONE = TimeZone.getTimeZone("America/New_York"); 
+    private static final String[] VERSIONS = new String[]{"1.5.1"};
+
+    private static final TimeZone EST_TIME_ZONE = TimeZone.getTimeZone("America/New_York");
 
     /**
      * Get the object to serialize when generating serialized file for future
@@ -37,18 +37,18 @@ public class AnnualCalendarTest extends SerializationTestSupport {
     @Override
     protected Object getTargetObject() {
         AnnualCalendar c = new AnnualCalendar();
-        
+
         c.setDescription("description");
-        
-        Calendar cal = Calendar.getInstance(EST_TIME_ZONE, Locale.US); 
+
+        Calendar cal = Calendar.getInstance(EST_TIME_ZONE, Locale.US);
         cal.clear();
         cal.set(2005, Calendar.JANUARY, 20, 10, 5, 15);
-        
+
         c.setDayExcluded(cal, true);
-        
+
         return c;
     }
-    
+
     /**
      * Get the Quartz versions for which we should verify
      * serialization backwards compatibility.
@@ -57,16 +57,16 @@ public class AnnualCalendarTest extends SerializationTestSupport {
     protected String[] getVersions() {
         return VERSIONS;
     }
-    
+
     /**
-     * Verify that the target object and the object we just deserialized 
+     * Verify that the target object and the object we just deserialized
      * match.
      */
     @Override
     protected void verifyMatch(Object target, Object deserialized) {
-        AnnualCalendar targetCalendar = (AnnualCalendar)target;
-        AnnualCalendar deserializedCalendar = (AnnualCalendar)deserialized;
-        
+        AnnualCalendar targetCalendar = (AnnualCalendar) target;
+        AnnualCalendar deserializedCalendar = (AnnualCalendar) deserialized;
+
         assertNotNull(deserializedCalendar);
         assertEquals(targetCalendar.getDescription(), deserializedCalendar.getDescription());
         assertEquals(targetCalendar.getDaysExcluded(), deserializedCalendar.getDaysExcluded());
@@ -78,11 +78,11 @@ public class AnnualCalendarTest extends SerializationTestSupport {
      * See: QUARTZ-590
      */
     public void testDaysExcluded() {
-		AnnualCalendar annualCalendar = new AnnualCalendar();
-		
-		annualCalendar.setDaysExcluded(null);
-		
-		assertNotNull("Annual calendar daysExcluded property should have been set to empty ArrayList, not null.",annualCalendar.getDaysExcluded());
+        AnnualCalendar annualCalendar = new AnnualCalendar();
+
+        annualCalendar.setDaysExcluded(null);
+
+        assertNotNull("Annual calendar daysExcluded property should have been set to empty ArrayList, not null.", annualCalendar.getDaysExcluded());
     }
 
     /**
@@ -126,19 +126,19 @@ public class AnnualCalendarTest extends SerializationTestSupport {
     public void testDaysExcludedOverTime() {
         AnnualCalendar annualCalendar = new AnnualCalendar();
         Calendar day = Calendar.getInstance();
-        
+
         day.set(Calendar.MONTH, Calendar.JUNE);
         day.set(Calendar.YEAR, 2005);
         day.set(Calendar.DAY_OF_MONTH, 23);
-        
+
         annualCalendar.setDayExcluded((Calendar) day.clone(), true);
-        
-    	day.set(Calendar.YEAR, 2008);
-    	day.set(Calendar.MONTH, Calendar.FEBRUARY);
-    	day.set(Calendar.DAY_OF_MONTH, 1);
-    	annualCalendar.setDayExcluded((Calendar) day.clone(), true);
- 
-    	assertTrue("The day 1 February is expected to be excluded but it is not", annualCalendar.isDayExcluded(day));    	
+
+        day.set(Calendar.YEAR, 2008);
+        day.set(Calendar.MONTH, Calendar.FEBRUARY);
+        day.set(Calendar.DAY_OF_MONTH, 1);
+        annualCalendar.setDayExcluded((Calendar) day.clone(), true);
+
+        assertTrue("The day 1 February is expected to be excluded but it is not", annualCalendar.isDayExcluded(day));
     }
 
     /**
@@ -147,20 +147,20 @@ public class AnnualCalendarTest extends SerializationTestSupport {
     public void testRemoveInTheFuture() {
         AnnualCalendar annualCalendar = new AnnualCalendar();
         Calendar day = Calendar.getInstance();
-        
+
         day.set(Calendar.MONTH, Calendar.JUNE);
         day.set(Calendar.YEAR, 2005);
         day.set(Calendar.DAY_OF_MONTH, 23);
-        
+
         annualCalendar.setDayExcluded((Calendar) day.clone(), true);
 
-    	// Trying to remove the 23th of June
+        // Trying to remove the 23th of June
         day.set(Calendar.MONTH, Calendar.JUNE);
         day.set(Calendar.YEAR, 2008);
         day.set(Calendar.DAY_OF_MONTH, 23);
         annualCalendar.setDayExcluded((Calendar) day.clone(), false);
-        
-        assertTrue("The day 23 June is not expected to be excluded but it is", ! annualCalendar.isDayExcluded(day));
+
+        assertTrue("The day 23 June is not expected to be excluded but it is", !annualCalendar.isDayExcluded(day));
     }
 
 }

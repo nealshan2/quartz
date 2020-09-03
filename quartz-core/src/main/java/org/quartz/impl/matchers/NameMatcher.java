@@ -22,17 +22,17 @@ import org.quartz.utils.Key;
 
 /**
  * Matches on name (ignores group) property of Keys.
- *  
+ *
  * @author jhouse
  */
 public class NameMatcher<T extends Key<?>> extends StringMatcher<T> {
-  
+
     private static final long serialVersionUID = -33104959459613480L;
 
     protected NameMatcher(String compareTo, StringOperatorName compareWith) {
         super(compareTo, compareWith);
     }
-    
+
     /**
      * Create a NameMatcher that matches names equaling the given string.
      */
@@ -46,14 +46,14 @@ public class NameMatcher<T extends Key<?>> extends StringMatcher<T> {
     public static NameMatcher<JobKey> jobNameEquals(String compareTo) {
         return NameMatcher.nameEquals(compareTo);
     }
-    
+
     /**
      * Create a NameMatcher that matches trigger names equaling the given string.
      */
     public static NameMatcher<TriggerKey> triggerNameEquals(String compareTo) {
         return NameMatcher.nameEquals(compareTo);
     }
-    
+
     /**
      * Create a NameMatcher that matches names starting with the given string.
      */
@@ -67,7 +67,7 @@ public class NameMatcher<T extends Key<?>> extends StringMatcher<T> {
     public static NameMatcher<JobKey> jobNameStartsWith(String compareTo) {
         return NameMatcher.nameStartsWith(compareTo);
     }
-    
+
     /**
      * Create a NameMatcher that matches trigger names starting with the given string.
      */
@@ -88,7 +88,7 @@ public class NameMatcher<T extends Key<?>> extends StringMatcher<T> {
     public static NameMatcher<JobKey> jobNameEndsWith(String compareTo) {
         return NameMatcher.nameEndsWith(compareTo);
     }
-    
+
     /**
      * Create a NameMatcher that matches trigger names ending with the given string.
      */
@@ -109,14 +109,14 @@ public class NameMatcher<T extends Key<?>> extends StringMatcher<T> {
     public static NameMatcher<JobKey> jobNameContains(String compareTo) {
         return NameMatcher.nameContains(compareTo);
     }
-    
+
     /**
      * Create a NameMatcher that matches trigger names containing the given string.
      */
     public static NameMatcher<TriggerKey> triggerNameContains(String compareTo) {
         return NameMatcher.nameContains(compareTo);
     }
-    
+
     @Override
     protected String getValue(T key) {
         return key.getName();

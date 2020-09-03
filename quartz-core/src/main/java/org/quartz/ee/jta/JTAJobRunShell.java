@@ -33,10 +33,9 @@ import org.quartz.spi.TriggerFiredBundle;
  * begins an XA transaction before executing the Job, and commits (or
  * rolls-back) the transaction after execution completes.
  * </p>
- * 
- * @see org.quartz.core.JobRunShell
- * 
+ *
  * @author James House
+ * @see org.quartz.core.JobRunShell
  */
 public class JTAJobRunShell extends JobRunShell {
 
@@ -94,7 +93,7 @@ public class JTAJobRunShell extends JobRunShell {
         // where begin() can be called multiple times w/o complete being called in
         // between.
         cleanupUserTransaction();
-        
+
         boolean beganSuccessfully = false;
         try {
             getLog().debug("Looking up UserTransaction.");
@@ -105,7 +104,7 @@ public class JTAJobRunShell extends JobRunShell {
 
             getLog().debug("Beginning UserTransaction.");
             ut.begin();
-            
+
             beganSuccessfully = true;
         } catch (SchedulerException se) {
             throw se;
@@ -122,7 +121,7 @@ public class JTAJobRunShell extends JobRunShell {
 
     @Override
     protected void complete(boolean successfulExecution)
-        throws SchedulerException {
+            throws SchedulerException {
         if (ut == null) {
             return;
         }
@@ -137,7 +136,7 @@ public class JTAJobRunShell extends JobRunShell {
                 throw new SchedulerException(
                         "JTAJobRunShell could not read UserTransaction status.", e);
             }
-    
+
             if (successfulExecution) {
                 try {
                     getLog().debug("Committing UserTransaction.");
@@ -162,14 +161,14 @@ public class JTAJobRunShell extends JobRunShell {
     }
 
     /**
-     * Override passivate() to ensure we always cleanup the UserTransaction. 
+     * Override passivate() to ensure we always cleanup the UserTransaction.
      */
     @Override
     public void passivate() {
         cleanupUserTransaction();
         super.passivate();
     }
-    
+
     private void cleanupUserTransaction() {
         if (ut != null) {
             UserTransactionHelper.returnUserTransaction(ut);

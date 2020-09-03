@@ -31,12 +31,12 @@ import org.quartz.spi.TriggerFiredBundle;
  * to be used within the <class>{@link org.quartz.core.QuartzScheduler}
  * </code> instance.
  * </p>
- * 
+ * <p>
  * <p>
  * This implementation does not re-use any objects, it simply makes a new
  * JTAJobRunShell each time <code>borrowJobRunShell()</code> is called.
  * </p>
- * 
+ *
  * @author James House
  */
 public class JTAJobRunShellFactory implements JobRunShellFactory {
@@ -80,7 +80,7 @@ public class JTAJobRunShellFactory implements JobRunShellFactory {
      * </p>
      */
     public void initialize(Scheduler sched)
-        throws SchedulerConfigException {
+            throws SchedulerConfigException {
         this.scheduler = sched;
     }
 
@@ -95,7 +95,6 @@ public class JTAJobRunShellFactory implements JobRunShellFactory {
             throws SchedulerException {
         return new JTAJobRunShell(scheduler, bundle);
     }
-
 
 
 }

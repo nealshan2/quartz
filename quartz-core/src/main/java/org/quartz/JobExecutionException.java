@@ -23,17 +23,16 @@ package org.quartz;
  * occurred while executing, and whether or not the <code>Job</code> requests
  * to be re-fired immediately (using the same <code>{@link JobExecutionContext}</code>,
  * or whether it wants to be unscheduled.
- * 
+ * <p>
  * <p>
  * Note that if the flag for 'refire immediately' is set, the flags for
  * unscheduling the Job are ignored.
  * </p>
- * 
+ *
+ * @author James House
  * @see Job
  * @see JobExecutionContext
  * @see SchedulerException
- * 
- * @author James House
  */
 public class JobExecutionException extends SchedulerException {
 
@@ -119,7 +118,7 @@ public class JobExecutionException extends SchedulerException {
     public JobExecutionException(String msg, Throwable cause) {
         super(msg, cause);
     }
-    
+
     /**
      * <p>
      * Create a JobExcecutionException with the given message, and underlying
@@ -127,14 +126,14 @@ public class JobExecutionException extends SchedulerException {
      * </p>
      */
     public JobExecutionException(String msg, Throwable cause,
-            boolean refireImmediately) {
+                                 boolean refireImmediately) {
         super(msg, cause);
 
         refire = refireImmediately;
     }
-    
+
     /**
-     * Create a JobExcecutionException with the given message and the 're-fire 
+     * Create a JobExcecutionException with the given message and the 're-fire
      * immediately' flag set to the given value.
      */
     public JobExecutionException(String msg, boolean refireImmediately) {

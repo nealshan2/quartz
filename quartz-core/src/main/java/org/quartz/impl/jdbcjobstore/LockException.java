@@ -24,10 +24,9 @@ import org.quartz.JobPersistenceException;
  * Exception class for when there is a failure obtaining or releasing a
  * resource lock.
  * </p>
- * 
- * @see Semaphore
- * 
+ *
  * @author James House
+ * @see Semaphore
  */
 public class LockException extends JobPersistenceException {
 

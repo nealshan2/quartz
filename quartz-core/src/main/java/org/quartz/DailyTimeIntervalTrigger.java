@@ -24,31 +24,29 @@ import org.quartz.DateBuilder.IntervalUnit;
 /**
  * A <code>{@link Trigger}</code> that is used to fire a <code>{@link org.quartz.JobDetail}</code>
  * based upon daily repeating time intervals.
- * 
+ * <p>
  * <p>The trigger will fire every N (see {@link #getRepeatInterval()} ) seconds, minutes or hours
  * (see {@link #getRepeatIntervalUnit()}) during a given time window on specified days of the week.</p>
- * 
- * <p>For example#1, a trigger can be set to fire every 72 minutes between 8:00 and 11:00 everyday. It's fire times would 
+ * <p>
+ * <p>For example#1, a trigger can be set to fire every 72 minutes between 8:00 and 11:00 everyday. It's fire times would
  * be 8:00, 9:12, 10:24, then next day would repeat: 8:00, 9:12, 10:24 again.</p>
- * 
+ * <p>
  * <p>For example#2, a trigger can be set to fire every 23 minutes between 9:20 and 16:47 Monday through Friday.</p>
- * 
+ * <p>
  * <p>On each day, the starting fire time is reset to startTimeOfDay value, and then it will add repeatInterval value to it until
- * the endTimeOfDay is reached. If you set daysOfWeek values, then fire time will only occur during those week days period.</p> 
- * 
- * <p>The default values for fields if not set are: startTimeOfDay defaults to 00:00:00, the endTimeOfDay default to 23:59:59, 
+ * the endTimeOfDay is reached. If you set daysOfWeek values, then fire time will only occur during those week days period.</p>
+ * <p>
+ * <p>The default values for fields if not set are: startTimeOfDay defaults to 00:00:00, the endTimeOfDay default to 23:59:59,
  * and daysOfWeek is default to every day. The startTime default to current time-stamp now, while endTime has not value.</p>
- * 
- * <p>If startTime is before startTimeOfDay, then it has no affect. Else if startTime after startTimeOfDay, then the first fire time 
- * for that day will be normal startTimeOfDay incremental values after startTime value. Same reversal logic is applied to endTime 
+ * <p>
+ * <p>If startTime is before startTimeOfDay, then it has no affect. Else if startTime after startTimeOfDay, then the first fire time
+ * for that day will be normal startTimeOfDay incremental values after startTime value. Same reversal logic is applied to endTime
  * with endTimeOfDay.</p>
- *   
- * @see DailyTimeIntervalScheduleBuilder
- * 
- * @since 2.1.0
- * 
+ *
  * @author James House
  * @author Zemian Deng <saltnlight5@gmail.com>
+ * @see DailyTimeIntervalScheduleBuilder
+ * @since 2.1.0
  */
 public interface DailyTimeIntervalTrigger extends Trigger {
 
@@ -60,7 +58,7 @@ public interface DailyTimeIntervalTrigger extends Trigger {
      * </p>
      */
     public static final int REPEAT_INDEFINITELY = -1;
-    
+
     /**
      * <p>
      * Instructs the <code>{@link Scheduler}</code> that upon a mis-fire
@@ -69,7 +67,7 @@ public interface DailyTimeIntervalTrigger extends Trigger {
      * </p>
      */
     public static final int MISFIRE_INSTRUCTION_FIRE_ONCE_NOW = 1;
-    
+
     /**
      * <p>
      * Instructs the <code>{@link Scheduler}</code> that upon a mis-fire
@@ -83,18 +81,18 @@ public interface DailyTimeIntervalTrigger extends Trigger {
 
     /**
      * <p>Get the interval unit - the time unit on with the interval applies.</p>
-     * 
+     * <p>
      * <p>The only intervals that are valid for this type of trigger are {@link IntervalUnit#SECOND},
      * {@link IntervalUnit#MINUTE}, and {@link IntervalUnit#HOUR}.</p>
      */
     public IntervalUnit getRepeatIntervalUnit();
-    
+
     /**
      * <p>
      * Get the the number of times for interval this trigger should
      * repeat, after which it will be automatically deleted.
      * </p>
-     * 
+     *
      * @see #REPEAT_INDEFINITELY
      */
     public int getRepeatCount();
@@ -102,17 +100,17 @@ public interface DailyTimeIntervalTrigger extends Trigger {
     /**
      * <p>
      * Get the the time interval that will be added to the <code>DateIntervalTrigger</code>'s
-     * fire time (in the set repeat interval unit) in order to calculate the time of the 
+     * fire time (in the set repeat interval unit) in order to calculate the time of the
      * next trigger repeat.
      * </p>
      */
     public int getRepeatInterval();
-    
+
     /**
      * The time of day to start firing at the given interval.
      */
     public TimeOfDay getStartTimeOfDay();
-    
+
     /**
      * The time of day to complete firing at the given interval.
      */
@@ -120,12 +118,12 @@ public interface DailyTimeIntervalTrigger extends Trigger {
 
     /**
      * The days of the week upon which to fire.
-     * 
-     * @return a Set containing the integers representing the days of the week, per the values 1-7 as defined by 
-     * {@link java.util.Calendar#SUNDAY} - {@link java.util.Calendar#SATURDAY}. 
+     *
+     * @return a Set containing the integers representing the days of the week, per the values 1-7 as defined by
+     * {@link java.util.Calendar#SUNDAY} - {@link java.util.Calendar#SATURDAY}.
      */
     public Set<Integer> getDaysOfWeek();
-    
+
     /**
      * <p>
      * Get the number of times the <code>DateIntervalTrigger</code> has already

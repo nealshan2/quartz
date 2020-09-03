@@ -20,25 +20,25 @@ import org.quartz.Matcher;
 import org.quartz.utils.Key;
 
 /**
- * Matches using an AND operator on two Matcher operands. 
- *  
+ * Matches using an AND operator on two Matcher operands.
+ *
  * @author jhouse
  */
 public class AndMatcher<T extends Key<?>> implements Matcher<T> {
-  
+
     private static final long serialVersionUID = 4697276220890670941L;
 
     protected Matcher<T> leftOperand;
     protected Matcher<T> rightOperand;
-    
+
     protected AndMatcher(Matcher<T> leftOperand, Matcher<T> rightOperand) {
-        if(leftOperand == null || rightOperand == null)
+        if (leftOperand == null || rightOperand == null)
             throw new IllegalArgumentException("Two non-null operands required!");
-        
+
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
     }
-    
+
     /**
      * Create an AndMatcher that depends upon the result of both of the given matchers.
      */

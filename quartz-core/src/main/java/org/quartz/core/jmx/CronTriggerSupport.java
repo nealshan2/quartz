@@ -25,9 +25,9 @@ import org.quartz.spi.OperableTrigger;
 public class CronTriggerSupport {
     private static final String COMPOSITE_TYPE_NAME = "CronTrigger";
     private static final String COMPOSITE_TYPE_DESCRIPTION = "CronTrigger Details";
-    private static final String[] ITEM_NAMES = new String[] { "expression", "timeZone" };
-    private static final String[] ITEM_DESCRIPTIONS = new String[] { "expression", "timeZone" };
-    private static final OpenType[] ITEM_TYPES = new OpenType[] { STRING, STRING };
+    private static final String[] ITEM_NAMES = new String[]{"expression", "timeZone"};
+    private static final String[] ITEM_DESCRIPTIONS = new String[]{"expression", "timeZone"};
+    private static final OpenType[] ITEM_TYPES = new OpenType[]{STRING, STRING};
     private static final CompositeType COMPOSITE_TYPE;
     private static final String TABULAR_TYPE_NAME = "CronTrigger collection";
     private static final String TABULAR_TYPE_DESCRIPTION = "CronTrigger collection";
@@ -44,7 +44,7 @@ public class CronTriggerSupport {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static String[] getItemNames() {
         List<String> l = new ArrayList<String>(Arrays.asList(ITEM_NAMES));
         l.addAll(Arrays.asList(TriggerSupport.getItemNames()));
@@ -56,17 +56,17 @@ public class CronTriggerSupport {
         l.addAll(Arrays.asList(TriggerSupport.getItemDescriptions()));
         return l.toArray(new String[l.size()]);
     }
-    
+
     public static OpenType[] getItemTypes() {
         List<OpenType> l = new ArrayList<OpenType>(Arrays.asList(ITEM_TYPES));
         l.addAll(Arrays.asList(TriggerSupport.getItemTypes()));
         return l.toArray(new OpenType[l.size()]);
     }
-    
+
     public static CompositeData toCompositeData(CronTrigger trigger) {
         try {
             return new CompositeDataSupport(COMPOSITE_TYPE, ITEM_NAMES,
-                    new Object[] {
+                    new Object[]{
                             trigger.getCronExpression(),
                             trigger.getTimeZone(),
                             trigger.getKey().getName(),
@@ -77,12 +77,12 @@ public class CronTriggerSupport {
                             JobDataMapSupport.toTabularData(trigger
                                     .getJobDataMap()),
                             trigger.getCalendarName(),
-                            ((OperableTrigger)trigger).getFireInstanceId(),
+                            ((OperableTrigger) trigger).getFireInstanceId(),
                             trigger.getMisfireInstruction(),
                             trigger.getPriority(), trigger.getStartTime(),
                             trigger.getEndTime(), trigger.getNextFireTime(),
                             trigger.getPreviousFireTime(),
-                            trigger.getFinalFireTime() });
+                            trigger.getFinalFireTime()});
         } catch (OpenDataException e) {
             throw new RuntimeException(e);
         }
@@ -99,12 +99,12 @@ public class CronTriggerSupport {
         }
         return tData;
     }
-    
+
     public static OperableTrigger newTrigger(CompositeData cData) throws ParseException {
         CronTriggerImpl result = new CronTriggerImpl();
         result.setCronExpression((String) cData.get("cronExpression"));
-        if(cData.containsKey("timeZone")) {
-            result.setTimeZone(TimeZone.getTimeZone((String)cData.get("timeZone")));
+        if (cData.containsKey("timeZone")) {
+            result.setTimeZone(TimeZone.getTimeZone((String) cData.get("timeZone")));
         }
         TriggerSupport.initializeTrigger(result, cData);
         return result;
@@ -113,8 +113,8 @@ public class CronTriggerSupport {
     public static OperableTrigger newTrigger(Map<String, Object> attrMap) throws ParseException {
         CronTriggerImpl result = new CronTriggerImpl();
         result.setCronExpression((String) attrMap.get("cronExpression"));
-        if(attrMap.containsKey("timeZone")) {
-            result.setTimeZone(TimeZone.getTimeZone((String)attrMap.get("timeZone")));
+        if (attrMap.containsKey("timeZone")) {
+            result.setTimeZone(TimeZone.getTimeZone((String) attrMap.get("timeZone")));
         }
         TriggerSupport.initializeTrigger(result, attrMap);
         return result;

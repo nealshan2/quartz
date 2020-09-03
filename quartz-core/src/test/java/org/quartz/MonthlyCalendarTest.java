@@ -27,13 +27,13 @@ import org.quartz.impl.calendar.MonthlyCalendar;
 public class MonthlyCalendarTest extends TestCase {
 
     /**
-     * Tests whether greater than the 7th of the month causes infinite looping. 
+     * Tests whether greater than the 7th of the month causes infinite looping.
      * See: QUARTZ-636
      */
     public void testForInfiniteLoop() {
         MonthlyCalendar monthlyCalendar = new MonthlyCalendar();
 
-        for(int i=1; i<9; i++) {
+        for (int i = 1; i < 9; i++) {
             monthlyCalendar.setDayExcluded(i, true);
         }
         Calendar c = Calendar.getInstance();
