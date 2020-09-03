@@ -23,4 +23,3 @@ example11 - Loading Up Quartz with Many Jobs
 example12 - Remoting with Quartz using RMI
 example13 - Clustering Quartz and JDBC Job Stores
 example14 - Quartz Trigger Priorities
-example15 - Clustering Quartz and Terracotta Job Store
