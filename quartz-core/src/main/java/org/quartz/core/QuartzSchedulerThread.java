@@ -18,11 +18,6 @@
 
 package org.quartz.core;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.quartz.JobPersistenceException;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
@@ -33,6 +28,11 @@ import org.quartz.spi.TriggerFiredBundle;
 import org.quartz.spi.TriggerFiredResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * <p>
@@ -241,7 +241,7 @@ public class QuartzSchedulerThread extends Thread {
      */
     @Override
     public void run() {
-        int acquiresFailed = 0;
+        int acquiresFailedCount = 0;
 
         while (!halted.get()) {
             try {
@@ -256,7 +256,7 @@ public class QuartzSchedulerThread extends Thread {
 
                         // reset failure counter when paused, so that we don't
                         // wait again after unpausing
-                        acquiresFailed = 0;
+                        acquiresFailedCount = 0;
                     }
 
                     if (halted.get()) {
@@ -266,9 +266,9 @@ public class QuartzSchedulerThread extends Thread {
 
                 // wait a bit, if reading from job store is consistently
                 // failing (e.g. DB is down or restarting)..
-                if (acquiresFailed > 1) {
+                if (acquiresFailedCount > 1) {
                     try {
-                        long delay = computeDelayForRepeatedErrors(qsRsrcs.getJobStore(), acquiresFailed);
+                        long delay = computeDelayForRepeatedErrors(qsRsrcs.getJobStore(), acquiresFailedCount);
                         Thread.sleep(delay);
                     } catch (Exception ignore) {
                     }
@@ -285,25 +285,25 @@ public class QuartzSchedulerThread extends Thread {
                     try {
                         triggers = qsRsrcs.getJobStore().acquireNextTriggers(
                                 now + idleWaitTime, Math.min(availThreadCount, qsRsrcs.getMaxBatchSize()), qsRsrcs.getBatchTimeWindow());
-                        acquiresFailed = 0;
+                        acquiresFailedCount = 0;
                         if (log.isDebugEnabled())
                             log.debug("batch acquisition of " + (triggers == null ? 0 : triggers.size()) + " triggers");
                     } catch (JobPersistenceException jpe) {
-                        if (acquiresFailed == 0) {
+                        if (acquiresFailedCount == 0) {
                             qs.notifySchedulerListenersError(
                                     "An error occurred while scanning for the next triggers to fire.",
                                     jpe);
                         }
-                        if (acquiresFailed < Integer.MAX_VALUE)
-                            acquiresFailed++;
+                        if (acquiresFailedCount < Integer.MAX_VALUE)
+                            acquiresFailedCount++;
                         continue;
                     } catch (RuntimeException e) {
-                        if (acquiresFailed == 0) {
+                        if (acquiresFailedCount == 0) {
                             getLog().error("quartzSchedulerThreadLoop: RuntimeException "
                                     + e.getMessage(), e);
                         }
-                        if (acquiresFailed < Integer.MAX_VALUE)
-                            acquiresFailed++;
+                        if (acquiresFailedCount < Integer.MAX_VALUE)
+                            acquiresFailedCount++;
                         continue;
                     }
 
