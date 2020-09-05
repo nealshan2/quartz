@@ -241,15 +241,18 @@ public class QuartzSchedulerThread extends Thread {
      */
     @Override
     public void run() {
+        log.info(this.getClass().getSimpleName() + " runs in");
         int acquiresFailedCount = 0;
 
         while (!halted.get()) {
             try {
                 // check if we're supposed to pause...
+                log.info(this.getClass().getSimpleName() + " check if we're supposed to pause...");
                 synchronized (sigLock) {
                     while (paused && !halted.get()) {
                         try {
                             // wait until togglePause(false) is called...
+                            log.info(this.getClass().getSimpleName() + " wait until togglePause(false) is called...");
                             sigLock.wait(1000L);
                         } catch (InterruptedException ignore) {
                         }
@@ -438,6 +441,9 @@ public class QuartzSchedulerThread extends Thread {
         // drop references to scheduler stuff to aid garbage collection...
         qs = null;
         qsRsrcs = null;
+
+        log.info(this.getClass().getSimpleName() + " runs out");
+
     }
 
     private static final long MIN_DELAY = 20;

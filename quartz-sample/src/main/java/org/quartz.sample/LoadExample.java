@@ -34,11 +34,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
  */
 public class LoadExample {
 
-    private int _numberOfJobs = 500;
 
-    public LoadExample(int inNumberOfJobs) {
-        _numberOfJobs = inNumberOfJobs;
-    }
 
     public void run() throws Exception {
         Logger log = LoggerFactory.getLogger(LoadExample.class);
@@ -50,7 +46,7 @@ public class LoadExample {
         log.info("------- Initialization Complete -----------");
 
         // schedule 500 jobs to run
-        for (int count = 1; count <= _numberOfJobs; count++) {
+        for (int count = 1; count <= 5; count++) {
             JobDetail job = newJob(SimpleJob.class)
                     .withIdentity("job" + count, "group_1")
                     .requestRecovery() // ask scheduler
@@ -68,13 +64,11 @@ public class LoadExample {
 
             Trigger trigger = newTrigger()
                     .withIdentity("trigger_" + count, "group_1")
-                    .startAt(futureDate((10000 + (count * 100)), IntervalUnit.MILLISECOND)) // space fire times a small bit
+                    .startAt(futureDate((count * 100), IntervalUnit.MILLISECOND)) // space fire times a small bit
                     .build();
 
             sched.scheduleJob(job, trigger);
-            if (count % 25 == 0) {
-                log.info("...scheduled " + count + " jobs");
-            }
+            log.info("...scheduled " + count + " jobs");
         }
 
         log.info("------- Starting Scheduler ----------------");
@@ -88,7 +82,7 @@ public class LoadExample {
 
         // wait five minutes to give our jobs a chance to run
         try {
-            Thread.sleep(300L * 1000L);
+            Thread.sleep(5L * 1000L);
         } catch (Exception e) {
             //
         }
@@ -103,16 +97,7 @@ public class LoadExample {
     }
 
     public static void main(String[] args) throws Exception {
-
-        int numberOfJobs = 500;
-        if (args.length == 1) {
-            numberOfJobs = Integer.parseInt(args[0]);
-        }
-        if (args.length > 1) {
-            System.out.println("Usage: java " + LoadExample.class.getName() + "[# of jobs]");
-            return;
-        }
-        LoadExample example = new LoadExample(numberOfJobs);
+        LoadExample example = new LoadExample();
         example.run();
     }
 
