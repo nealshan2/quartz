@@ -15,12 +15,7 @@
  */
 package org.quartz.impl;
 
-import java.io.IOException;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import junit.framework.TestCase;
-
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -28,8 +23,17 @@ import org.quartz.SchedulerException;
 import org.quartz.simpl.RAMJobStore;
 import org.quartz.simpl.SimpleThreadPool;
 import org.quartz.spi.ThreadPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SchedulerDetailsSetterTest extends TestCase {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
 
     public void testSetter() throws SchedulerException, IOException {
         Properties props = new Properties();
@@ -42,6 +46,8 @@ public class SchedulerDetailsSetterTest extends TestCase {
 
         assertEquals(3, instanceIdCalls.get());
         assertEquals(3, instanceNameCalls.get());
+
+        log.info("STD-----DIRECT");
 
         DirectSchedulerFactory directFactory = DirectSchedulerFactory.getInstance();
         directFactory.createScheduler(new MyThreadPool(), new MyJobStore());
@@ -94,6 +100,8 @@ public class SchedulerDetailsSetterTest extends TestCase {
 
     public static class MyThreadPool extends SimpleThreadPool {
 
+        private final Logger log = LoggerFactory.getLogger(getClass());
+
         @Override
         public void initialize() {
         }
@@ -101,6 +109,7 @@ public class SchedulerDetailsSetterTest extends TestCase {
         @Override
         public void setInstanceId(String schedInstId) {
             super.setInstanceId(schedInstId);
+            log.info("MyThreadPool instanceIdCalls");
             instanceIdCalls.incrementAndGet();
         }
 
@@ -114,9 +123,12 @@ public class SchedulerDetailsSetterTest extends TestCase {
 
     public static class MyJobStore extends RAMJobStore {
 
+        private final Logger log = LoggerFactory.getLogger(getClass());
+
         @Override
         public void setInstanceId(String schedInstId) {
             super.setInstanceId(schedInstId);
+            log.info("RAMJobStore instanceIdCalls");
             instanceIdCalls.incrementAndGet();
         }
 
