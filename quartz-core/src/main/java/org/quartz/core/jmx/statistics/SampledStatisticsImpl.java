@@ -1,13 +1,7 @@
-package org.quartz.core;
+package org.quartz.core.jmx.statistics;
 
-import java.util.Timer;
-
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.JobListener;
-import org.quartz.SchedulerListener;
-import org.quartz.Trigger;
+import org.quartz.*;
+import org.quartz.core.QuartzScheduler;
 import org.quartz.listeners.SchedulerListenerSupport;
 import org.quartz.utils.counter.CounterConfig;
 import org.quartz.utils.counter.CounterManager;
@@ -15,6 +9,8 @@ import org.quartz.utils.counter.CounterManagerImpl;
 import org.quartz.utils.counter.sampled.SampledCounter;
 import org.quartz.utils.counter.sampled.SampledCounterConfig;
 import org.quartz.utils.counter.sampled.SampledRateCounterConfig;
+
+import java.util.Timer;
 
 public class SampledStatisticsImpl extends SchedulerListenerSupport implements SampledStatistics, JobListener, SchedulerListener {
     @SuppressWarnings("unused")
@@ -35,7 +31,7 @@ public class SampledStatisticsImpl extends SchedulerListenerSupport implements S
     private final SampledCounter jobsExecutingCount;
     private final SampledCounter jobsCompletedCount;
 
-    SampledStatisticsImpl(QuartzScheduler scheduler) {
+    public SampledStatisticsImpl(QuartzScheduler scheduler) {
         this.scheduler = scheduler;
 
         counterManager = new CounterManagerImpl(new Timer(NAME + "Timer"));

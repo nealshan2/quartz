@@ -1,4 +1,4 @@
-package org.quartz.core.jmx;
+package org.quartz.core.jmx.support;
 
 import static javax.management.openmbean.SimpleType.BOOLEAN;
 import static javax.management.openmbean.SimpleType.DATE;

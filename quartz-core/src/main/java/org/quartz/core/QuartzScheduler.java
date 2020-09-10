@@ -18,66 +18,33 @@
 
 package org.quartz.core;
 
+import org.quartz.Calendar;
+import org.quartz.*;
+import org.quartz.Trigger.CompletedExecutionInstruction;
+import org.quartz.Trigger.TriggerState;
+import org.quartz.core.jmx.QuartzSchedulerMBean;
+import org.quartz.core.jmx.QuartzSchedulerMBeanImpl;
+import org.quartz.impl.SchedulerRepository;
+import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.listeners.SchedulerListenerSupport;
+import org.quartz.simpl.PropertySettingJobFactory;
+import org.quartz.spi.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.io.InputStream;
 import java.lang.management.ManagementFactory;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-
-import org.quartz.Calendar;
-import org.quartz.InterruptableJob;
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
-import org.quartz.JobListener;
-import org.quartz.ListenerManager;
-import org.quartz.Matcher;
-import org.quartz.ObjectAlreadyExistsException;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerContext;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerListener;
-import org.quartz.SchedulerMetaData;
-import org.quartz.Trigger;
-
-import static org.quartz.TriggerBuilder.*;
-
-import org.quartz.TriggerKey;
-import org.quartz.TriggerListener;
-import org.quartz.UnableToInterruptJobException;
-import org.quartz.Trigger.CompletedExecutionInstruction;
-import org.quartz.Trigger.TriggerState;
-import org.quartz.core.jmx.QuartzSchedulerMBean;
-import org.quartz.impl.SchedulerRepository;
-import org.quartz.impl.matchers.GroupMatcher;
-import org.quartz.listeners.SchedulerListenerSupport;
-import org.quartz.simpl.PropertySettingJobFactory;
-import org.quartz.spi.JobFactory;
-import org.quartz.spi.OperableTrigger;
-import org.quartz.spi.SchedulerPlugin;
-import org.quartz.spi.SchedulerSignaler;
-import org.quartz.spi.ThreadExecutor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
  * <p>

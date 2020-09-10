@@ -1,4 +1,4 @@
-package org.quartz.core;
+package org.quartz.core.jmx.statistics;
 
 public class NullSampledStatisticsImpl implements SampledStatistics {
     public long getJobsCompletedMostRecentSample() {

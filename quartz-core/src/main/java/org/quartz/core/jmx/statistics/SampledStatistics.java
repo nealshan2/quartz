@@ -1,4 +1,4 @@
-package org.quartz.core;
+package org.quartz.core.jmx.statistics;
 
 public interface SampledStatistics {
     long getJobsScheduledMostRecentSample();

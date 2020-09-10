@@ -16,8 +16,6 @@
  */
 package org.quartz.impl;
 
-import java.text.ParseException;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -44,8 +42,7 @@ import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 import org.quartz.UnableToInterruptJobException;
 import org.quartz.Trigger.TriggerState;
-import org.quartz.core.jmx.JobDetailSupport;
-import org.quartz.core.jmx.TriggerSupport;
+import org.quartz.core.jmx.support.JobDetailSupport;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.impl.matchers.StringMatcher;
 import org.quartz.spi.JobFactory;

@@ -1,8 +1,21 @@
-package org.quartz.core;
+package org.quartz.core.jmx;
 
-import static org.quartz.JobKey.jobKey;
-import static org.quartz.TriggerKey.triggerKey;
+import org.quartz.*;
+import org.quartz.Trigger.TriggerState;
+import org.quartz.core.QuartzScheduler;
+import org.quartz.core.jmx.statistics.NullSampledStatisticsImpl;
+import org.quartz.core.jmx.statistics.SampledStatistics;
+import org.quartz.core.jmx.statistics.SampledStatisticsImpl;
+import org.quartz.core.jmx.support.JobDetailSupport;
+import org.quartz.core.jmx.support.JobExecutionContextSupport;
+import org.quartz.core.jmx.support.TriggerSupport;
+import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.impl.triggers.AbstractTrigger;
+import org.quartz.spi.OperableTrigger;
 
+import javax.management.*;
+import javax.management.openmbean.CompositeData;
+import javax.management.openmbean.TabularData;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -10,44 +23,11 @@ import java.beans.MethodDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.management.ListenerNotFoundException;
-import javax.management.MBeanNotificationInfo;
-import javax.management.NotCompliantMBeanException;
-import javax.management.Notification;
-import javax.management.NotificationBroadcasterSupport;
-import javax.management.NotificationEmitter;
-import javax.management.NotificationFilter;
-import javax.management.NotificationListener;
-import javax.management.StandardMBean;
-import javax.management.openmbean.CompositeData;
-import javax.management.openmbean.TabularData;
-
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
-import org.quartz.JobListener;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerListener;
-import org.quartz.Trigger;
-import org.quartz.Trigger.TriggerState;
-import org.quartz.TriggerKey;
-import org.quartz.core.jmx.JobDetailSupport;
-import org.quartz.core.jmx.JobExecutionContextSupport;
-import org.quartz.core.jmx.QuartzSchedulerMBean;
-import org.quartz.core.jmx.TriggerSupport;
-import org.quartz.impl.matchers.GroupMatcher;
-import org.quartz.impl.triggers.AbstractTrigger;
-import org.quartz.spi.OperableTrigger;
+import static org.quartz.JobKey.jobKey;
+import static org.quartz.TriggerKey.triggerKey;
 
 public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         NotificationEmitter, QuartzSchedulerMBean, JobListener,
@@ -84,7 +64,7 @@ public class QuartzSchedulerMBeanImpl extends StandardMBean implements
      *
      * @throws NotCompliantMBeanException
      */
-    protected QuartzSchedulerMBeanImpl(QuartzScheduler scheduler)
+    public QuartzSchedulerMBeanImpl(QuartzScheduler scheduler)
             throws NotCompliantMBeanException {
         super(QuartzSchedulerMBean.class);
         this.scheduler = scheduler;

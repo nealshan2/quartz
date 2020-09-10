@@ -1,12 +1,14 @@
 package org.quartz.core.jmx;
 
+import org.quartz.core.jmx.support.JobDetailSupport;
+import org.quartz.core.jmx.support.TriggerSupport;
+
+import javax.management.openmbean.CompositeData;
+import javax.management.openmbean.TabularData;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.management.openmbean.CompositeData;
-import javax.management.openmbean.TabularData;
 
 public interface QuartzSchedulerMBean {
     static final String SCHEDULER_STARTED = "schedulerStarted";
