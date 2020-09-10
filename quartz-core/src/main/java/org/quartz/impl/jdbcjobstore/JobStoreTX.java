@@ -29,16 +29,6 @@ import org.quartz.spi.SchedulerSignaler;
  * <code>JobStoreTX</code> is meant to be used in a standalone environment.
  * Both commit and rollback will be handled by this class.
  * </p>
- * <p>
- * <p>
- * If you need a <code>{@link org.quartz.spi.JobStore}</code> class to use
- * within an application-server environment, use <code>{@link
- * org.quartz.impl.jdbcjobstore.JobStoreCMT}</code>
- * instead.
- * </p>
- *
- * @author <a href="mailto:jeff@binaryfeed.org">Jeffrey Wescott</a>
- * @author James House
  */
 public class JobStoreTX extends JobStoreSupport {
 
@@ -81,7 +71,6 @@ public class JobStoreTX extends JobStoreSupport {
      *                 "TRIGGER_ACCESS".  If null, then no lock is aquired, but the
      *                 lockCallback is still executed in a transaction.
      * @see JobStoreSupport#executeInNonManagedTXLock(String, TransactionCallback)
-     * @see JobStoreCMT#executeInLock(String, TransactionCallback)
      * @see JobStoreSupport#getNonManagedTXConnection()
      * @see JobStoreSupport#getConnection()
      */

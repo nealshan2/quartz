@@ -37,7 +37,6 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  * @see org.quartz.impl.jdbcjobstore.JobStoreSupport#getConnection()
- * @see org.quartz.impl.jdbcjobstore.JobStoreCMT#getNonManagedTXConnection()
  */
 public class AttributeRestoringConnectionInvocationHandler implements InvocationHandler {
     private Connection conn;
