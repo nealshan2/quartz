@@ -15,18 +15,17 @@
  */
 package org.quartz.impl;
 
-import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.quartz.scheduler.*;
 import org.quartz.simpl.RAMJobStore;
 import org.quartz.simpl.SimpleThreadPool;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerPlugin;
 import org.quartz.spi.ThreadPool;
+
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.List;
 
 public class DirectSchedulerFactoryTest extends TestCase {
     public void testPlugins() throws Exception {
@@ -57,7 +56,7 @@ public class DirectSchedulerFactoryTest extends TestCase {
         DirectSchedulerFactory.getInstance().createScheduler(
                 "MyScheduler", "Instance1", threadPool,
                 new RAMJobStore(), Collections.singletonMap("TestPlugin", testPlugin),
-                null, -1, 0, 0, false, null);
+                0, 0, false, null);
 
         Scheduler scheduler = DirectSchedulerFactory.getInstance().getScheduler("MyScheduler");
         scheduler.start();
