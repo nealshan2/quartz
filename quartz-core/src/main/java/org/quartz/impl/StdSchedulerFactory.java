@@ -17,12 +17,7 @@
 
 package org.quartz.impl;
 
-import org.quartz.JobListener;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerConfigException;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
-import org.quartz.TriggerListener;
+import org.quartz.*;
 import org.quartz.core.JobRunShellFactory;
 import org.quartz.core.QuartzScheduler;
 import org.quartz.core.QuartzSchedulerResources;
@@ -31,22 +26,10 @@ import org.quartz.impl.jdbcjobstore.Semaphore;
 import org.quartz.impl.jdbcjobstore.TablePrefixAware;
 import org.quartz.impl.matchers.EverythingMatcher;
 import org.quartz.jmx.RemoteMBeanScheduler;
-import org.quartz.management.ManagementRESTServiceConfiguration;
 import org.quartz.simpl.RAMJobStore;
 import org.quartz.simpl.SimpleThreadPool;
-import org.quartz.spi.ClassLoadHelper;
-import org.quartz.spi.InstanceIdGenerator;
-import org.quartz.spi.JobFactory;
-import org.quartz.spi.JobStore;
-import org.quartz.spi.SchedulerPlugin;
-import org.quartz.spi.ThreadExecutor;
-import org.quartz.spi.ThreadPool;
-import org.quartz.utils.ConnectionProvider;
-import org.quartz.utils.DBConnectionManager;
-import org.quartz.utils.JNDIConnectionProvider;
-import org.quartz.utils.C3p0PoolingConnectionProvider;
-import org.quartz.utils.PoolingConnectionProvider;
-import org.quartz.utils.PropertiesParser;
+import org.quartz.spi.*;
+import org.quartz.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,11 +37,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.security.AccessControlException;
@@ -277,10 +256,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
     public static final String PROP_THREAD_EXECUTOR_CLASS = "org.quartz.threadExecutor.class";
 
     public static final String SYSTEM_PROPERTY_AS_INSTANCE_ID = "SYS_PROP";
-
-    public static final String MANAGEMENT_REST_SERVICE_ENABLED = "org.quartz.managementRESTService.enabled";
-
-    public static final String MANAGEMENT_REST_SERVICE_HOST_PORT = "org.quartz.managementRESTService.bind";
 
     /*
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -697,9 +672,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
         if (jmxProxy) {
             throw new SchedulerConfigException("Cannot proxy both RMI and JMX.");
         }
-
-        boolean managementRESTServiceEnabled = cfg.getBooleanProperty(MANAGEMENT_REST_SERVICE_ENABLED, false);
-        String managementRESTServiceHostAndPort = cfg.getStringProperty(MANAGEMENT_REST_SERVICE_HOST_PORT, "0.0.0.0:9889");
 
         Properties schedCtxtProps = cfg.getPropertyGroup(PROP_SCHED_CONTEXT_PREFIX, true);
 
@@ -1244,13 +1216,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
             rsrcs.setInterruptJobsOnShutdownWithWait(interruptJobsOnShutdownWithWait);
             rsrcs.setJMXExport(jmxExport);
             rsrcs.setJMXObjectName(jmxObjectName);
-
-            if (managementRESTServiceEnabled) {
-                ManagementRESTServiceConfiguration managementRESTServiceConfiguration = new ManagementRESTServiceConfiguration();
-                managementRESTServiceConfiguration.setBind(managementRESTServiceHostAndPort);
-                managementRESTServiceConfiguration.setEnabled(managementRESTServiceEnabled);
-                rsrcs.setManagementRESTServiceConfiguration(managementRESTServiceConfiguration);
-            }
 
             SchedulerDetailsSetter.setDetails(tp, schedName, schedInstId);
 

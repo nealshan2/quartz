@@ -18,14 +18,13 @@
 
 package org.quartz.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.quartz.management.ManagementRESTServiceConfiguration;
 import org.quartz.spi.JobStore;
 import org.quartz.spi.SchedulerPlugin;
 import org.quartz.spi.ThreadExecutor;
 import org.quartz.spi.ThreadPool;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -83,8 +82,6 @@ public class QuartzSchedulerResources {
     private boolean jmxExport;
 
     private String jmxObjectName;
-
-    private ManagementRESTServiceConfiguration managementRESTServiceConfiguration;
 
     private ThreadExecutor threadExecutor;
 
@@ -564,15 +561,6 @@ public class QuartzSchedulerResources {
     public void setInterruptJobsOnShutdownWithWait(
             boolean interruptJobsOnShutdownWithWait) {
         this.interruptJobsOnShutdownWithWait = interruptJobsOnShutdownWithWait;
-    }
-
-
-    public ManagementRESTServiceConfiguration getManagementRESTServiceConfiguration() {
-        return managementRESTServiceConfiguration;
-    }
-
-    public void setManagementRESTServiceConfiguration(ManagementRESTServiceConfiguration managementRESTServiceConfiguration) {
-        this.managementRESTServiceConfiguration = managementRESTServiceConfiguration;
     }
 
 }
