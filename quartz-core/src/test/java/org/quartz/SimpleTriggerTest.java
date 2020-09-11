@@ -15,22 +15,22 @@
  */
 package org.quartz;
 
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-
 import org.quartz.job.JobDataMap;
 import org.quartz.triggers.SimpleTrigger;
 import org.quartz.triggers.SimpleTriggerImpl;
 import org.quartz.triggers.Trigger;
+
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 
 /**
  * Unit test for SimpleTrigger serialization backwards compatibility.
  */
 public class SimpleTriggerTest extends SerializationTestSupport {
-    private static final String[] VERSIONS = new String[]{"2.0"};
+    private static final String[] VERSIONS = new String[]{"2.5.0"};
 
     private static final TimeZone EST_TIME_ZONE = TimeZone.getTimeZone("US/Eastern");
     private static final Calendar START_TIME = Calendar.getInstance();
@@ -186,7 +186,7 @@ public class SimpleTriggerTest extends SerializationTestSupport {
 
     // execute with version number to generate a new version's serialized form
     public static void main(String[] args) throws Exception {
-        new SimpleTriggerTest().writeJobDataFile("2.0");
+        new SimpleTriggerTest().writeJobDataFile(VERSIONS[0]);
     }
 
 }

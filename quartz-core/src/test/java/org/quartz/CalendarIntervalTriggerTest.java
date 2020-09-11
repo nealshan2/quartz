@@ -15,10 +15,14 @@
  */
 package org.quartz;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import org.junit.Test;
+import org.quartz.calendar.BaseCalendar;
+import org.quartz.calendar.DateBuilder;
+import org.quartz.calendar.DateBuilder.IntervalUnit;
+import org.quartz.job.JobDataMap;
+import org.quartz.triggers.CalendarIntervalTriggerImpl;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerUtils;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -26,21 +30,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.junit.Test;
-import org.quartz.calendar.DateBuilder;
-import org.quartz.calendar.DateBuilder.IntervalUnit;
-import org.quartz.calendar.BaseCalendar;
-import org.quartz.job.JobDataMap;
-import org.quartz.triggers.CalendarIntervalTriggerImpl;
-import org.quartz.triggers.Trigger;
-import org.quartz.triggers.TriggerUtils;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Unit tests for DateIntervalTrigger.
  */
 public class CalendarIntervalTriggerTest extends SerializationTestSupport {
 
-    private static final String[] VERSIONS = new String[]{"2.0"};
+    private static final String[] VERSIONS = new String[]{"2.5.0"};
 
     @Test
     public void testQTZ331FireTimeAfterBoundary() {
@@ -513,7 +512,7 @@ public class CalendarIntervalTriggerTest extends SerializationTestSupport {
 
     // execute with version number to generate a new version's serialized form
     public static void main(String[] args) throws Exception {
-        new CalendarIntervalTriggerTest().writeJobDataFile("2.0");
+        new CalendarIntervalTriggerTest().writeJobDataFile(VERSIONS[0]);
     }
 
 

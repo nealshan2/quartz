@@ -15,12 +15,12 @@
  */
 package org.quartz;
 
-import java.text.ParseException;
-
 import org.quartz.cron.CronTrigger;
 import org.quartz.cron.CronTriggerImpl;
 import org.quartz.job.JobDataMap;
 import org.quartz.triggers.Trigger;
+
+import java.text.ParseException;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.is;
  */
 public class CronTriggerTest extends SerializationTestSupport {
 
-    private static final String[] VERSIONS = new String[]{"2.0"};
+    private static final String[] VERSIONS = new String[]{"2.5.0"};
 
     /**
      * Get the Quartz versions for which we should verify
@@ -168,7 +168,7 @@ public class CronTriggerTest extends SerializationTestSupport {
 
     // execute with version number to generate a new version's serialized form
     public static void main(String[] args) throws Exception {
-        new CronTriggerTest().writeJobDataFile("2.0");
+        new CronTriggerTest().writeJobDataFile(VERSIONS[0]);
     }
 
 }

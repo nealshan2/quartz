@@ -22,7 +22,7 @@ import org.quartz.job.JobDataMap;
  * Unit test for JobDataMap serialization backwards compatibility.
  */
 public class JobDataMapTest extends SerializationTestSupport {
-    private static final String[] VERSIONS = new String[]{"1.4.5", "1.5.1", "2.1"};
+    private static final String[] VERSIONS = new String[]{"2.5.0"};
 
     /**
      * Get the object to serialize when generating serialized file for future
@@ -61,6 +61,6 @@ public class JobDataMapTest extends SerializationTestSupport {
     }
 
     public static void main(String[] args) throws Exception {
-        new JobDataMapTest().writeJobDataFile("2.1");
+        new JobDataMapTest().writeJobDataFile(VERSIONS[0]);
     }
 }
