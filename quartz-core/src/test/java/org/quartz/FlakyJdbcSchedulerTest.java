@@ -15,16 +15,6 @@
  */
 package org.quartz;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +27,16 @@ import org.quartz.impl.jdbcjobstore.JobStoreTX;
 import org.quartz.simpl.SimpleThreadPool;
 import org.quartz.utils.ConnectionProvider;
 import org.quartz.utils.DBConnectionManager;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(Parameterized.class)
 public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
@@ -61,7 +61,8 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
     @Override
     protected Scheduler createScheduler(String name, int threadPoolSize) throws SchedulerException {
         try {
-            DBConnectionManager.getInstance().addConnectionProvider(name, new FlakyConnectionProvider(name));
+            DBConnectionManager.getInstance()
+                    .addConnectionProvider(name, new FlakyConnectionProvider(name));
         } catch (SQLException ex) {
             throw new AssertionError(ex);
         }
@@ -164,8 +165,11 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
                 return DBConnectionManager.getInstance().getConnection(delegateName);
             } else {
                 createFailure();
-                return (Connection) Proxy.newProxyInstance(Connection.class.getClassLoader(), new Class[]{Connection.class},
-                        new FlakyConnectionInvocationHandler(DBConnectionManager.getInstance().getConnection(delegateName)));
+                return (Connection) Proxy.newProxyInstance(Connection.class.getClassLoader(),
+                        new Class[]{Connection.class},
+                        new FlakyConnectionInvocationHandler(
+                                DBConnectionManager.getInstance()
+                                        .getConnection(delegateName)));
             }
         }
 
