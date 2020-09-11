@@ -26,9 +26,6 @@ import org.quartz.TriggerListener;
 import org.quartz.core.JobRunShellFactory;
 import org.quartz.core.QuartzScheduler;
 import org.quartz.core.QuartzSchedulerResources;
-import org.quartz.ee.jta.JTAAnnotationAwareJobRunShellFactory;
-import org.quartz.ee.jta.JTAJobRunShellFactory;
-import org.quartz.ee.jta.UserTransactionHelper;
 import org.quartz.impl.jdbcjobstore.JobStoreSupport;
 import org.quartz.impl.jdbcjobstore.Semaphore;
 import org.quartz.impl.jdbcjobstore.TablePrefixAware;
@@ -169,8 +166,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
     public static final String PROP_SCHED_RMI_BIND_NAME = "org.quartz.scheduler.rmi.bindName";
 
     public static final String PROP_SCHED_WRAP_JOB_IN_USER_TX = "org.quartz.scheduler.wrapJobExecutionInUserTransaction";
-
-    public static final String PROP_SCHED_USER_TX_URL = "org.quartz.scheduler.userTransactionURL";
 
     public static final String PROP_SCHED_IDLE_WAIT_TIME = "org.quartz.scheduler.idleWaitTime";
 
@@ -625,7 +620,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
         DBConnectionManager dbMgr = null;
         String instanceIdGeneratorClass = null;
         Properties tProps = null;
-        String userTXLocation = null;
         boolean wrapJobInTx = false;
         boolean autoId = false;
         long idleWaitTime = -1;
@@ -658,12 +652,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
             autoId = true;
             instanceIdGeneratorClass =
                     "org.quartz.simpl.SystemPropertyInstanceIdGenerator";
-        }
-
-        userTXLocation = cfg.getStringProperty(PROP_SCHED_USER_TX_URL,
-                userTXLocation);
-        if (userTXLocation != null && userTXLocation.trim().length() == 0) {
-            userTXLocation = null;
         }
 
         classLoadHelperClass = cfg.getStringProperty(
@@ -1227,17 +1215,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
         try {
 
 
-            JobRunShellFactory jrsf = null; // Create correct run-shell factory...
-
-            if (userTXLocation != null) {
-                UserTransactionHelper.setUserTxLocation(userTXLocation);
-            }
-
-            if (wrapJobInTx) {
-                jrsf = new JTAJobRunShellFactory();
-            } else {
-                jrsf = new JTAAnnotationAwareJobRunShellFactory();
-            }
 
             if (autoId) {
                 try {
@@ -1284,6 +1261,7 @@ public class StdSchedulerFactory implements SchedulerFactory {
             rsrcs.setName(schedName);
             rsrcs.setThreadName(threadName);
             rsrcs.setInstanceId(schedInstId);
+            JobRunShellFactory jrsf = new StdJobRunShellFactory(); // Create correct run-shell factory...
             rsrcs.setJobRunShellFactory(jrsf);
             rsrcs.setMakeSchedulerThreadDaemon(makeSchedulerThreadDaemon);
             rsrcs.setThreadsInheritInitializersClassLoadContext(threadsInheritInitalizersClassLoader);
