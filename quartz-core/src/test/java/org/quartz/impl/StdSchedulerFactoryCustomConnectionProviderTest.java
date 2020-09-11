@@ -15,12 +15,12 @@
  */
 package org.quartz.impl;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.quartz.scheduler.Scheduler;
 import org.quartz.scheduler.SchedulerException;
 import org.quartz.scheduler.StdSchedulerFactory;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * TestCase to verify StdSchedulerFactory initializes correctly a custom ConnectionProvider
@@ -38,7 +38,7 @@ public class StdSchedulerFactoryCustomConnectionProviderTest {
             scheduler.start();
         } catch (Exception e) {
             //the mock connection provider throws a MockSQLException
-            assertEquals("org.quartz.job.MockSQLException", e.getCause().getCause().getClass().getName());
+            assertEquals("org.quartz.impl.MockSQLException", e.getCause().getCause().getClass().getName());
         }
         assertEquals("setCustomProperty(customValue)", MockConnectionProvider.methodsCalled.get(0));
         assertEquals("initialize", MockConnectionProvider.methodsCalled.get(1));
