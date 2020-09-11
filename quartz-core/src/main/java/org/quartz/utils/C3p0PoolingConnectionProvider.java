@@ -18,7 +18,7 @@
 package org.quartz.utils;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import org.quartz.SchedulerException;
+import org.quartz.scheduler.SchedulerException;
 
 import java.beans.PropertyVetoException;
 import java.sql.Connection;

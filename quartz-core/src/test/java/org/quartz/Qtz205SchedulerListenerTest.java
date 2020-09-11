@@ -15,17 +15,24 @@
  */
 package org.quartz;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.scheduler.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 import java.util.Properties;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.quartz.Trigger.CompletedExecutionInstruction;
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.Trigger.CompletedExecutionInstruction;
+import org.quartz.scheduler.StdSchedulerFactory;
+import org.quartz.job.*;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.scheduler.SchedulerListener;
+import org.quartz.triggers.TriggerKey;
+import org.quartz.triggers.TriggerListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

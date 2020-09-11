@@ -18,7 +18,7 @@ package org.quartz.simpl;
 
 import java.net.InetAddress;
 
-import org.quartz.SchedulerException;
+import org.quartz.scheduler.SchedulerException;
 import org.quartz.spi.InstanceIdGenerator;
 
 /**

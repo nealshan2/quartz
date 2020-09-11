@@ -17,8 +17,10 @@
 
 package org.quartz.spi;
 
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.scheduler.SchedulerConfigException;
+import org.quartz.scheduler.StdSchedulerFactory;
 
 /**
  * <p>
@@ -33,7 +35,7 @@ import org.quartz.SchedulerException;
  * </p>
  * <p>
  * <p>
- * If you use <code>{@link org.quartz.impl.StdSchedulerFactory}</code> to
+ * If you use <code>{@link StdSchedulerFactory}</code> to
  * initialize your Scheduler, it can also create and initialize your plugins -
  * look at the configuration docs for details.
  * </p>
@@ -79,7 +81,7 @@ public interface SchedulerPlugin {
      * @param scheduler  The scheduler to which the plugin is registered.
      * @param loadHelper The classLoadHelper the <code>SchedulerFactory</code> is
      *                   actually using
-     * @throws org.quartz.SchedulerConfigException if there is an error initializing.
+     * @throws SchedulerConfigException if there is an error initializing.
      */
     void initialize(String name, Scheduler scheduler, ClassLoadHelper loadHelper)
             throws SchedulerException;

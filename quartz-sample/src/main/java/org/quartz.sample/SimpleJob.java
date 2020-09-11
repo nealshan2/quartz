@@ -17,10 +17,12 @@
 
 package org.quartz.sample;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
+import org.quartz.job.Job;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.job.JobKey;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.triggers.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +50,7 @@ public class SimpleJob implements Job {
 
     /**
      * <p>
-     * Called by the <code>{@link org.quartz.Scheduler}</code> when a <code>{@link org.quartz.Trigger}</code> fires that
+     * Called by the <code>{@link Scheduler}</code> when a <code>{@link Trigger}</code> fires that
      * is associated with the <code>Job</code>.
      * </p>
      *

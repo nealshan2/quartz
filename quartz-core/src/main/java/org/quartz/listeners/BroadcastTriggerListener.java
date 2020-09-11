@@ -19,10 +19,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.quartz.JobExecutionContext;
-import org.quartz.Trigger;
-import org.quartz.TriggerListener;
-import org.quartz.Trigger.CompletedExecutionInstruction;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerListener;
+import org.quartz.triggers.Trigger.CompletedExecutionInstruction;
 
 /**
  * Holds a List of references to TriggerListener instances and broadcasts all
@@ -34,8 +34,8 @@ import org.quartz.Trigger.CompletedExecutionInstruction;
  * get notified.</p>
  *
  * @author James House (jhouse AT revolition DOT net)
- * @see #addListener(org.quartz.TriggerListener)
- * @see #removeListener(org.quartz.TriggerListener)
+ * @see #addListener(TriggerListener)
+ * @see #removeListener(TriggerListener)
  * @see #removeListener(String)
  */
 public class BroadcastTriggerListener implements TriggerListener {

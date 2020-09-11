@@ -2,11 +2,12 @@ package org.quartz.spi;
 
 import java.util.Date;
 
-import org.quartz.Calendar;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.calendar.Calendar;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.job.JobDetail;
 
 public interface OperableTrigger extends MutableTrigger {
 
@@ -56,7 +57,7 @@ public interface OperableTrigger extends MutableTrigger {
      * <p>
      * <p>
      * Called after the <code>{@link Scheduler}</code> has executed the
-     * <code>{@link org.quartz.JobDetail}</code> associated with the <code>Trigger</code>
+     * <code>{@link JobDetail}</code> associated with the <code>Trigger</code>
      * in order to get the final instruction code from the trigger.
      * </p>
      *

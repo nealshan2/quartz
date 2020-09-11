@@ -19,9 +19,9 @@ package org.quartz.integrations.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.scheduler.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,15 +31,15 @@ import java.util.List;
 import java.util.Properties;
 
 import org.junit.Test;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerFactory;
-import org.quartz.SimpleTrigger;
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.exception.DisallowConcurrentExecution;
+import org.quartz.job.Job;
+import org.quartz.job.JobDetail;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerFactory;
+import org.quartz.triggers.SimpleTrigger;
+import org.quartz.scheduler.StdSchedulerFactory;
 import org.quartz.simpl.RAMJobStore;
 import org.quartz.spi.OperableTrigger;
 import org.slf4j.Logger;

@@ -18,11 +18,13 @@ package org.quartz.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.quartz.*;
-import org.quartz.core.QuartzSchedulerResources;
-import org.quartz.impl.calendar.BaseCalendar;
-import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.scheduler.*;
+import org.quartz.calendar.BaseCalendar;
+import org.quartz.matchers.GroupMatcher;
 import org.quartz.jmx.RemoteMBeanScheduler;
+import org.quartz.job.*;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerKey;
 
 import javax.management.AttributeList;
 import javax.management.MBeanServer;
@@ -36,8 +38,8 @@ import java.util.Properties;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 /**
  * RemoteMBeanSchedulerTest

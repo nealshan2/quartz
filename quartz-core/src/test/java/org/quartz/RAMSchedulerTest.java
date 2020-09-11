@@ -17,7 +17,9 @@ package org.quartz;
 
 import java.util.Properties;
 
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.scheduler.StdSchedulerFactory;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
 
 public class RAMSchedulerTest extends AbstractSchedulerTest {
 

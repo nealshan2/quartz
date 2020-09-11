@@ -15,8 +15,8 @@
  */
 package org.quartz;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 import java.util.List;
 import java.util.Properties;
@@ -26,7 +26,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import junit.framework.TestCase;
 
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.exception.UnableToInterruptJobException;
+import org.quartz.scheduler.StdSchedulerFactory;
+import org.quartz.job.InterruptableJob;
+import org.quartz.job.JobDetail;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.triggers.Trigger;
 
 /**
  * Test job interruption

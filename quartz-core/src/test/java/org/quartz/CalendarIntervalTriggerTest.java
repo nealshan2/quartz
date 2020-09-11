@@ -27,9 +27,13 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.junit.Test;
-import org.quartz.DateBuilder.IntervalUnit;
-import org.quartz.impl.calendar.BaseCalendar;
-import org.quartz.impl.triggers.CalendarIntervalTriggerImpl;
+import org.quartz.calendar.DateBuilder;
+import org.quartz.calendar.DateBuilder.IntervalUnit;
+import org.quartz.calendar.BaseCalendar;
+import org.quartz.job.JobDataMap;
+import org.quartz.triggers.CalendarIntervalTriggerImpl;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerUtils;
 
 /**
  * Unit tests for DateIntervalTrigger.

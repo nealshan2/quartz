@@ -16,22 +16,32 @@
  */
 package org.quartz;
 
-import static org.quartz.DailyTimeIntervalScheduleBuilder.dailyTimeIntervalSchedule;
-import static org.quartz.DateBuilder.dateOf;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TimeOfDay.hourMinuteAndSecondOfDay;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.scheduler.DailyTimeIntervalScheduleBuilder.dailyTimeIntervalSchedule;
+import static org.quartz.calendar.DateBuilder.dateOf;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.calendar.TimeOfDay.hourMinuteAndSecondOfDay;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 import java.util.Date;
-import java.util.Calendar;
 import java.util.List;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.quartz.DateBuilder.IntervalUnit;
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.calendar.DateBuilder;
+import org.quartz.calendar.DateBuilder.IntervalUnit;
+import org.quartz.calendar.TimeOfDay;
+import org.quartz.scheduler.StdSchedulerFactory;
+import org.quartz.job.Job;
+import org.quartz.job.JobDetail;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
 import org.quartz.spi.OperableTrigger;
+import org.quartz.triggers.DailyTimeIntervalTrigger;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerUtils;
 
 /**
  * Unit test for DailyTimeIntervalScheduleBuilder.

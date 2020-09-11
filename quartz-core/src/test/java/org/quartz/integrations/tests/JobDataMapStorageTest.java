@@ -17,17 +17,17 @@ package org.quartz.integrations.tests;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.quartz.*;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import org.quartz.cron.CronTrigger;
+import org.quartz.job.JobDataMap;
+import org.quartz.job.JobDetail;
+import org.quartz.job.JobKey;
+import org.quartz.triggers.Trigger;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.quartz.CronScheduleBuilder.cronSchedule;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
-import static org.quartz.TriggerKey.triggerKey;
+import static org.quartz.cron.CronScheduleBuilder.cronSchedule;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
+import static org.quartz.triggers.TriggerKey.triggerKey;
 
 /**
  * Created by zemian on 10/25/16.

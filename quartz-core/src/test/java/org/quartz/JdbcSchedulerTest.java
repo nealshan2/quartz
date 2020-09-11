@@ -17,10 +17,12 @@ package org.quartz;
 
 import java.sql.SQLException;
 
-import org.quartz.impl.DirectSchedulerFactory;
-import org.quartz.impl.SchedulerRepository;
-import org.quartz.impl.jdbcjobstore.JdbcQuartzTestUtilities;
-import org.quartz.impl.jdbcjobstore.JobStoreTX;
+import org.quartz.scheduler.DirectSchedulerFactory;
+import org.quartz.scheduler.SchedulerRepository;
+import org.quartz.job.jdbcjobstore.JdbcQuartzTestUtilities;
+import org.quartz.job.jdbcjobstore.JobStoreTX;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
 import org.quartz.simpl.SimpleThreadPool;
 
 public class JdbcSchedulerTest extends AbstractSchedulerTest {

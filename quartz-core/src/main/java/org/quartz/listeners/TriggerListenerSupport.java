@@ -17,27 +17,27 @@ package org.quartz.listeners;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.quartz.TriggerListener;
-import org.quartz.Trigger;
-import org.quartz.JobExecutionContext;
-import org.quartz.Trigger.CompletedExecutionInstruction;
+import org.quartz.triggers.TriggerListener;
+import org.quartz.triggers.Trigger;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.triggers.Trigger.CompletedExecutionInstruction;
 
 /**
  * A helpful abstract base class for implementors of
- * <code>{@link org.quartz.TriggerListener}</code>.
+ * <code>{@link TriggerListener}</code>.
  * <p>
  * <p>
  * The methods in this class are empty so you only need to override the
- * subset for the <code>{@link org.quartz.TriggerListener}</code> events
+ * subset for the <code>{@link TriggerListener}</code> events
  * you care about.
  * </p>
  * <p>
  * <p>
- * You are required to implement <code>{@link org.quartz.TriggerListener#getName()}</code>
+ * You are required to implement <code>{@link TriggerListener#getName()}</code>
  * to return the unique name of your <code>TriggerListener</code>.
  * </p>
  *
- * @see org.quartz.TriggerListener
+ * @see TriggerListener
  */
 public abstract class TriggerListenerSupport implements TriggerListener {
     private final Logger log = LoggerFactory.getLogger(getClass());

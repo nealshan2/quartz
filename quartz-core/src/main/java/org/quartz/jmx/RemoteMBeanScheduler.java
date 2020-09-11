@@ -16,14 +16,22 @@
  */
 package org.quartz.jmx;
 
-import org.quartz.Calendar;
-import org.quartz.*;
-import org.quartz.Trigger.TriggerState;
-import org.quartz.impl.SchedulerRepository;
-import org.quartz.impl.matchers.GroupMatcher;
-import org.quartz.impl.matchers.StringMatcher;
+import org.quartz.calendar.Calendar;
+import org.quartz.exception.UnableToInterruptJobException;
+import org.quartz.scheduler.*;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.Trigger.TriggerState;
+import org.quartz.scheduler.SchedulerRepository;
+import org.quartz.listeners.ListenerManager;
+import org.quartz.matchers.GroupMatcher;
+import org.quartz.matchers.StringMatcher;
 import org.quartz.jmx.support.JobDetailSupport;
+import org.quartz.job.JobDataMap;
+import org.quartz.job.JobDetail;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobKey;
 import org.quartz.spi.JobFactory;
+import org.quartz.triggers.TriggerKey;
 
 import javax.management.Attribute;
 import javax.management.AttributeList;
@@ -44,8 +52,8 @@ import java.util.*;
  * MBeanServer using their application specific connector.
  * </p>
  *
- * @see org.quartz.Scheduler
- * @see org.quartz.core.QuartzScheduler
+ * @see Scheduler
+ * @see QuartzScheduler
  */
 public abstract class RemoteMBeanScheduler implements Scheduler {
 
@@ -886,7 +894,7 @@ public abstract class RemoteMBeanScheduler implements Scheduler {
     }
 
     /**
-     * @see org.quartz.Scheduler#getPausedTriggerGroups()
+     * @see Scheduler#getPausedTriggerGroups()
      */
     @SuppressWarnings("unchecked")
     public Set<String> getPausedTriggerGroups() throws SchedulerException {
@@ -910,7 +918,7 @@ public abstract class RemoteMBeanScheduler implements Scheduler {
     }
 
     /**
-     * @see org.quartz.Scheduler#interrupt(JobKey)
+     * @see Scheduler#interrupt(JobKey)
      */
     public boolean interrupt(JobKey jobKey) throws UnableToInterruptJobException {
         try {
@@ -936,7 +944,7 @@ public abstract class RemoteMBeanScheduler implements Scheduler {
     }
 
     /**
-     * @see org.quartz.Scheduler#setJobFactory(org.quartz.spi.JobFactory)
+     * @see Scheduler#setJobFactory(org.quartz.spi.JobFactory)
      */
     public void setJobFactory(JobFactory factory) throws SchedulerException {
         throw new SchedulerException("Operation not supported for remote schedulers.");

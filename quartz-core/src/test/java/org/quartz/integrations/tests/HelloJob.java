@@ -19,9 +19,11 @@ package org.quartz.integrations.tests;
 
 import java.util.Date;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.job.Job;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.triggers.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,8 +52,8 @@ public class HelloJob implements Job {
 
     /**
      * <p>
-     * Called by the <code>{@link org.quartz.Scheduler}</code> when a
-     * <code>{@link org.quartz.Trigger}</code> fires that is associated with the
+     * Called by the <code>{@link Scheduler}</code> when a
+     * <code>{@link Trigger}</code> fires that is associated with the
      * <code>Job</code>.
      * </p>
      *

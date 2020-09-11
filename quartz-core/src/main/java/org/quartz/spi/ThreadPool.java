@@ -17,12 +17,13 @@
 
 package org.quartz.spi;
 
-import org.quartz.SchedulerConfigException;
+import org.quartz.scheduler.QuartzScheduler;
+import org.quartz.scheduler.SchedulerConfigException;
 
 /**
  * <p>
  * The interface to be implemented by classes that want to provide a thread
- * pool for the <code>{@link org.quartz.core.QuartzScheduler}</code>'s use.
+ * pool for the <code>{@link QuartzScheduler}</code>'s use.
  * </p>
  * <p>
  * <p>
@@ -37,7 +38,7 @@ import org.quartz.SchedulerConfigException;
  * </p>
  *
  * @author James House
- * @see org.quartz.core.QuartzScheduler
+ * @see QuartzScheduler
  */
 public interface ThreadPool {
 

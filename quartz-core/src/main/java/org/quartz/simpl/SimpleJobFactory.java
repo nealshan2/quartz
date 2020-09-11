@@ -18,10 +18,10 @@ package org.quartz.simpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.quartz.Job;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.job.Job;
+import org.quartz.job.JobDetail;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
 import org.quartz.spi.JobFactory;
 import org.quartz.spi.TriggerFiredBundle;
 

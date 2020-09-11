@@ -18,8 +18,9 @@ package org.quartz.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.scheduler.StdSchedulerFactory;
 
 /**
  * TestCase to verify StdSchedulerFactory initializes correctly a custom ConnectionProvider

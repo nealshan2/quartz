@@ -18,8 +18,8 @@ import javax.management.openmbean.TabularData;
 import javax.management.openmbean.TabularDataSupport;
 import javax.management.openmbean.TabularType;
 
-import org.quartz.SimpleTrigger;
-import org.quartz.impl.triggers.SimpleTriggerImpl;
+import org.quartz.triggers.SimpleTrigger;
+import org.quartz.triggers.SimpleTriggerImpl;
 import org.quartz.spi.OperableTrigger;
 
 public class SimpleTriggerSupport {

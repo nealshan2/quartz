@@ -20,9 +20,9 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
-import org.quartz.Scheduler;
-import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.jdbcjobstore.JdbcQuartzTestUtilities;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.StdSchedulerFactory;
+import org.quartz.job.jdbcjobstore.JdbcQuartzTestUtilities;
 
 /**
  * Unit test for SystemPropertyInstanceIdGenerator.
@@ -99,7 +99,7 @@ public class SystemPropertyInstanceIdGeneratorTest extends TestCase {
         config.setProperty("org.quartz.scheduler.instanceIdGenerator.systemPropertyName", "blah.blah");
         config.setProperty("org.quartz.threadPool.threadCount", "1");
         config.setProperty("org.quartz.threadPool.class", "org.quartz.simpl.SimpleThreadPool");
-        config.setProperty("org.quartz.jobStore.class", org.quartz.impl.jdbcjobstore.JobStoreTX.class.getName());
+        config.setProperty("org.quartz.jobStore.class", org.quartz.job.jdbcjobstore.JobStoreTX.class.getName());
         config.setProperty("org.quartz.jobStore.isClustered", "true");
         config.setProperty("org.quartz.jobStore.dataSource", "MeSchedulerDatabase");
 

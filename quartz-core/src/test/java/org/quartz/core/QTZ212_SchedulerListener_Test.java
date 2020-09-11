@@ -21,11 +21,11 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
-import org.quartz.SchedulerListener;
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.scheduler.SchedulerFactory;
+import org.quartz.scheduler.SchedulerListener;
+import org.quartz.scheduler.StdSchedulerFactory;
 import org.quartz.listeners.BroadcastSchedulerListener;
 import org.quartz.listeners.SchedulerListenerSupport;
 

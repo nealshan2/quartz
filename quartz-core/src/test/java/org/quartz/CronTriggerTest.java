@@ -17,7 +17,10 @@ package org.quartz;
 
 import java.text.ParseException;
 
-import org.quartz.impl.triggers.CronTriggerImpl;
+import org.quartz.cron.CronTrigger;
+import org.quartz.cron.CronTriggerImpl;
+import org.quartz.job.JobDataMap;
+import org.quartz.triggers.Trigger;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;

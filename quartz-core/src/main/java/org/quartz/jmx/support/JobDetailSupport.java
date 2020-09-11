@@ -15,9 +15,9 @@ import javax.management.openmbean.TabularData;
 import javax.management.openmbean.TabularDataSupport;
 import javax.management.openmbean.TabularType;
 
-import org.quartz.Job;
-import org.quartz.JobDetail;
-import org.quartz.impl.JobDetailImpl;
+import org.quartz.job.Job;
+import org.quartz.job.JobDetail;
+import org.quartz.job.JobDetailImpl;
 
 public class JobDetailSupport {
     private static final String COMPOSITE_TYPE_NAME = "JobDetail";

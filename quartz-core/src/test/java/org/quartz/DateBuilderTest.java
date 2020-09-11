@@ -20,8 +20,8 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static org.quartz.DateBuilder.*;
-import static org.quartz.DateBuilder.MILLISECONDS_IN_DAY;
+import static org.quartz.calendar.DateBuilder.*;
+import static org.quartz.calendar.DateBuilder.MILLISECONDS_IN_DAY;
 
 import junit.framework.TestCase;
 

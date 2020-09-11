@@ -24,7 +24,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -33,21 +32,20 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.quartz.Calendar;
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
-import org.quartz.JobPersistenceException;
-import org.quartz.ObjectAlreadyExistsException;
-import org.quartz.Trigger;
-import org.quartz.TriggerKey;
-import org.quartz.Trigger.CompletedExecutionInstruction;
-import org.quartz.Trigger.TriggerState;
-import org.quartz.Trigger.TriggerTimeComparator;
-import org.quartz.impl.JobDetailImpl;
-import org.quartz.impl.matchers.GroupMatcher;
-import org.quartz.impl.matchers.StringMatcher;
+import org.quartz.calendar.Calendar;
+import org.quartz.job.Job;
+import org.quartz.job.JobDataMap;
+import org.quartz.job.JobDetail;
+import org.quartz.job.JobKey;
+import org.quartz.job.JobPersistenceException;
+import org.quartz.exception.ObjectAlreadyExistsException;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerKey;
+import org.quartz.triggers.Trigger.CompletedExecutionInstruction;
+import org.quartz.triggers.Trigger.TriggerState;
+import org.quartz.triggers.Trigger.TriggerTimeComparator;
+import org.quartz.matchers.GroupMatcher;
+import org.quartz.matchers.StringMatcher;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.JobStore;
 import org.quartz.spi.OperableTrigger;
@@ -56,8 +54,6 @@ import org.quartz.spi.TriggerFiredBundle;
 import org.quartz.spi.TriggerFiredResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.quartz.impl.matchers.EverythingMatcher.allTriggers;
 
 /**
  * <p>
@@ -235,7 +231,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Store the given <code>{@link org.quartz.JobDetail}</code> and <code>{@link org.quartz.Trigger}</code>.
+     * Store the given <code>{@link JobDetail}</code> and <code>{@link Trigger}</code>.
      * </p>
      *
      * @param newJob     The <code>JobDetail</code> to be stored.
@@ -251,7 +247,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Store the given <code>{@link org.quartz.Job}</code>.
+     * Store the given <code>{@link Job}</code>.
      * </p>
      *
      * @param newJob          The <code>Job</code> to be stored.
@@ -296,8 +292,8 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Remove (delete) the <code>{@link org.quartz.Job}</code> with the given
-     * name, and any <code>{@link org.quartz.Trigger}</code> s that reference
+     * Remove (delete) the <code>{@link Job}</code> with the given
+     * name, and any <code>{@link Trigger}</code> s that reference
      * it.
      * </p>
      *
@@ -384,7 +380,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Store the given <code>{@link org.quartz.Trigger}</code>.
+     * Store the given <code>{@link Trigger}</code>.
      * </p>
      *
      * @param newTrigger      The <code>Trigger</code> to be stored.
@@ -393,7 +389,7 @@ public class RAMJobStore implements JobStore {
      *                        be over-written.
      * @throws ObjectAlreadyExistsException if a <code>Trigger</code> with the same name/group already
      *                                      exists, and replaceExisting is set to false.
-     * @see #pauseTriggers(org.quartz.impl.matchers.GroupMatcher)
+     * @see #pauseTriggers(org.quartz.matchers.GroupMatcher)
      */
     public void storeTrigger(OperableTrigger newTrigger,
                              boolean replaceExisting) throws JobPersistenceException {
@@ -448,7 +444,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Remove (delete) the <code>{@link org.quartz.Trigger}</code> with the
+     * Remove (delete) the <code>{@link Trigger}</code> with the
      * given name.
      * </p>
      *
@@ -555,8 +551,8 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Retrieve the <code>{@link org.quartz.JobDetail}</code> for the given
-     * <code>{@link org.quartz.Job}</code>.
+     * Retrieve the <code>{@link JobDetail}</code> for the given
+     * <code>{@link Job}</code>.
      * </p>
      *
      * @return The desired <code>Job</code>, or null if there is no match.
@@ -570,7 +566,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Retrieve the given <code>{@link org.quartz.Trigger}</code>.
+     * Retrieve the given <code>{@link Trigger}</code>.
      * </p>
      *
      * @return The desired <code>Trigger</code>, or null if there is no
@@ -696,7 +692,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Store the given <code>{@link org.quartz.Calendar}</code>.
+     * Store the given <code>{@link Calendar}</code>.
      * </p>
      *
      * @param calendar        The <code>Calendar</code> to be stored.
@@ -746,7 +742,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Remove (delete) the <code>{@link org.quartz.Calendar}</code> with the
+     * Remove (delete) the <code>{@link Calendar}</code> with the
      * given name.
      * </p>
      * <p>
@@ -784,7 +780,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Retrieve the given <code>{@link org.quartz.Trigger}</code>.
+     * Retrieve the given <code>{@link Trigger}</code>.
      * </p>
      *
      * @param calName The name of the <code>Calendar</code> to be retrieved.
@@ -802,7 +798,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Get the number of <code>{@link org.quartz.JobDetail}</code> s that are
+     * Get the number of <code>{@link JobDetail}</code> s that are
      * stored in the <code>JobsStore</code>.
      * </p>
      */
@@ -814,7 +810,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Get the number of <code>{@link org.quartz.Trigger}</code> s that are
+     * Get the number of <code>{@link Trigger}</code> s that are
      * stored in the <code>JobsStore</code>.
      * </p>
      */
@@ -826,7 +822,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Get the number of <code>{@link org.quartz.Calendar}</code> s that are
+     * Get the number of <code>{@link Calendar}</code> s that are
      * stored in the <code>JobsStore</code>.
      * </p>
      */
@@ -838,7 +834,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Get the names of all of the <code>{@link org.quartz.Job}</code> s that
+     * Get the names of all of the <code>{@link Job}</code> s that
      * match the given groupMatcher.
      * </p>
      */
@@ -885,7 +881,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Get the names of all of the <code>{@link org.quartz.Calendar}</code> s
+     * Get the names of all of the <code>{@link Calendar}</code> s
      * in the <code>JobStore</code>.
      * </p>
      * <p>
@@ -902,7 +898,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Get the names of all of the <code>{@link org.quartz.Trigger}</code> s
+     * Get the names of all of the <code>{@link Trigger}</code> s
      * that match the given groupMatcher.
      * </p>
      */
@@ -949,7 +945,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Get the names of all of the <code>{@link org.quartz.Job}</code>
+     * Get the names of all of the <code>{@link Job}</code>
      * groups.
      * </p>
      */
@@ -965,7 +961,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Get the names of all of the <code>{@link org.quartz.Trigger}</code>
+     * Get the names of all of the <code>{@link Trigger}</code>
      * groups.
      * </p>
      */
@@ -1111,7 +1107,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Pause the <code>{@link org.quartz.JobDetail}</code> with the given
+     * Pause the <code>{@link JobDetail}</code> with the given
      * name - by pausing all of its current <code>Trigger</code>s.
      * </p>
      */
@@ -1126,7 +1122,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Pause all of the <code>{@link org.quartz.JobDetail}s</code> in the
+     * Pause all of the <code>{@link JobDetail}s</code> in the
      * given group - by pausing all of their <code>Trigger</code>s.
      * </p>
      * <p>
@@ -1269,7 +1265,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Resume (un-pause) the <code>{@link org.quartz.JobDetail}</code> with
+     * Resume (un-pause) the <code>{@link JobDetail}</code> with
      * the given name.
      * </p>
      * <p>
@@ -1291,7 +1287,7 @@ public class RAMJobStore implements JobStore {
 
     /**
      * <p>
-     * Resume (un-pause) all of the <code>{@link org.quartz.JobDetail}s</code>
+     * Resume (un-pause) all of the <code>{@link JobDetail}s</code>
      * in the given group.
      * </p>
      * <p>
@@ -1338,8 +1334,8 @@ public class RAMJobStore implements JobStore {
      * </p>
      *
      * @see #resumeAll()
-     * @see #pauseTrigger(org.quartz.TriggerKey)
-     * @see #pauseTriggers(org.quartz.impl.matchers.GroupMatcher)
+     * @see #pauseTrigger(TriggerKey)
+     * @see #pauseTriggers(org.quartz.matchers.GroupMatcher)
      */
     public void pauseAll() {
 
@@ -1582,7 +1578,7 @@ public class RAMJobStore implements JobStore {
      * <p>
      * Inform the <code>JobStore</code> that the scheduler has completed the
      * firing of the given <code>Trigger</code> (and the execution its
-     * associated <code>Job</code>), and that the <code>{@link org.quartz.JobDataMap}</code>
+     * associated <code>Job</code>), and that the <code>{@link JobDataMap}</code>
      * in the given <code>JobDetail</code> should be updated if the <code>Job</code>
      * is stateful.
      * </p>

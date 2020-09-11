@@ -15,16 +15,17 @@
  */
 package org.quartz;
 
+import junit.framework.TestCase;
+import org.quartz.job.JobDetailImpl;
+import org.quartz.scheduler.StdSchedulerFactory;
+import org.quartz.job.*;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.spi.MutableTrigger;
+import org.quartz.triggers.SimpleTriggerImpl;
+
 import java.util.Calendar;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
-
-import junit.framework.TestCase;
-
-import org.quartz.impl.JobDetailImpl;
-import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.triggers.SimpleTriggerImpl;
-import org.quartz.spi.MutableTrigger;
 
 /**
  * Test Trigger priority support.

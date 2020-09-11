@@ -18,8 +18,8 @@ import javax.management.openmbean.TabularData;
 import javax.management.openmbean.TabularDataSupport;
 import javax.management.openmbean.TabularType;
 
-import org.quartz.JobExecutionContext;
-import org.quartz.SchedulerException;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.scheduler.SchedulerException;
 
 public class JobExecutionContextSupport {
     private static final String COMPOSITE_TYPE_NAME = "JobExecutionContext";

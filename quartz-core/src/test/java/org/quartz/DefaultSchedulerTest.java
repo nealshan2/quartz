@@ -18,10 +18,12 @@ package org.quartz;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
-import org.quartz.impl.JobDetailImpl;
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.job.JobDetailImpl;
+import org.quartz.scheduler.StdSchedulerFactory;
 
 import junit.framework.TestCase;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
 
 /**
  * DefaultSchedulerTest

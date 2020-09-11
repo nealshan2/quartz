@@ -15,20 +15,21 @@
  */
 package org.quartz.core;
 
-import static org.quartz.impl.matchers.GroupMatcher.jobGroupEquals;
-import static org.quartz.impl.matchers.GroupMatcher.triggerGroupEquals;
-import static org.quartz.impl.matchers.NameMatcher.jobNameContains;
+import static org.quartz.matchers.GroupMatcher.jobGroupEquals;
+import static org.quartz.matchers.GroupMatcher.triggerGroupEquals;
+import static org.quartz.matchers.NameMatcher.jobNameContains;
 
 import java.util.List;
 import java.util.UUID;
 
 import junit.framework.TestCase;
 
-import org.quartz.JobListener;
-import org.quartz.SchedulerListener;
-import org.quartz.TriggerKey;
-import org.quartz.TriggerListener;
-import org.quartz.impl.matchers.NameMatcher;
+import org.quartz.job.JobListener;
+import org.quartz.listeners.ListenerManagerImpl;
+import org.quartz.scheduler.SchedulerListener;
+import org.quartz.triggers.TriggerKey;
+import org.quartz.triggers.TriggerListener;
+import org.quartz.matchers.NameMatcher;
 import org.quartz.listeners.JobListenerSupport;
 import org.quartz.listeners.SchedulerListenerSupport;
 import org.quartz.listeners.TriggerListenerSupport;

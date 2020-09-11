@@ -1,6 +1,6 @@
 package org.quartz.simpl;
 
-import org.quartz.SchedulerException;
+import org.quartz.scheduler.SchedulerException;
 import org.quartz.spi.InstanceIdGenerator;
 
 /**
@@ -11,7 +11,7 @@ import org.quartz.spi.InstanceIdGenerator;
  * You can also set the properties "postpend" and "prepend" to String values that will be added to the beginning
  * or end (respectively) of the value found in the system property.
  * <p>
- * If no value set for the property, a {@link org.quartz.SchedulerException} is thrown
+ * If no value set for the property, a {@link SchedulerException} is thrown
  *
  * @author Alex Snaps
  */

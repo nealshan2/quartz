@@ -18,6 +18,7 @@ package org.quartz.impl;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
+import org.quartz.job.JobDetailImpl;
 
 public class JobDetailImplTest {
     @Test

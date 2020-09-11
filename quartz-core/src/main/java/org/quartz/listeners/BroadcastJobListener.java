@@ -19,9 +19,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.JobListener;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.job.JobListener;
 
 /**
  * Holds a List of references to JobListener instances and broadcasts all
@@ -33,8 +33,8 @@ import org.quartz.JobListener;
  * get notified.</p>
  *
  * @author James House (jhouse AT revolition DOT net)
- * @see #addListener(org.quartz.JobListener)
- * @see #removeListener(org.quartz.JobListener)
+ * @see #addListener(JobListener)
+ * @see #removeListener(JobListener)
  * @see #removeListener(String)
  */
 public class BroadcastJobListener implements JobListener {

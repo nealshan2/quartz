@@ -16,9 +16,9 @@
  */
 package org.quartz.spi;
 
-import org.quartz.Job;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.job.Job;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
 
 /**
  * <p>
@@ -33,7 +33,7 @@ import org.quartz.SchedulerException;
  * </p>
  *
  * @author James House
- * @see org.quartz.Scheduler#setJobFactory(JobFactory)
+ * @see Scheduler#setJobFactory(JobFactory)
  * @see org.quartz.simpl.SimpleJobFactory
  * @see org.quartz.simpl.PropertySettingJobFactory
  */

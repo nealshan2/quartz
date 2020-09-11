@@ -26,8 +26,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.exception.DisallowConcurrentExecution;
+import org.quartz.scheduler.StdSchedulerFactory;
+import org.quartz.job.*;
 import org.quartz.listeners.JobListenerSupport;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.scheduler.SimpleScheduleBuilder;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerBuilder;
 
 import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;

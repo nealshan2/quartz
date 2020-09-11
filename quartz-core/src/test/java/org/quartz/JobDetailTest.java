@@ -15,9 +15,12 @@
  */
 package org.quartz;
 
-import org.quartz.impl.JobDetailImpl;
+import org.quartz.exception.DisallowConcurrentExecution;
+import org.quartz.exception.PersistJobDataAfterExecution;
+import org.quartz.job.JobDetailImpl;
 
 import junit.framework.TestCase;
+import org.quartz.job.*;
 
 /**
  * Unit test for JobDetail.

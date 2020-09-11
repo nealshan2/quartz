@@ -21,9 +21,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.quartz.Scheduler;
-import org.quartz.core.QuartzScheduler;
-import org.quartz.core.QuartzSchedulerResources;
+import org.quartz.scheduler.*;
 import org.quartz.simpl.RAMJobStore;
 import org.quartz.simpl.SimpleThreadPool;
 import org.quartz.spi.ClassLoadHelper;
@@ -35,7 +33,7 @@ public class DirectSchedulerFactoryTest extends TestCase {
         final StringBuffer result = new StringBuffer();
 
         SchedulerPlugin testPlugin = new SchedulerPlugin() {
-            public void initialize(String name, org.quartz.Scheduler scheduler, ClassLoadHelper classLoadHelper) throws org.quartz.SchedulerException {
+            public void initialize(String name, Scheduler scheduler, ClassLoadHelper classLoadHelper) throws SchedulerException {
                 result.append(name).append("|").append(scheduler.getSchedulerName());
             }
 

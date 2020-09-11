@@ -9,14 +9,14 @@ import java.util.concurrent.TimeUnit;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.SchedulerFactory;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.jdbcjobstore.LockException;
-import org.quartz.impl.jdbcjobstore.StdRowLockSemaphore;
+import org.quartz.job.JobBuilder;
+import org.quartz.job.JobDetail;
+import org.quartz.scheduler.SchedulerFactory;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerBuilder;
+import org.quartz.scheduler.StdSchedulerFactory;
+import org.quartz.job.jdbcjobstore.LockException;
+import org.quartz.job.jdbcjobstore.StdRowLockSemaphore;
 
 public class StdRowLockSemaphoreTest extends QuartzDatabaseTestSupport {
     static volatile boolean myLockInvoked = false;

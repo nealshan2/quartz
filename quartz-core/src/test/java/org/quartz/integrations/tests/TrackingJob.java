@@ -17,11 +17,11 @@ package org.quartz.integrations.tests;
 
 import java.util.List;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.job.Job;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
 
 /**
  * @author cdennis

@@ -22,7 +22,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
-import org.quartz.*;
+import org.quartz.cron.CronScheduleBuilder;
+import org.quartz.cron.CronTrigger;
+import org.quartz.job.JobBuilder;
+import org.quartz.job.JobDetail;
+import org.quartz.triggers.TriggerBuilder;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;

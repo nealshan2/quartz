@@ -4,12 +4,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerListener;
-import org.quartz.Trigger;
-import org.quartz.TriggerKey;
+import org.quartz.job.JobDetail;
+import org.quartz.job.JobKey;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.scheduler.SchedulerListener;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerKey;
 
 /**
  * Holds a List of references to SchedulerListener instances and broadcasts all
@@ -20,8 +20,8 @@ import org.quartz.TriggerKey;
  * which listeners get notified.</p>
  *
  * @author James House (jhouse AT revolition DOT net)
- * @see #addListener(org.quartz.SchedulerListener)
- * @see #removeListener(org.quartz.SchedulerListener)
+ * @see #addListener(SchedulerListener)
+ * @see #removeListener(SchedulerListener)
  */
 public class BroadcastSchedulerListener implements SchedulerListener {
 

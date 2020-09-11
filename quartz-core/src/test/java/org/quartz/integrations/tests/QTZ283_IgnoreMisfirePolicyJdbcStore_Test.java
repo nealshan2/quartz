@@ -16,9 +16,9 @@
 package org.quartz.integrations.tests;
 
 import org.junit.Test;
-import org.quartz.DateBuilder;
-import org.quartz.JobDetail;
-import org.quartz.SimpleTrigger;
+import org.quartz.calendar.DateBuilder;
+import org.quartz.job.JobDetail;
+import org.quartz.triggers.SimpleTrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,9 +30,9 @@ import java.util.Properties;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.scheduler.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 public class QTZ283_IgnoreMisfirePolicyJdbcStore_Test extends QuartzDatabaseTestSupport {
 

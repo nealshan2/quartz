@@ -17,13 +17,21 @@ package org.quartz.core;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.quartz.*;
-import org.quartz.impl.DirectSchedulerFactory;
-import org.quartz.impl.jdbcjobstore.JdbcQuartzTestUtilities;
-import org.quartz.impl.jdbcjobstore.JobStoreTX;
+import org.quartz.exception.DisallowConcurrentExecution;
+import org.quartz.scheduler.DirectSchedulerFactory;
+import org.quartz.job.jdbcjobstore.JdbcQuartzTestUtilities;
+import org.quartz.job.jdbcjobstore.JobStoreTX;
 
+import org.quartz.job.Job;
+import org.quartz.job.JobBuilder;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
 import org.quartz.listeners.JobListenerSupport;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.scheduler.SimpleScheduleBuilder;
 import org.quartz.simpl.SimpleThreadPool;
+import org.quartz.triggers.TriggerBuilder;
 import org.quartz.utils.DBConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

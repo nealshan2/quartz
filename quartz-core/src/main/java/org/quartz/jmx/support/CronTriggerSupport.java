@@ -1,7 +1,7 @@
 package org.quartz.jmx.support;
 
-import org.quartz.CronTrigger;
-import org.quartz.impl.triggers.CronTriggerImpl;
+import org.quartz.cron.CronTrigger;
+import org.quartz.cron.CronTriggerImpl;
 import org.quartz.spi.OperableTrigger;
 
 import javax.management.openmbean.*;

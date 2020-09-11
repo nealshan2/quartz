@@ -15,12 +15,11 @@
  */
 package org.quartz;
 
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
 import junit.framework.TestCase;
+import org.quartz.scheduler.QuartzScheduler;
 
-import org.quartz.core.QuartzScheduler;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class VersionTest extends TestCase {
     @SuppressWarnings("unused")

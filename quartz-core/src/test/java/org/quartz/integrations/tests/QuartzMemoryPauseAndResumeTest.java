@@ -15,19 +15,20 @@
  */
 package org.quartz.integrations.tests;
 
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
-import org.quartz.*;
-import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.cron.CronTrigger;
+import org.quartz.matchers.GroupMatcher;
+import org.quartz.job.JobDetail;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerKey;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
-import static org.quartz.CronScheduleBuilder.cronSchedule;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
-import static org.quartz.TriggerKey.triggerKey;
+import static org.quartz.cron.CronScheduleBuilder.cronSchedule;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
+import static org.quartz.triggers.TriggerKey.triggerKey;
 
 /**
  * Created by zemian on 10/25/16.

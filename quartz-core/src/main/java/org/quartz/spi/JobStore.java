@@ -17,30 +17,28 @@
 
 package org.quartz.spi;
 
+import org.quartz.exception.ObjectAlreadyExistsException;
+import org.quartz.scheduler.QuartzScheduler;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.Trigger.CompletedExecutionInstruction;
+import org.quartz.triggers.Trigger.TriggerState;
+import org.quartz.calendar.Calendar;
+import org.quartz.matchers.GroupMatcher;
+import org.quartz.job.*;
+import org.quartz.scheduler.SchedulerConfigException;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.triggers.TriggerKey;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.quartz.Calendar;
-import org.quartz.Job;
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
-import org.quartz.JobPersistenceException;
-import org.quartz.ObjectAlreadyExistsException;
-import org.quartz.SchedulerConfigException;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
-import org.quartz.TriggerKey;
-import org.quartz.Trigger.CompletedExecutionInstruction;
-import org.quartz.Trigger.TriggerState;
-import org.quartz.impl.matchers.GroupMatcher;
-
 /**
  * <p>
- * The interface to be implemented by classes that want to provide a <code>{@link org.quartz.Job}</code>
- * and <code>{@link org.quartz.Trigger}</code> storage mechanism for the
- * <code>{@link org.quartz.core.QuartzScheduler}</code>'s use.
+ * The interface to be implemented by classes that want to provide a <code>{@link Job}</code>
+ * and <code>{@link Trigger}</code> storage mechanism for the
+ * <code>{@link QuartzScheduler}</code>'s use.
  * </p>
  * <p>
  * <p>
@@ -50,12 +48,12 @@ import org.quartz.impl.matchers.GroupMatcher;
  *
  * @author James House
  * @author Eric Mueller
- * @see org.quartz.core.QuartzScheduler
- * @see org.quartz.Trigger
- * @see org.quartz.Job
- * @see org.quartz.JobDetail
- * @see org.quartz.JobDataMap
- * @see org.quartz.Calendar
+ * @see QuartzScheduler
+ * @see Trigger
+ * @see Job
+ * @see JobDetail
+ * @see JobDataMap
+ * @see Calendar
  */
 public interface JobStore {
 
@@ -119,7 +117,7 @@ public interface JobStore {
     /////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Store the given <code>{@link org.quartz.JobDetail}</code> and <code>{@link org.quartz.Trigger}</code>.
+     * Store the given <code>{@link JobDetail}</code> and <code>{@link Trigger}</code>.
      *
      * @param newJob     The <code>JobDetail</code> to be stored.
      * @param newTrigger The <code>Trigger</code> to be stored.
@@ -130,7 +128,7 @@ public interface JobStore {
             throws ObjectAlreadyExistsException, JobPersistenceException;
 
     /**
-     * Store the given <code>{@link org.quartz.JobDetail}</code>.
+     * Store the given <code>{@link JobDetail}</code>.
      *
      * @param newJob          The <code>JobDetail</code> to be stored.
      * @param replaceExisting If <code>true</code>, any <code>Job</code> existing in the
@@ -146,8 +144,8 @@ public interface JobStore {
             throws ObjectAlreadyExistsException, JobPersistenceException;
 
     /**
-     * Remove (delete) the <code>{@link org.quartz.Job}</code> with the given
-     * key, and any <code>{@link org.quartz.Trigger}</code> s that reference
+     * Remove (delete) the <code>{@link Job}</code> with the given
+     * key, and any <code>{@link Trigger}</code> s that reference
      * it.
      * <p>
      * <p>
@@ -166,8 +164,8 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Retrieve the <code>{@link org.quartz.JobDetail}</code> for the given
-     * <code>{@link org.quartz.Job}</code>.
+     * Retrieve the <code>{@link JobDetail}</code> for the given
+     * <code>{@link Job}</code>.
      *
      * @return The desired <code>Job</code>, or null if there is no match.
      */
@@ -175,7 +173,7 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Store the given <code>{@link org.quartz.Trigger}</code>.
+     * Store the given <code>{@link Trigger}</code>.
      *
      * @param newTrigger      The <code>Trigger</code> to be stored.
      * @param replaceExisting If <code>true</code>, any <code>Trigger</code> existing in
@@ -183,13 +181,13 @@ public interface JobStore {
      *                        be over-written.
      * @throws ObjectAlreadyExistsException if a <code>Trigger</code> with the same name/group already
      *                                      exists, and replaceExisting is set to false.
-     * @see #pauseTriggers(org.quartz.impl.matchers.GroupMatcher)
+     * @see #pauseTriggers(org.quartz.matchers.GroupMatcher)
      */
     void storeTrigger(OperableTrigger newTrigger, boolean replaceExisting)
             throws ObjectAlreadyExistsException, JobPersistenceException;
 
     /**
-     * Remove (delete) the <code>{@link org.quartz.Trigger}</code> with the
+     * Remove (delete) the <code>{@link Trigger}</code> with the
      * given key.
      * <p>
      * <p>
@@ -213,7 +211,7 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Remove (delete) the <code>{@link org.quartz.Trigger}</code> with the
+     * Remove (delete) the <code>{@link Trigger}</code> with the
      * given key, and store the new given one - which must be associated
      * with the same job.
      *
@@ -225,7 +223,7 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Retrieve the given <code>{@link org.quartz.Trigger}</code>.
+     * Retrieve the given <code>{@link Trigger}</code>.
      *
      * @return The desired <code>Trigger</code>, or null if there is no
      * match.
@@ -262,7 +260,7 @@ public interface JobStore {
     void clearAllSchedulingData() throws JobPersistenceException;
 
     /**
-     * Store the given <code>{@link org.quartz.Calendar}</code>.
+     * Store the given <code>{@link Calendar}</code>.
      *
      * @param calendar        The <code>Calendar</code> to be stored.
      * @param replaceExisting If <code>true</code>, any <code>Calendar</code> existing
@@ -279,7 +277,7 @@ public interface JobStore {
             throws ObjectAlreadyExistsException, JobPersistenceException;
 
     /**
-     * Remove (delete) the <code>{@link org.quartz.Calendar}</code> with the
+     * Remove (delete) the <code>{@link Calendar}</code> with the
      * given name.
      * <p>
      * <p>
@@ -296,7 +294,7 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Retrieve the given <code>{@link org.quartz.Trigger}</code>.
+     * Retrieve the given <code>{@link Trigger}</code>.
      *
      * @param calName The name of the <code>Calendar</code> to be retrieved.
      * @return The desired <code>Calendar</code>, or null if there is no
@@ -312,28 +310,28 @@ public interface JobStore {
     /////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Get the number of <code>{@link org.quartz.Job}</code> s that are
+     * Get the number of <code>{@link Job}</code> s that are
      * stored in the <code>JobsStore</code>.
      */
     int getNumberOfJobs()
             throws JobPersistenceException;
 
     /**
-     * Get the number of <code>{@link org.quartz.Trigger}</code> s that are
+     * Get the number of <code>{@link Trigger}</code> s that are
      * stored in the <code>JobsStore</code>.
      */
     int getNumberOfTriggers()
             throws JobPersistenceException;
 
     /**
-     * Get the number of <code>{@link org.quartz.Calendar}</code> s that are
+     * Get the number of <code>{@link Calendar}</code> s that are
      * stored in the <code>JobsStore</code>.
      */
     int getNumberOfCalendars()
             throws JobPersistenceException;
 
     /**
-     * Get the keys of all of the <code>{@link org.quartz.Job}</code> s that
+     * Get the keys of all of the <code>{@link Job}</code> s that
      * have the given group name.
      * <p>
      * <p>
@@ -345,7 +343,7 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Get the names of all of the <code>{@link org.quartz.Trigger}</code> s
+     * Get the names of all of the <code>{@link Trigger}</code> s
      * that have the given group name.
      * <p>
      * <p>
@@ -357,7 +355,7 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Get the names of all of the <code>{@link org.quartz.Job}</code>
+     * Get the names of all of the <code>{@link Job}</code>
      * groups.
      * <p>
      * <p>
@@ -369,7 +367,7 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Get the names of all of the <code>{@link org.quartz.Trigger}</code>
+     * Get the names of all of the <code>{@link Trigger}</code>
      * groups.
      * <p>
      * <p>
@@ -381,7 +379,7 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Get the names of all of the <code>{@link org.quartz.Calendar}</code> s
+     * Get the names of all of the <code>{@link Calendar}</code> s
      * in the <code>JobStore</code>.
      * <p>
      * <p>
@@ -430,14 +428,14 @@ public interface JobStore {
     /////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Pause the <code>{@link org.quartz.Trigger}</code> with the given key.
+     * Pause the <code>{@link Trigger}</code> with the given key.
      *
      * @see #resumeTrigger(TriggerKey)
      */
     void pauseTrigger(TriggerKey triggerKey) throws JobPersistenceException;
 
     /**
-     * Pause all of the <code>{@link org.quartz.Trigger}s</code> in the
+     * Pause all of the <code>{@link Trigger}s</code> in the
      * given group.
      * <p>
      * <p>
@@ -452,7 +450,7 @@ public interface JobStore {
     Collection<String> pauseTriggers(GroupMatcher<TriggerKey> matcher) throws JobPersistenceException;
 
     /**
-     * Pause the <code>{@link org.quartz.Job}</code> with the given name - by
+     * Pause the <code>{@link Job}</code> with the given name - by
      * pausing all of its current <code>Trigger</code>s.
      *
      * @see #resumeJob(JobKey)
@@ -460,7 +458,7 @@ public interface JobStore {
     void pauseJob(JobKey jobKey) throws JobPersistenceException;
 
     /**
-     * Pause all of the <code>{@link org.quartz.Job}s</code> in the given
+     * Pause all of the <code>{@link Job}s</code> in the given
      * group - by pausing all of their <code>Trigger</code>s.
      * <p>
      * <p>
@@ -475,7 +473,7 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Resume (un-pause) the <code>{@link org.quartz.Trigger}</code> with the
+     * Resume (un-pause) the <code>{@link Trigger}</code> with the
      * given key.
      * <p>
      * <p>
@@ -488,7 +486,7 @@ public interface JobStore {
     void resumeTrigger(TriggerKey triggerKey) throws JobPersistenceException;
 
     /**
-     * Resume (un-pause) all of the <code>{@link org.quartz.Trigger}s</code>
+     * Resume (un-pause) all of the <code>{@link Trigger}s</code>
      * in the given group.
      * <p>
      * <p>
@@ -505,7 +503,7 @@ public interface JobStore {
             throws JobPersistenceException;
 
     /**
-     * Resume (un-pause) the <code>{@link org.quartz.Job}</code> with the
+     * Resume (un-pause) the <code>{@link Job}</code> with the
      * given key.
      * <p>
      * <p>
@@ -519,7 +517,7 @@ public interface JobStore {
     void resumeJob(JobKey jobKey) throws JobPersistenceException;
 
     /**
-     * Resume (un-pause) all of the <code>{@link org.quartz.Job}s</code> in
+     * Resume (un-pause) all of the <code>{@link Job}s</code> in
      * the given group.
      * <p>
      * <p>
@@ -602,7 +600,7 @@ public interface JobStore {
      * Inform the <code>JobStore</code> that the scheduler has completed the
      * firing of the given <code>Trigger</code> (and the execution of its
      * associated <code>Job</code> completed, threw an exception, or was vetoed),
-     * and that the <code>{@link org.quartz.JobDataMap}</code>
+     * and that the <code>{@link JobDataMap}</code>
      * in the given <code>JobDetail</code> should be updated if the <code>Job</code>
      * is stateful.
      */

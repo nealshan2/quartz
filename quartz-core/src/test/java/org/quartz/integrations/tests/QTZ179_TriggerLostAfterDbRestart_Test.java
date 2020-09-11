@@ -16,9 +16,9 @@
 package org.quartz.integrations.tests;
 
 import org.junit.Test;
-import org.quartz.JobDetail;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
+import org.quartz.job.JobDetail;
+import org.quartz.scheduler.SimpleScheduleBuilder;
+import org.quartz.triggers.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +26,8 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 public class QTZ179_TriggerLostAfterDbRestart_Test extends QuartzDatabaseTestSupport {
 

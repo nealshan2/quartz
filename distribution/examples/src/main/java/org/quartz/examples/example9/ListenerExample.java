@@ -29,7 +29,7 @@ import org.quartz.SchedulerFactory;
 import org.quartz.SchedulerMetaData;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.matchers.KeyMatcher;
+import org.quartz.matchers.KeyMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

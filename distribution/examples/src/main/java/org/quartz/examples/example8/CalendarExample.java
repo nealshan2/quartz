@@ -29,7 +29,7 @@ import org.quartz.SchedulerMetaData;
 import org.quartz.SimpleTrigger;
 import org.quartz.examples.example2.SimpleJob;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.calendar.AnnualCalendar;
+import org.quartz.calendar.AnnualCalendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

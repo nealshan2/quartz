@@ -18,8 +18,8 @@ package org.quartz.simpl;
 import java.util.Collections;
 import java.util.Map;
 
-import org.quartz.JobDataMap;
-import org.quartz.SchedulerException;
+import org.quartz.job.JobDataMap;
+import org.quartz.scheduler.SchedulerException;
 
 import junit.framework.TestCase;
 

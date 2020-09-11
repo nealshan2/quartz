@@ -19,14 +19,14 @@ package org.quartz.spi;
 
 import java.util.Date;
 
-import org.quartz.Calendar;
-import org.quartz.CronTrigger;
-import org.quartz.JobDataMap;
-import org.quartz.JobKey;
-import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
-import org.quartz.TriggerKey;
-import org.quartz.TriggerUtils;
+import org.quartz.calendar.Calendar;
+import org.quartz.cron.CronTrigger;
+import org.quartz.job.JobDataMap;
+import org.quartz.job.JobKey;
+import org.quartz.triggers.SimpleTrigger;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerKey;
+import org.quartz.triggers.TriggerUtils;
 
 public interface MutableTrigger extends Trigger {
 

@@ -19,8 +19,9 @@ package org.quartz.spi;
 
 import java.util.Date;
 
-import org.quartz.Calendar;
-import org.quartz.JobDetail;
+import org.quartz.calendar.Calendar;
+import org.quartz.job.JobDetail;
+import org.quartz.scheduler.QuartzSchedulerThread;
 
 /**
  * <p>
@@ -29,7 +30,7 @@ import org.quartz.JobDetail;
  * </p>
  *
  * @author James House
- * @see org.quartz.core.QuartzSchedulerThread
+ * @see QuartzSchedulerThread
  */
 public class TriggerFiredBundle implements java.io.Serializable {
 

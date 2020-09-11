@@ -15,9 +15,13 @@
  */
 package org.quartz;
 
+import org.quartz.cron.CronExpression;
+import org.quartz.cron.CronScheduleBuilder;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerBuilder;
+
 import java.io.*;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;

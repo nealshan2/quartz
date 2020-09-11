@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.quartz.impl.calendar.AnnualCalendar;
+import org.quartz.calendar.AnnualCalendar;
 
 
 /**

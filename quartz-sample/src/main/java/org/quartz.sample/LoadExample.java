@@ -17,15 +17,19 @@
 
 package org.quartz.sample;
 
-import org.quartz.DateBuilder.IntervalUnit;
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.calendar.DateBuilder.IntervalUnit;
+import org.quartz.scheduler.StdSchedulerFactory;
+import org.quartz.job.JobDetail;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerFactory;
+import org.quartz.scheduler.SchedulerMetaData;
+import org.quartz.triggers.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.quartz.DateBuilder.futureDate;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.calendar.DateBuilder.futureDate;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 /**
  * This example will spawn a large number of jobs to run

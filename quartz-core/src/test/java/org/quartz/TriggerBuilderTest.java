@@ -15,28 +15,28 @@
  */
 package org.quartz;
 
-import static org.quartz.DateBuilder.evenSecondDateAfterNow;
-import static org.quartz.DateBuilder.futureDate;
-import static org.quartz.TriggerBuilder.newTrigger;
+import junit.framework.TestCase;
+import org.quartz.calendar.DateBuilder.IntervalUnit;
+import org.quartz.cron.CronScheduleBuilder;
+import org.quartz.exception.DisallowConcurrentExecution;
+import org.quartz.exception.PersistJobDataAfterExecution;
+import org.quartz.job.Job;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.job.JobKey;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerBuilder;
 
 import java.util.Date;
 
-import junit.framework.TestCase;
-
-import org.quartz.DateBuilder.IntervalUnit;
+import static org.quartz.calendar.DateBuilder.evenSecondDateAfterNow;
+import static org.quartz.calendar.DateBuilder.futureDate;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 /**
  * Test TriggerBuilder functionality
  */
 public class TriggerBuilderTest extends TestCase {
-
-
-    @SuppressWarnings("deprecation")
-    public static class TestStatefulJob implements StatefulJob {
-        public void execute(JobExecutionContext context)
-                throws JobExecutionException {
-        }
-    }
 
     public static class TestJob implements Job {
         public void execute(JobExecutionContext context)

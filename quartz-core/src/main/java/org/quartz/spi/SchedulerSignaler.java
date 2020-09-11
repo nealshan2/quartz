@@ -17,9 +17,9 @@
 
 package org.quartz.spi;
 
-import org.quartz.JobKey;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
+import org.quartz.job.JobKey;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.triggers.Trigger;
 
 /**
  * An interface to be used by <code>JobStore</code> instances in order to

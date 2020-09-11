@@ -15,11 +15,11 @@
  */
 package org.quartz.utils;
 
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.PersistJobDataAfterExecution;
+import org.quartz.exception.DisallowConcurrentExecution;
+import org.quartz.job.Job;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.exception.PersistJobDataAfterExecution;
 
 import junit.framework.TestCase;
 

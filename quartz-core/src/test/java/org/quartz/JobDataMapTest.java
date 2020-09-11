@@ -16,6 +16,8 @@
 package org.quartz;
 
 
+import org.quartz.job.JobDataMap;
+
 /**
  * Unit test for JobDataMap serialization backwards compatibility.
  */

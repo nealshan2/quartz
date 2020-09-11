@@ -1,8 +1,13 @@
 package org.quartz.jmx.statistics;
 
-import org.quartz.*;
-import org.quartz.core.QuartzScheduler;
+import org.quartz.scheduler.QuartzScheduler;
+import org.quartz.job.JobDetail;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.JobExecutionException;
+import org.quartz.job.JobListener;
 import org.quartz.listeners.SchedulerListenerSupport;
+import org.quartz.scheduler.SchedulerListener;
+import org.quartz.triggers.Trigger;
 import org.quartz.utils.counter.CounterConfig;
 import org.quartz.utils.counter.CounterManager;
 import org.quartz.utils.counter.CounterManagerImpl;

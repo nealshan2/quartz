@@ -15,9 +15,9 @@
  */
 package org.quartz;
 
-import static org.quartz.DateBuilder.futureDate;
-import static org.quartz.DateBuilder.IntervalUnit.MINUTE;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.calendar.DateBuilder.futureDate;
+import static org.quartz.calendar.DateBuilder.IntervalUnit.MINUTE;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -26,6 +26,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.quartz.spi.OperableTrigger;
+import org.quartz.triggers.Trigger;
 
 public class TriggerComparatorTest extends TestCase {
 

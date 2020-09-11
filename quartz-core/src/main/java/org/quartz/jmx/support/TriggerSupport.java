@@ -19,9 +19,9 @@ import javax.management.openmbean.TabularData;
 import javax.management.openmbean.TabularDataSupport;
 import javax.management.openmbean.TabularType;
 
-import org.quartz.JobKey;
-import org.quartz.Trigger;
-import org.quartz.TriggerKey;
+import org.quartz.job.JobKey;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.TriggerKey;
 import org.quartz.spi.MutableTrigger;
 import org.quartz.spi.OperableTrigger;
 

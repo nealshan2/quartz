@@ -25,11 +25,12 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerContext;
-import org.quartz.SchedulerException;
+import org.quartz.job.Job;
+import org.quartz.job.JobDataMap;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerContext;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.job.JobExecutionContext;
 import org.quartz.spi.TriggerFiredBundle;
 
 
@@ -53,7 +54,7 @@ import org.quartz.spi.TriggerFiredBundle;
  * @see org.quartz.spi.JobFactory
  * @see SimpleJobFactory
  * @see SchedulerContext
- * @see org.quartz.JobExecutionContext#getMergedJobDataMap()
+ * @see JobExecutionContext#getMergedJobDataMap()
  * @see #setWarnIfPropertyNotFound(boolean)
  * @see #setThrowIfPropertyNotFound(boolean)
  */

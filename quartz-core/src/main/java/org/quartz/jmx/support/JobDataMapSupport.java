@@ -15,7 +15,7 @@ import javax.management.openmbean.TabularData;
 import javax.management.openmbean.TabularDataSupport;
 import javax.management.openmbean.TabularType;
 
-import org.quartz.JobDataMap;
+import org.quartz.job.JobDataMap;
 
 public class JobDataMapSupport {
     private static final String typeName = "JobDataMap";

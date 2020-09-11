@@ -15,12 +15,13 @@
  */
 package org.quartz.impl;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import org.quartz.scheduler.StdSchedulerFactory;
+import org.slf4j.helpers.NOPLogger;
 
 import java.util.Properties;
 
-import org.junit.Test;
-import org.slf4j.helpers.NOPLogger;
+import static org.junit.Assert.assertEquals;
 
 public class StdSchedulerFactoryTest {
 

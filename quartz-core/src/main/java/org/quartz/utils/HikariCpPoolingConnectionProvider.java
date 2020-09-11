@@ -18,7 +18,7 @@
 package org.quartz.utils;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.quartz.SchedulerException;
+import org.quartz.scheduler.SchedulerException;
 
 import java.sql.Connection;
 import java.sql.SQLException;

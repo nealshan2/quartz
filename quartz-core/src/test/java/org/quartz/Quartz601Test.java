@@ -15,10 +15,11 @@
  */
 package org.quartz;
 
+import junit.framework.TestCase;
+import org.quartz.cron.CronExpression;
+
 import java.text.ParseException;
 import java.util.Set;
-
-import junit.framework.TestCase;
 
 public class Quartz601Test extends TestCase {
 

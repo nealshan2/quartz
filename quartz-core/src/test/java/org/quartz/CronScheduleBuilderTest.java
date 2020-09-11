@@ -16,11 +16,13 @@
  */
 package org.quartz;
 
-import static org.quartz.CronScheduleBuilder.atHourAndMinuteOnGivenDaysOfWeek;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.cron.CronScheduleBuilder.atHourAndMinuteOnGivenDaysOfWeek;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.quartz.calendar.DateBuilder;
+import org.quartz.cron.CronTrigger;
 
 /**
  * Unit test for CronScheduleBuilder.

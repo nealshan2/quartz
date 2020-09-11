@@ -1,17 +1,21 @@
 package org.quartz.jmx;
 
-import org.quartz.*;
-import org.quartz.Trigger.TriggerState;
-import org.quartz.core.QuartzScheduler;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.Trigger.TriggerState;
+import org.quartz.scheduler.QuartzScheduler;
 import org.quartz.jmx.statistics.NullSampledStatisticsImpl;
 import org.quartz.jmx.statistics.SampledStatistics;
 import org.quartz.jmx.statistics.SampledStatisticsImpl;
 import org.quartz.jmx.support.JobDetailSupport;
 import org.quartz.jmx.support.JobExecutionContextSupport;
 import org.quartz.jmx.support.TriggerSupport;
-import org.quartz.impl.matchers.GroupMatcher;
-import org.quartz.impl.triggers.AbstractTrigger;
+import org.quartz.matchers.GroupMatcher;
+import org.quartz.job.*;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.scheduler.SchedulerListener;
+import org.quartz.triggers.AbstractTrigger;
 import org.quartz.spi.OperableTrigger;
+import org.quartz.triggers.TriggerKey;
 
 import javax.management.*;
 import javax.management.openmbean.CompositeData;
@@ -26,8 +30,8 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.quartz.JobKey.jobKey;
-import static org.quartz.TriggerKey.triggerKey;
+import static org.quartz.job.JobKey.jobKey;
+import static org.quartz.triggers.TriggerKey.triggerKey;
 
 public class QuartzSchedulerMBeanImpl extends StandardMBean implements
         NotificationEmitter, QuartzSchedulerMBean, JobListener,

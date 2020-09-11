@@ -15,32 +15,31 @@
  */
 package org.quartz;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.JobKey.jobKey;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
-import static org.quartz.TriggerKey.triggerKey;
+import org.junit.Test;
+import org.quartz.exception.DisallowConcurrentExecution;
+import org.quartz.exception.PersistJobDataAfterExecution;
+import org.quartz.job.*;
+import org.quartz.matchers.GroupMatcher;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerContext;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.scheduler.SimpleScheduleBuilder;
+import org.quartz.triggers.Trigger;
+import org.quartz.triggers.Trigger.TriggerState;
+import org.quartz.triggers.TriggerBuilder;
+import org.quartz.triggers.TriggerKey;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Test;
-
-import org.quartz.Trigger.TriggerState;
-import org.quartz.impl.matchers.GroupMatcher;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.job.JobKey.jobKey;
+import static org.quartz.scheduler.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.triggers.TriggerBuilder.newTrigger;
+import static org.quartz.triggers.TriggerKey.triggerKey;
 
 /**
  * Test High Level Scheduler functionality (implicitly tests the underlying jobstore (RAMJobStore))

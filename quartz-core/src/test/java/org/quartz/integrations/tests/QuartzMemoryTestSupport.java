@@ -18,9 +18,9 @@ package org.quartz.integrations.tests;
 
 import org.junit.After;
 import org.junit.Before;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerFactory;
-import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerFactory;
+import org.quartz.scheduler.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

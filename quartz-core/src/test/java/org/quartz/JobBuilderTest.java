@@ -15,10 +15,13 @@
  */
 package org.quartz;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.JobKey.jobKey;
-
 import junit.framework.TestCase;
+import org.quartz.exception.DisallowConcurrentExecution;
+import org.quartz.exception.PersistJobDataAfterExecution;
+import org.quartz.job.*;
+
+import static org.quartz.job.JobBuilder.newJob;
+import static org.quartz.job.JobKey.jobKey;
 
 /**
  * Test JobBuilder functionality

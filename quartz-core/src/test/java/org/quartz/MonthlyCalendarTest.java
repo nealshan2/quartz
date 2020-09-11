@@ -19,7 +19,7 @@ import java.util.Calendar;
 
 import junit.framework.TestCase;
 
-import org.quartz.impl.calendar.MonthlyCalendar;
+import org.quartz.calendar.MonthlyCalendar;
 
 /**
  * Unit test for MonthlyCalendar
