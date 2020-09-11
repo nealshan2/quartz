@@ -4,7 +4,7 @@
 # PLEASE consider using mysql with innodb tables to avoid locking issues
 #
 # In your Quartz properties file, you'll need to set
-# org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+# org.quartz.jobStore.driverDelegateClass = org.quartz.job.jdbcjobstore.StdJDBCDelegate
 #
 
 DROP TABLE IF EXISTS QRTZ_FIRED_TRIGGERS;

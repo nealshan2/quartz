@@ -42,7 +42,6 @@
                         <maxmem>512</maxmem>
                     </configuration>
                 </plugin>
-
             </plugins>
         </pluginManagement>
 
@@ -70,7 +69,7 @@
                         <artifactId>liquibase-maven-plugin</artifactId>
                         <version>3.6.3</version>
                         <configuration>
-                            <changeLogFile>org/quartz/impl/jdbcjobstore/liquibase.quartz.init.xml</changeLogFile>
+                            <changeLogFile>org/quartz/job/jdbcjobstore/liquibase.quartz.init.xml</changeLogFile>
                             <driver>com.mysql.cj.jdbc.Driver</driver>
                             <url>${liquibase.url}</url>
                             <username>${liquibase.username}</username>

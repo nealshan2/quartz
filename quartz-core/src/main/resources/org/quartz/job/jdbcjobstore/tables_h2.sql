@@ -6,7 +6,7 @@
 --
 --
 -- In your Quartz properties file, you'll need to set 
--- org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+-- org.quartz.jobStore.driverDelegateClass = org.quartz.job.jdbcjobstore.StdJDBCDelegate
 
 CREATE TABLE QRTZ_CALENDARS (
   SCHED_NAME VARCHAR(120) NOT NULL,

@@ -38,7 +38,7 @@ public class StdSchedulerFactoryCustomConnectionProviderTest {
             scheduler.start();
         } catch (Exception e) {
             //the mock connection provider throws a MockSQLException
-            assertEquals("org.quartz.impl.MockSQLException", e.getCause().getCause().getClass().getName());
+            assertEquals("org.quartz.job.MockSQLException", e.getCause().getCause().getClass().getName());
         }
         assertEquals("setCustomProperty(customValue)", MockConnectionProvider.methodsCalled.get(0));
         assertEquals("initialize", MockConnectionProvider.methodsCalled.get(1));

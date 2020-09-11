@@ -78,8 +78,8 @@ public class C3p0PoolingConnectionProviderTest extends QuartzDatabaseTestSupport
         properties.put("org.quartz.threadPool.threadCount", "12");
         properties.put("org.quartz.threadPool.threadPriority", "5");
         properties.put("org.quartz.jobStore.misfireThreshold", "10000");
-        properties.put("org.quartz.jobStore.class", "org.quartz.impl.jdbcjobstore.JobStoreTX");
-        properties.put("org.quartz.jobStore.driverDelegateClass", "org.quartz.impl.jdbcjobstore.StdJDBCDelegate");
+        properties.put("org.quartz.jobStore.class", "org.quartz.job.jdbcjobstore.JobStoreTX");
+        properties.put("org.quartz.jobStore.driverDelegateClass", "org.quartz.job.jdbcjobstore.StdJDBCDelegate");
         properties.put("org.quartz.jobStore.useProperties", "true");
         properties.put("org.quartz.jobStore.dataSource", "myDS");
         properties.put("org.quartz.jobStore.tablePrefix", "QRTZ_");

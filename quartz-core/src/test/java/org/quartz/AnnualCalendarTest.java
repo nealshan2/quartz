@@ -87,7 +87,7 @@ public class AnnualCalendarTest extends SerializationTestSupport {
 
     /**
      * Tests the parameter <code>exclude</code> in a method <code>setDaysExcluded</code>
-     * of class <code>org.quartz.impl.calendar.AnnualCalendar</code>
+     * of class <code>org.quartz.job.calendar.AnnualCalendar</code>
      */
     public void testExclude() {
         AnnualCalendar annualCalendar = new AnnualCalendar();
