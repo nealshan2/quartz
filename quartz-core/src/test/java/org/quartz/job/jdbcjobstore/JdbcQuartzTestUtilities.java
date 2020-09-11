@@ -15,6 +15,9 @@
  */
 package org.quartz.job.jdbcjobstore;
 
+import org.quartz.utils.ConnectionProvider;
+import org.quartz.utils.DBConnectionManager;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,9 +28,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.quartz.utils.ConnectionProvider;
-import org.quartz.utils.DBConnectionManager;
 
 public final class JdbcQuartzTestUtilities {
 
@@ -50,7 +50,7 @@ public final class JdbcQuartzTestUtilities {
         String setupScript;
         try {
             InputStream setupStream = DerbyEmbeddedConnectionProvider.class
-                    .getClassLoader().getResourceAsStream("org/quartz/impl/jdbcjobstore/tables_derby.sql");
+                    .getClassLoader().getResourceAsStream("org/quartz/job/jdbcjobstore/tables_derby.sql");
             try {
                 BufferedReader r = new BufferedReader(new InputStreamReader(setupStream, "US-ASCII"));
                 StringBuilder sb = new StringBuilder();
