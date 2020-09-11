@@ -14,38 +14,23 @@
  * under the License.
  * 
  */
-package org.quartz.impl;
+package org.quartz.jmx;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.quartz.Calendar;
+import org.quartz.*;
+import org.quartz.Trigger.TriggerState;
+import org.quartz.impl.SchedulerRepository;
+import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.impl.matchers.StringMatcher;
+import org.quartz.jmx.support.JobDetailSupport;
+import org.quartz.spi.JobFactory;
 
 import javax.management.Attribute;
 import javax.management.AttributeList;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.management.openmbean.CompositeData;
-
-import org.quartz.Calendar;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobKey;
-import org.quartz.ListenerManager;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerContext;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerMetaData;
-import org.quartz.Trigger;
-import org.quartz.TriggerKey;
-import org.quartz.UnableToInterruptJobException;
-import org.quartz.Trigger.TriggerState;
-import org.quartz.core.jmx.support.JobDetailSupport;
-import org.quartz.impl.matchers.GroupMatcher;
-import org.quartz.impl.matchers.StringMatcher;
-import org.quartz.spi.JobFactory;
+import java.util.*;
 
 /**
  * <p>

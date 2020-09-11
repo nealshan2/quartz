@@ -1,14 +1,14 @@
-package org.quartz.core.jmx;
+package org.quartz.jmx;
 
 import org.quartz.*;
 import org.quartz.Trigger.TriggerState;
 import org.quartz.core.QuartzScheduler;
-import org.quartz.core.jmx.statistics.NullSampledStatisticsImpl;
-import org.quartz.core.jmx.statistics.SampledStatistics;
-import org.quartz.core.jmx.statistics.SampledStatisticsImpl;
-import org.quartz.core.jmx.support.JobDetailSupport;
-import org.quartz.core.jmx.support.JobExecutionContextSupport;
-import org.quartz.core.jmx.support.TriggerSupport;
+import org.quartz.jmx.statistics.NullSampledStatisticsImpl;
+import org.quartz.jmx.statistics.SampledStatistics;
+import org.quartz.jmx.statistics.SampledStatisticsImpl;
+import org.quartz.jmx.support.JobDetailSupport;
+import org.quartz.jmx.support.JobExecutionContextSupport;
+import org.quartz.jmx.support.TriggerSupport;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.quartz.impl.triggers.AbstractTrigger;
 import org.quartz.spi.OperableTrigger;

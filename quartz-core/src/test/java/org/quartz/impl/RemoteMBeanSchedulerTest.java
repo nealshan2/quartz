@@ -22,6 +22,7 @@ import org.quartz.*;
 import org.quartz.core.QuartzSchedulerResources;
 import org.quartz.impl.calendar.BaseCalendar;
 import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.jmx.RemoteMBeanScheduler;
 
 import javax.management.AttributeList;
 import javax.management.MBeanServer;

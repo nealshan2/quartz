@@ -30,6 +30,7 @@ import org.quartz.impl.jdbcjobstore.JobStoreSupport;
 import org.quartz.impl.jdbcjobstore.Semaphore;
 import org.quartz.impl.jdbcjobstore.TablePrefixAware;
 import org.quartz.impl.matchers.EverythingMatcher;
+import org.quartz.jmx.RemoteMBeanScheduler;
 import org.quartz.management.ManagementRESTServiceConfiguration;
 import org.quartz.simpl.RAMJobStore;
 import org.quartz.simpl.SimpleThreadPool;
@@ -692,17 +693,8 @@ public class StdSchedulerFactory implements SchedulerFactory {
         boolean jmxProxy = cfg.getBooleanProperty(PROP_SCHED_JMX_PROXY);
         String jmxProxyClass = cfg.getStringProperty(PROP_SCHED_JMX_PROXY_CLASS);
 
-        boolean rmiExport = cfg.getBooleanProperty(PROP_SCHED_RMI_EXPORT, false);
-        boolean rmiProxy = cfg.getBooleanProperty(PROP_SCHED_RMI_PROXY, false);
-        String rmiHost = cfg.getStringProperty(PROP_SCHED_RMI_HOST, "localhost");
-        int rmiPort = cfg.getIntProperty(PROP_SCHED_RMI_PORT, 1099);
-        int rmiServerPort = cfg.getIntProperty(PROP_SCHED_RMI_SERVER_PORT, -1);
-        String rmiCreateRegistry = cfg.getStringProperty(
-                PROP_SCHED_RMI_CREATE_REGISTRY,
-                QuartzSchedulerResources.CREATE_REGISTRY_NEVER);
-        String rmiBindName = cfg.getStringProperty(PROP_SCHED_RMI_BIND_NAME);
 
-        if (jmxProxy && rmiProxy) {
+        if (jmxProxy) {
             throw new SchedulerConfigException("Cannot proxy both RMI and JMX.");
         }
 
@@ -710,25 +702,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
         String managementRESTServiceHostAndPort = cfg.getStringProperty(MANAGEMENT_REST_SERVICE_HOST_PORT, "0.0.0.0:9889");
 
         Properties schedCtxtProps = cfg.getPropertyGroup(PROP_SCHED_CONTEXT_PREFIX, true);
-
-        // If Proxying to remote scheduler, short-circuit here...
-        // ~~~~~~~~~~~~~~~~~~
-        if (rmiProxy) {
-
-            if (autoId) {
-                schedInstId = DEFAULT_INSTANCE_ID;
-            }
-
-            String uid = (rmiBindName == null) ? QuartzSchedulerResources.getUniqueIdentifier(
-                    schedName, schedInstId) : rmiBindName;
-
-            RemoteScheduler remoteScheduler = new RemoteScheduler(uid, rmiHost, rmiPort);
-
-            schedRep.bind(remoteScheduler);
-
-            return remoteScheduler;
-        }
-
 
         // Create class load helper
         ClassLoadHelper loadHelper = null;
@@ -1277,14 +1250,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
                 managementRESTServiceConfiguration.setBind(managementRESTServiceHostAndPort);
                 managementRESTServiceConfiguration.setEnabled(managementRESTServiceEnabled);
                 rsrcs.setManagementRESTServiceConfiguration(managementRESTServiceConfiguration);
-            }
-
-            if (rmiExport) {
-                rsrcs.setRMIRegistryHost(rmiHost);
-                rsrcs.setRMIRegistryPort(rmiPort);
-                rsrcs.setRMIServerPort(rmiServerPort);
-                rsrcs.setRMICreateRegistryStrategy(rmiCreateRegistry);
-                rsrcs.setRMIBindName(rmiBindName);
             }
 
             SchedulerDetailsSetter.setDetails(tp, schedName, schedInstId);

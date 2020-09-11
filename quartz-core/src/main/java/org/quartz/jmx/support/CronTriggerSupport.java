@@ -1,4 +1,4 @@
-package org.quartz.core.jmx.support;
+package org.quartz.jmx.support;
 
 import org.quartz.CronTrigger;
 import org.quartz.impl.triggers.CronTriggerImpl;

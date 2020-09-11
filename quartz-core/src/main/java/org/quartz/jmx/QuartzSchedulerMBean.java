@@ -1,7 +1,7 @@
-package org.quartz.core.jmx;
+package org.quartz.jmx;
 
-import org.quartz.core.jmx.support.JobDetailSupport;
-import org.quartz.core.jmx.support.TriggerSupport;
+import org.quartz.jmx.support.JobDetailSupport;
+import org.quartz.jmx.support.TriggerSupport;
 
 import javax.management.openmbean.CompositeData;
 import javax.management.openmbean.TabularData;
