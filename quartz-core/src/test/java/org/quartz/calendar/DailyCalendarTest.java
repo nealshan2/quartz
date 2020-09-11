@@ -21,7 +21,7 @@ import org.quartz.SerializationTestSupport;
  * Unit test for DailyCalendar.
  */
 public class DailyCalendarTest extends SerializationTestSupport {
-    private static final String[] VERSIONS = new String[]{"1.5.2"};
+    private static final String[] VERSIONS = new String[]{"2.5.0"};
 
     public void testStringStartEndTimes() {
         DailyCalendar dailyCalendar = new DailyCalendar("1:20", "14:50");
@@ -76,5 +76,10 @@ public class DailyCalendarTest extends SerializationTestSupport {
         assertTrue(deserializedCalendar.getInvertTimeRange());
         assertNull(deserializedCalendar.getTimeZone());
         assertTrue(deserializedCalendar.toString().indexOf("01:20:01:456 - 14:50:15:002") > 0);
+    }
+
+    // execute with version number to generate a new version's serialized form
+    public static void main(String[] args) throws Exception {
+        new DailyCalendarTest().writeJobDataFile(VERSIONS[0]);
     }
 }
