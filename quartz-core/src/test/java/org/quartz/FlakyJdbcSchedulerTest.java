@@ -79,7 +79,7 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
         jobStore.setTablePrefix("QRTZ_");
         jobStore.setInstanceId("AUTO");
         jobStore.setDbRetryInterval(50);
-        DirectSchedulerFactory.getInstance().createScheduler(name + "Scheduler", "AUTO", new SimpleThreadPool(threadPoolSize, Thread.NORM_PRIORITY), jobStore, null, 0, -1, 50);
+        DirectSchedulerFactory.getInstance().createScheduler(name + "Scheduler", "AUTO", new SimpleThreadPool(threadPoolSize, Thread.NORM_PRIORITY), jobStore, -1, 50);
         return SchedulerRepository.getInstance().lookup(name + "Scheduler");
     }
 

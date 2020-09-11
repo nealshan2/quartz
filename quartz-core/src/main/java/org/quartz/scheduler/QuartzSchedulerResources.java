@@ -46,25 +46,11 @@ public class QuartzSchedulerResources {
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      */
 
-    public static final String CREATE_REGISTRY_NEVER = "never";
-
-    public static final String CREATE_REGISTRY_ALWAYS = "always";
-
-    public static final String CREATE_REGISTRY_AS_NEEDED = "as_needed";
-
     private String name;
 
     private String instanceId;
 
     private String threadName;
-
-    private String rmiRegistryHost = null;
-
-    private int rmiRegistryPort = 1099;
-
-    private int rmiServerPort = -1;
-
-    private String rmiCreateRegistryStrategy = CREATE_REGISTRY_NEVER;
 
     private ThreadPool threadPool;
 
@@ -77,8 +63,6 @@ public class QuartzSchedulerResources {
     private boolean makeSchedulerThreadDaemon = false;
 
     private boolean threadsInheritInitializersClassLoadContext = false;
-
-    private String rmiBindName;
 
     private boolean jmxExport;
 
@@ -182,74 +166,6 @@ public class QuartzSchedulerResources {
         return getUniqueIdentifier(name, instanceId);
     }
 
-    /**
-     * <p>
-     * Get the host name of the RMI Registry that the scheduler should export
-     * itself to.
-     * </p>
-     */
-    public String getRMIRegistryHost() {
-        return rmiRegistryHost;
-    }
-
-    /**
-     * <p>
-     * Set the host name of the RMI Registry that the scheduler should export
-     * itself to.
-     * </p>
-     */
-    public void setRMIRegistryHost(String hostName) {
-        this.rmiRegistryHost = hostName;
-    }
-
-    /**
-     * <p>
-     * Get the port number of the RMI Registry that the scheduler should export
-     * itself to.
-     * </p>
-     */
-    public int getRMIRegistryPort() {
-        return rmiRegistryPort;
-    }
-
-    /**
-     * <p>
-     * Set the port number of the RMI Registry that the scheduler should export
-     * itself to.
-     * </p>
-     */
-    public void setRMIRegistryPort(int port) {
-        this.rmiRegistryPort = port;
-    }
-
-
-    /**
-     * <p>
-     * Get the port number the scheduler server will be bound to.
-     * </p>
-     */
-    public int getRMIServerPort() {
-        return rmiServerPort;
-    }
-
-    /**
-     * <p>
-     * Set the port number the scheduler server will be bound to.
-     * </p>
-     */
-    public void setRMIServerPort(int port) {
-        this.rmiServerPort = port;
-    }
-
-    /**
-     * <p>
-     * Get the setting of whether or not Quartz should create an RMI Registry,
-     * and if so, how.
-     * </p>
-     */
-    public String getRMICreateRegistryStrategy() {
-        return rmiCreateRegistryStrategy;
-    }
 
     /**
      * <p>
@@ -274,38 +190,6 @@ public class QuartzSchedulerResources {
         }
 
         this.threadName = threadName;
-    }
-
-    /**
-     * <p>
-     * Set whether or not Quartz should create an RMI Registry, and if so, how.
-     * </p>
-     *
-     * @see #CREATE_REGISTRY_ALWAYS
-     * @see #CREATE_REGISTRY_AS_NEEDED
-     * @see #CREATE_REGISTRY_NEVER
-     */
-    public void setRMICreateRegistryStrategy(String rmiCreateRegistryStrategy) {
-        if (rmiCreateRegistryStrategy == null
-                || rmiCreateRegistryStrategy.trim().length() == 0) {
-            rmiCreateRegistryStrategy = CREATE_REGISTRY_NEVER;
-        } else if (rmiCreateRegistryStrategy.equalsIgnoreCase("true")) {
-            rmiCreateRegistryStrategy = CREATE_REGISTRY_AS_NEEDED;
-        } else if (rmiCreateRegistryStrategy.equalsIgnoreCase("false")) {
-            rmiCreateRegistryStrategy = CREATE_REGISTRY_NEVER;
-        } else if (rmiCreateRegistryStrategy.equalsIgnoreCase(CREATE_REGISTRY_ALWAYS)) {
-            rmiCreateRegistryStrategy = CREATE_REGISTRY_ALWAYS;
-        } else if (rmiCreateRegistryStrategy.equalsIgnoreCase(CREATE_REGISTRY_AS_NEEDED)) {
-            rmiCreateRegistryStrategy = CREATE_REGISTRY_AS_NEEDED;
-        } else if (rmiCreateRegistryStrategy.equalsIgnoreCase(CREATE_REGISTRY_NEVER)) {
-            rmiCreateRegistryStrategy = CREATE_REGISTRY_NEVER;
-        } else {
-            throw new IllegalArgumentException(
-                    "Faild to set RMICreateRegistryStrategy - strategy unknown: '"
-                            + rmiCreateRegistryStrategy + "'");
-        }
-
-        this.rmiCreateRegistryStrategy = rmiCreateRegistryStrategy;
     }
 
     /**
@@ -443,27 +327,6 @@ public class QuartzSchedulerResources {
     public void setThreadsInheritInitializersClassLoadContext(
             boolean threadsInheritInitializersClassLoadContext) {
         this.threadsInheritInitializersClassLoadContext = threadsInheritInitializersClassLoadContext;
-    }
-
-    /**
-     * Get the name under which to bind the QuartzScheduler in RMI.  Will
-     * return the value of the uniqueIdentifier property if explict RMI bind
-     * name was never set.
-     *
-     * @see #getUniqueIdentifier()
-     */
-    public String getRMIBindName() {
-        return (rmiBindName == null) ? getUniqueIdentifier() : rmiBindName;
-    }
-
-    /**
-     * Set the name under which to bind the QuartzScheduler in RMI.  If unset,
-     * defaults to the value of the uniqueIdentifier property.
-     *
-     * @see #getUniqueIdentifier()
-     */
-    public void setRMIBindName(String rmiBindName) {
-        this.rmiBindName = rmiBindName;
     }
 
     /**
