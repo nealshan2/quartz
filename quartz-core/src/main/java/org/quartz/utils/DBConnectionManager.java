@@ -33,7 +33,6 @@ import java.util.HashMap;
  * @see ConnectionProvider
  * @see PoolingConnectionProvider
  * @see JNDIConnectionProvider
- * @see org.quartz.utils.weblogic.WeblogicConnectionProvider
  */
 public class DBConnectionManager {
 

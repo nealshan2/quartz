@@ -17,14 +17,13 @@
 
 package org.quartz.utils;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.quartz.SchedulerException;
+
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import org.quartz.SchedulerException;
-
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 /**
  * <p>
@@ -42,6 +41,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
  * @see DBConnectionManager
  * @see ConnectionProvider
  */
+@Deprecated // use hikari only
 public class C3p0PoolingConnectionProvider implements PoolingConnectionProvider {
 
     /*
