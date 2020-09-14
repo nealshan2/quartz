@@ -29,14 +29,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public final class JdbcQuartzTestUtilities {
 
     private static final String DATABASE_DRIVER_CLASS = JdbcQuartzH2Utilities.DATABASE_DRIVER_CLASS;
     private static final String DATABASE_CONNECTION_PREFIX = "jdbc:h2:mem:";
     private static final List<String> DATABASE_SETUP_STATEMENTS;
+    private final static Properties PROPS = new Properties();
 
     static {
+        PROPS.setProperty("user", JdbcQuartzH2Utilities.DATABASE_USERNAME);
+        PROPS.setProperty("password", JdbcQuartzH2Utilities.DATABASE_PASSWORD);
+
         try {
             Class.forName(DATABASE_DRIVER_CLASS).newInstance();
         } catch (ClassNotFoundException e) {
@@ -87,7 +92,7 @@ public final class JdbcQuartzTestUtilities {
     public static void destroyDatabase(String name) throws SQLException {
         try {
             DriverManager.getConnection(
-                    DATABASE_CONNECTION_PREFIX + name).close();
+                    DATABASE_CONNECTION_PREFIX + name, PROPS).close();
         } catch (SQLException e) {
             if (!("Database 'memory:" + name + "' dropped.").equals(e.getMessage())) {
                 throw e;
@@ -124,7 +129,8 @@ public final class JdbcQuartzTestUtilities {
 
         EmbeddedConnectionProvider(String name) throws SQLException {
             this.databaseName = name;
-            Connection conn = DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + databaseName + ";create=true");
+            Connection conn = DriverManager
+                    .getConnection(DATABASE_CONNECTION_PREFIX + databaseName, PROPS);
             try {
                 Statement statement = conn.createStatement();
                 for (String command : DATABASE_SETUP_STATEMENTS) {
@@ -137,7 +143,7 @@ public final class JdbcQuartzTestUtilities {
         }
 
         public Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + databaseName);
+            return DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + databaseName, PROPS);
         }
 
         public void shutdown() throws SQLException {

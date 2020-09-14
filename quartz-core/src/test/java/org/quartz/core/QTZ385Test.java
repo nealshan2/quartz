@@ -15,6 +15,22 @@
  */
 package org.quartz.core;
 
+import org.junit.Assert;
+import org.junit.Test;
+import org.quartz.integrations.tests.HelloJob;
+import org.quartz.job.JobBuilder;
+import org.quartz.job.JobExecutionContext;
+import org.quartz.job.jdbcjobstore.JdbcQuartzTestUtilities;
+import org.quartz.job.jdbcjobstore.JobStoreTX;
+import org.quartz.listeners.JobListenerSupport;
+import org.quartz.scheduler.DirectSchedulerFactory;
+import org.quartz.scheduler.Scheduler;
+import org.quartz.scheduler.SchedulerException;
+import org.quartz.scheduler.SimpleScheduleBuilder;
+import org.quartz.simpl.SimpleThreadPool;
+import org.quartz.spi.JobStore;
+import org.quartz.triggers.TriggerBuilder;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -24,22 +40,6 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.quartz.job.JobBuilder;
-import org.quartz.job.JobExecutionContext;
-import org.quartz.scheduler.Scheduler;
-import org.quartz.scheduler.SchedulerException;
-import org.quartz.scheduler.SimpleScheduleBuilder;
-import org.quartz.triggers.TriggerBuilder;
-import org.quartz.scheduler.DirectSchedulerFactory;
-import org.quartz.job.jdbcjobstore.JdbcQuartzTestUtilities;
-import org.quartz.job.jdbcjobstore.JobStoreTX;
-import org.quartz.integrations.tests.HelloJob;
-import org.quartz.listeners.JobListenerSupport;
-import org.quartz.simpl.SimpleThreadPool;
-import org.quartz.spi.JobStore;
 
 /**
  * @author cdennis
@@ -88,8 +88,16 @@ public class QTZ385Test {
             factory.createScheduler(new SimpleThreadPool(1, Thread.NORM_PRIORITY), evilJobStore);
             Scheduler scheduler = factory.getScheduler();
             try {
-                scheduler.scheduleJob(JobBuilder.newJob(HelloJob.class).withIdentity("test").requestRecovery().build(),
-                        TriggerBuilder.newTrigger().withIdentity("test").withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(1)).build());
+                scheduler.scheduleJob(JobBuilder.newJob(HelloJob.class)
+                                .withIdentity("test")
+                                .requestRecovery()
+                                .build(),
+                        TriggerBuilder.newTrigger()
+                                .withIdentity("test")
+                                .withSchedule(SimpleScheduleBuilder
+                                        .simpleSchedule()
+                                        .withIntervalInMilliseconds(1))
+                                .build());
                 scheduler.start();
                 barrier.await();
             } finally {
