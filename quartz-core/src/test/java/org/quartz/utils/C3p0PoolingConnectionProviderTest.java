@@ -18,11 +18,10 @@
 package org.quartz.utils;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
-import org.quartz.integrations.tests.JdbcQuartzDerbyUtilities;
+import org.quartz.integrations.tests.JdbcQuartzH2Utilities;
 import org.quartz.integrations.tests.QuartzDatabaseTestSupport;
 
 import java.util.Properties;
@@ -55,10 +54,10 @@ public class C3p0PoolingConnectionProviderTest extends QuartzDatabaseTestSupport
 
         ComboPooledDataSource ds = ((C3p0PoolingConnectionProvider) provider).getDataSource();
 
-        Assert.assertThat(ds.getDriverClass(), Matchers.is("org.apache.derby.jdbc.ClientDriver"));
-        Assert.assertThat(ds.getJdbcUrl(), Matchers.is(JdbcQuartzDerbyUtilities.DATABASE_CONNECTION_PREFIX));
-        Assert.assertThat(ds.getUser(), Matchers.is("quartz"));
-        Assert.assertThat(ds.getPassword(), Matchers.is("quartz"));
+        Assert.assertThat(ds.getDriverClass(), Matchers.is(JdbcQuartzH2Utilities.DATABASE_DRIVER_CLASS));
+        Assert.assertThat(ds.getJdbcUrl(), Matchers.is(JdbcQuartzH2Utilities.DATABASE_CONNECTION_PREFIX));
+        Assert.assertThat(ds.getUser(), Matchers.is(JdbcQuartzH2Utilities.DATABASE_USERNAME));
+        Assert.assertThat(ds.getPassword(), Matchers.is(JdbcQuartzH2Utilities.DATABASE_PASSWORD));
         Assert.assertThat(ds.getMaxPoolSize(), Matchers.is(5));
 
         Assert.assertThat(ds.getMinPoolSize(), Matchers.is(5));
@@ -90,10 +89,10 @@ public class C3p0PoolingConnectionProviderTest extends QuartzDatabaseTestSupport
 
         properties.put("org.quartz.dataSource.myDS.provider", "c3p0");
 
-        properties.put("org.quartz.dataSource.myDS.driver", "org.apache.derby.jdbc.ClientDriver");
-        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzDerbyUtilities.DATABASE_CONNECTION_PREFIX);
-        properties.put("org.quartz.dataSource.myDS.user", "quartz");
-        properties.put("org.quartz.dataSource.myDS.password", "quartz");
+        properties.put("org.quartz.dataSource.myDS.driver", JdbcQuartzH2Utilities.DATABASE_DRIVER_CLASS);
+        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzH2Utilities.DATABASE_CONNECTION_PREFIX);
+        properties.put("org.quartz.dataSource.myDS.user", JdbcQuartzH2Utilities.DATABASE_USERNAME);
+        properties.put("org.quartz.dataSource.myDS.password", JdbcQuartzH2Utilities.DATABASE_PASSWORD);
         properties.put("org.quartz.dataSource.myDS.maxConnections", "5");
 
         // Set extra properties

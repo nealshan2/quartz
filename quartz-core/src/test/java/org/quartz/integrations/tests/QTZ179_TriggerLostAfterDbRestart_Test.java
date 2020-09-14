@@ -57,10 +57,10 @@ public class QTZ179_TriggerLostAfterDbRestart_Test extends QuartzDatabaseTestSup
         properties.put("org.quartz.jobStore.dataSource", "myDS");
         properties.put("org.quartz.jobStore.tablePrefix", "QRTZ_");
         properties.put("org.quartz.jobStore.isClustered", "false");
-        properties.put("org.quartz.dataSource.myDS.driver", "org.apache.derby.jdbc.ClientDriver");
-        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzDerbyUtilities.DATABASE_CONNECTION_PREFIX);
-        properties.put("org.quartz.dataSource.myDS.user", "quartz");
-        properties.put("org.quartz.dataSource.myDS.password", "quartz");
+        properties.put("org.quartz.dataSource.myDS.driver", JdbcQuartzH2Utilities.DATABASE_DRIVER_CLASS);
+        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzH2Utilities.DATABASE_CONNECTION_PREFIX);
+        properties.put("org.quartz.dataSource.myDS.user", JdbcQuartzH2Utilities.DATABASE_USERNAME);
+        properties.put("org.quartz.dataSource.myDS.password", JdbcQuartzH2Utilities.DATABASE_PASSWORD);
         properties.put("org.quartz.dataSource.myDS.maxConnections", "5");
         return properties;
     }
@@ -135,7 +135,7 @@ public class QTZ179_TriggerLostAfterDbRestart_Test extends QuartzDatabaseTestSup
         }
 
         //there should be maximum 1 trigger in acquired state
-        if (JdbcQuartzDerbyUtilities.triggersInAcquiredState() > 1) {
+        if (JdbcQuartzH2Utilities.triggersInAcquiredState() > 1) {
             fail("There should not be more than 1 trigger in ACQUIRED state in the DB.");
         }
 
@@ -143,16 +143,16 @@ public class QTZ179_TriggerLostAfterDbRestart_Test extends QuartzDatabaseTestSup
         // network error
         try {
             LOG.info("------- Shutting down database ! -----------------");
-            derbyServer.shutdown();
+            dbServer.shutdown();
             Thread.sleep(DURATION_OF_NETWORK_FAILURE * 1000L);
-            derbyServer.start(null);
+            dbServer.start();
             LOG.info("------- Database back online ! -----------------");
             Thread.sleep(DURATION_OF_SECOND_SCHEDULING * 1000L);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        int triggersInAcquiredState = JdbcQuartzDerbyUtilities.triggersInAcquiredState();
+        int triggersInAcquiredState = JdbcQuartzH2Utilities.triggersInAcquiredState();
         assertFalse("There should not be more than 1 trigger in ACQUIRED state in the DB, but found " + triggersInAcquiredState, triggersInAcquiredState > 1);
     }
 

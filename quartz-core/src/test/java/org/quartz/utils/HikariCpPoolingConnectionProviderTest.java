@@ -1,28 +1,10 @@
-
-/*
- * All content copyright Terracotta, Inc., unless otherwise indicated. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy
- * of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- *
- */
-
 package org.quartz.utils;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
-import org.quartz.integrations.tests.JdbcQuartzDerbyUtilities;
+import org.quartz.integrations.tests.JdbcQuartzH2Utilities;
 import org.quartz.integrations.tests.QuartzDatabaseTestSupport;
 
 import java.util.Properties;
@@ -55,10 +37,10 @@ public class HikariCpPoolingConnectionProviderTest extends QuartzDatabaseTestSup
 
         HikariDataSource ds = ((HikariCpPoolingConnectionProvider) provider).getDataSource();
 
-        Assert.assertThat(ds.getDriverClassName(), Matchers.is("org.apache.derby.jdbc.ClientDriver"));
-        Assert.assertThat(ds.getJdbcUrl(), Matchers.is(JdbcQuartzDerbyUtilities.DATABASE_CONNECTION_PREFIX));
-        Assert.assertThat(ds.getUsername(), Matchers.is("quartz"));
-        Assert.assertThat(ds.getPassword(), Matchers.is("quartz"));
+        Assert.assertThat(ds.getDriverClassName(), Matchers.is(JdbcQuartzH2Utilities.DATABASE_DRIVER_CLASS));
+        Assert.assertThat(ds.getJdbcUrl(), Matchers.is(JdbcQuartzH2Utilities.DATABASE_CONNECTION_PREFIX));
+        Assert.assertThat(ds.getUsername(), Matchers.is(JdbcQuartzH2Utilities.DATABASE_USERNAME));
+        Assert.assertThat(ds.getPassword(), Matchers.is(JdbcQuartzH2Utilities.DATABASE_PASSWORD));
         Assert.assertThat(ds.getMaximumPoolSize(), Matchers.is(5));
 
         Assert.assertThat(ds.getTransactionIsolation(), Matchers.is("TRANSACTION_REPEATABLE_READ"));
@@ -90,10 +72,10 @@ public class HikariCpPoolingConnectionProviderTest extends QuartzDatabaseTestSup
             properties.put("org.quartz.dataSource.myDS.connectionProvider.class", "org.quartz.utils.HikariCpPoolingConnectionProvider");
 
         properties.put("org.quartz.dataSource.myDS.provider", "hikaricp");
-        properties.put("org.quartz.dataSource.myDS.driver", "org.apache.derby.jdbc.ClientDriver");
-        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzDerbyUtilities.DATABASE_CONNECTION_PREFIX);
-        properties.put("org.quartz.dataSource.myDS.username", "quartz");
-        properties.put("org.quartz.dataSource.myDS.password", "quartz");
+        properties.put("org.quartz.dataSource.myDS.driver", JdbcQuartzH2Utilities.DATABASE_DRIVER_CLASS);
+        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzH2Utilities.DATABASE_CONNECTION_PREFIX);
+        properties.put("org.quartz.dataSource.myDS.username", JdbcQuartzH2Utilities.DATABASE_USERNAME);
+        properties.put("org.quartz.dataSource.myDS.password", JdbcQuartzH2Utilities.DATABASE_PASSWORD);
         properties.put("org.quartz.dataSource.myDS.maxConnections", "5");
 
         // Set extra properties

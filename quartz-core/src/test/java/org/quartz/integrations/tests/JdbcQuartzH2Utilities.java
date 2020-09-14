@@ -16,51 +16,41 @@
 package org.quartz.integrations.tests;
 
 
-import org.quartz.utils.ConnectionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public final class JdbcQuartzDerbyUtilities {
+public final class JdbcQuartzH2Utilities {
 
     private static final Logger LOG = LoggerFactory
-            .getLogger(JdbcQuartzDerbyUtilities.class);
+            .getLogger(JdbcQuartzH2Utilities.class);
 
-    private static final String DATABASE_DRIVER_CLASS = "org.apache.derby.jdbc.ClientDriver";
-    public static final String DATABASE_PORT = System.getProperty("test.databasePort", "1527");
-    ;
+    public static final String DATABASE_DRIVER_CLASS = "org.h2.Driver";
     public static final String DATABASE_CONNECTION_PREFIX;
+    public static final String DATABASE_PORT = "8022";
+    public static final String DATABASE_USERNAME = "sa";
+    public static final String DATABASE_PASSWORD = "";
 
     private static final List<String> DATABASE_SETUP_STATEMENTS;
     private static final List<String> DATABASE_TEARDOWN_STATEMENTS;
-    private static final String DERBY_DIRECTORY;
 
     private final static Properties PROPS = new Properties();
 
     static {
+//        DATABASE_CONNECTION_PREFIX = "jdbc:h2:~/test";
+        DATABASE_CONNECTION_PREFIX = "jdbc:h2:tcp://localhost:" + DATABASE_PORT + "/~/test";
 
-        String derbyDirectory;
-        if (System.getProperty("buildDirectory") != null) {
-            // running the tests from maven, the db will be stored in target/
-            derbyDirectory = System.getProperty("buildDirectory") + "/quartzTestDb";
-            LOG.info("running the tests with maven, the db will be stored in " + derbyDirectory);
-        } else {
-            derbyDirectory = System.getProperty("java.io.tmpdir") + "quartzTestDb";
-            LOG.info("not using maven, the db will be stored in " + derbyDirectory);
-        }
-        DERBY_DIRECTORY = derbyDirectory;
-
-        DATABASE_CONNECTION_PREFIX = "jdbc:derby://localhost:" + DATABASE_PORT + "/"
-                + DERBY_DIRECTORY + ";create=true";
-
-        PROPS.setProperty("user", "quartz");
-        PROPS.setProperty("password", "quartz");
+        PROPS.setProperty("user", DATABASE_USERNAME);
+        PROPS.setProperty("password", DATABASE_PASSWORD);
 
 
         try {
@@ -73,11 +63,11 @@ public final class JdbcQuartzDerbyUtilities {
             throw new AssertionError(e);
         }
 
-        List<String> setup = new ArrayList<String>();
+        List<String> setup = new ArrayList<>();
         String setupScript;
         try {
-            InputStream setupStream = DerbyConnectionProvider.class
-                    .getClassLoader().getResourceAsStream("org/quartz/job/jdbcjobstore/tables_derby.sql");
+            InputStream setupStream = JdbcQuartzH2Utilities.class
+                    .getClassLoader().getResourceAsStream("org/quartz/job/jdbcjobstore/tables_h2.sql");
             try {
                 BufferedReader r = new BufferedReader(new InputStreamReader(setupStream, "US-ASCII"));
                 StringBuilder sb = new StringBuilder();
@@ -105,11 +95,11 @@ public final class JdbcQuartzDerbyUtilities {
         DATABASE_SETUP_STATEMENTS = setup;
 
 
-        List<String> tearDown = new ArrayList<String>();
+        List<String> tearDown = new ArrayList<>();
         String tearDownScript;
         try {
-            InputStream tearDownStream = DerbyConnectionProvider.class
-                    .getClassLoader().getResourceAsStream("tables_derby_drop.sql");
+            InputStream tearDownStream = JdbcQuartzH2Utilities.class
+                    .getClassLoader().getResourceAsStream("tables_h2_drop.sql");
             try {
                 BufferedReader r = new BufferedReader(new InputStreamReader(tearDownStream, "US-ASCII"));
                 StringBuilder sb = new StringBuilder();
@@ -141,8 +131,7 @@ public final class JdbcQuartzDerbyUtilities {
 
     public static void createDatabase() throws SQLException {
 
-        File derbyDirectory = new File(DERBY_DIRECTORY);
-        delete(derbyDirectory);
+        // TODO: delete and create h2 database
 
         Connection conn = DriverManager.getConnection(DATABASE_CONNECTION_PREFIX, PROPS);
         try {
@@ -201,38 +190,27 @@ public final class JdbcQuartzDerbyUtilities {
             conn.close();
         }
 
-        File derbyDirectory = new File(DERBY_DIRECTORY);
-        delete(derbyDirectory);
     }
 
-    static class DerbyConnectionProvider implements ConnectionProvider {
+//    static class H2ConnectionProvider implements ConnectionProvider {
+//
+//
+//        public Connection getConnection() throws SQLException {
+//            return DriverManager.getConnection(DATABASE_CONNECTION_PREFIX, PROPS);
+//        }
+//
+//        public void shutdown() throws SQLException {
+//            // nothing to do
+//        }
+//
+//        @Override
+//        public void initialize() throws SQLException {
+//            // nothing to do
+//        }
+//    }
 
-
-        public Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(DATABASE_CONNECTION_PREFIX, PROPS);
-        }
-
-        public void shutdown() throws SQLException {
-            // nothing to do
-        }
-
-        @Override
-        public void initialize() throws SQLException {
-            // nothing to do
-        }
-    }
-
-    private JdbcQuartzDerbyUtilities() {
+    private JdbcQuartzH2Utilities() {
         // not instantiable
-    }
-
-    static void delete(File f) {
-        if (f.isDirectory()) {
-            for (File c : f.listFiles())
-                delete(c);
-        }
-        if (!f.delete())
-            LOG.debug("Failed to delete file: " + f + " certainly because it does not exist yet");
     }
 
 }

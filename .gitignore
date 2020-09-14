@@ -1,6 +1,5 @@
 # Maven and test related noise
 target/
-derby.log
 logs/
 tmp/
 

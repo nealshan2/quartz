@@ -15,13 +15,13 @@
  */
 package org.quartz.job.jdbcjobstore;
 
-import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import junit.framework.TestCase;
+import org.quartz.job.JobDataMap;
+import org.quartz.job.JobPersistenceException;
+import org.quartz.simpl.SimpleClassLoadHelper;
+import org.quartz.spi.OperableTrigger;
+import org.quartz.triggers.TriggerKey;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -31,20 +31,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.quartz.job.JobPersistenceException;
-import org.quartz.triggers.TriggerKey;
-import org.quartz.spi.OperableTrigger;
-import org.slf4j.LoggerFactory;
-import org.quartz.job.JobDataMap;
-import org.quartz.simpl.SimpleClassLoadHelper;
-
-import junit.framework.TestCase;
+import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 public class StdJDBCDelegateTest extends TestCase {
 
     public void testSerializeJobData() throws IOException, NoSuchDelegateException {
         StdJDBCDelegate delegate = new StdJDBCDelegate();
-        delegate.initialize(LoggerFactory.getLogger(getClass()), "QRTZ_", "TESTSCHED", "INSTANCE", new SimpleClassLoadHelper(), false, "");
+        delegate.initialize(LoggerFactory.getLogger(getClass()),
+                "QRTZ_", "TESTSCHED", "INSTANCE",
+                new SimpleClassLoadHelper(), false, "");
 
         JobDataMap jdm = new JobDataMap();
         delegate.serializeJobData(jdm).close();

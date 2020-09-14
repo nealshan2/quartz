@@ -185,7 +185,7 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
         public void shutdown() throws SQLException {
             DBConnectionManager.getInstance().shutdown(delegateName);
             JdbcQuartzTestUtilities.destroyDatabase(delegateName);
-            JdbcQuartzTestUtilities.shutdownDatabase();
+            JdbcQuartzTestUtilities.shutdownDatabase(delegateName);
         }
 
         @Override

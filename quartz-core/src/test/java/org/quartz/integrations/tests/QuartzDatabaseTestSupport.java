@@ -16,52 +16,50 @@
  */
 package org.quartz.integrations.tests;
 
-import org.apache.derby.drda.NetworkServerControl;
+import org.h2.tools.Server;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * A base class to support database (DERBY) scheduler integration testing. Each test will have a fresh
- * scheduler created and started, and it will auto shutdown upon each test run. The database will
+ * A base class to support database (H2) scheduler integration testing.
+ * Each test will have a fresh scheduler created and started,
+ * and it will auto shutdown upon each test run. The database will
  * be created with schema before class and destroy after class test.
  *
  * @author Zemian Deng
  */
 public class QuartzDatabaseTestSupport extends QuartzMemoryTestSupport {
     protected static final Logger LOG = LoggerFactory.getLogger(QuartzDatabaseTestSupport.class);
-    protected static NetworkServerControl derbyServer;
+    protected static Server dbServer;
 
     @BeforeClass
     public static void initialize() throws Exception {
-        LOG.info("Starting DERBY database.");
-        InetAddress localhost = InetAddress.getByName("localhost");
-        int portNum = Integer.parseInt(JdbcQuartzDerbyUtilities.DATABASE_PORT);
-        derbyServer = new NetworkServerControl(localhost, portNum);
-        derbyServer.start(new PrintWriter(System.out));
+        LOG.info("Starting database.");
+        Server server = Server.createTcpServer("-tcpPort", JdbcQuartzH2Utilities.DATABASE_PORT).start();
         int tries = 0;
         while (tries < 5) {
-            try {
-                Thread.sleep(500);
-                derbyServer.ping();
+            Thread.sleep(500);
+            if(server.isRunning(false)){
                 break;
-            } catch (Exception e) {
+            } else {
                 tries++;
             }
         }
         if (tries == 5) {
-            throw new Exception("Failed to start Derby!");
+            throw new Exception("Failed to start database!");
         }
         LOG.info("Database started");
+        dbServer = server;
+        LOG.info("Database port: " + server.getPort());
+
         try {
             LOG.info("Creating Database tables for Quartz.");
-            JdbcQuartzDerbyUtilities.createDatabase();
+            JdbcQuartzH2Utilities.createDatabase();
             LOG.info("Database tables created.");
         } catch (SQLException e) {
             throw new Exception("Failed to create Quartz tables.", e);
@@ -72,7 +70,7 @@ public class QuartzDatabaseTestSupport extends QuartzMemoryTestSupport {
     public static void shutdownDb() throws Exception {
         try {
             LOG.info("Destroying Database.");
-            JdbcQuartzDerbyUtilities.destroyDatabase();
+            JdbcQuartzH2Utilities.destroyDatabase();
             LOG.info("Database destroyed.");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,7 +78,7 @@ public class QuartzDatabaseTestSupport extends QuartzMemoryTestSupport {
             throw new AssertionError(e);
         }
 
-        derbyServer.shutdown();
+        dbServer.stop();
         LOG.info("Database shutdown.");
     }
 
@@ -99,10 +97,10 @@ public class QuartzDatabaseTestSupport extends QuartzMemoryTestSupport {
         properties.put("org.quartz.jobStore.dataSource", "myDS");
         properties.put("org.quartz.jobStore.tablePrefix", "QRTZ_");
         properties.put("org.quartz.jobStore.isClustered", "false");
-        properties.put("org.quartz.dataSource.myDS.driver", "org.apache.derby.jdbc.ClientDriver");
-        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzDerbyUtilities.DATABASE_CONNECTION_PREFIX);
-        properties.put("org.quartz.dataSource.myDS.user", "quartz");
-        properties.put("org.quartz.dataSource.myDS.password", "quartz");
+        properties.put("org.quartz.dataSource.myDS.driver", JdbcQuartzH2Utilities.DATABASE_DRIVER_CLASS);
+        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzH2Utilities.DATABASE_CONNECTION_PREFIX);
+        properties.put("org.quartz.dataSource.myDS.user", JdbcQuartzH2Utilities.DATABASE_USERNAME);
+        properties.put("org.quartz.dataSource.myDS.password", JdbcQuartzH2Utilities.DATABASE_PASSWORD);
         properties.put("org.quartz.dataSource.myDS.maxConnections", "5");
         return properties;
     }

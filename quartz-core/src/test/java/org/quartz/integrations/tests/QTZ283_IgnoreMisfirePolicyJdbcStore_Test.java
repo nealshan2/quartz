@@ -56,10 +56,10 @@ public class QTZ283_IgnoreMisfirePolicyJdbcStore_Test extends QuartzDatabaseTest
         properties.put("org.quartz.jobStore.dataSource", "myDS");
         properties.put("org.quartz.jobStore.tablePrefix", "QRTZ_");
         properties.put("org.quartz.jobStore.isClustered", "false");
-        properties.put("org.quartz.dataSource.myDS.driver", "org.apache.derby.jdbc.ClientDriver");
-        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzDerbyUtilities.DATABASE_CONNECTION_PREFIX);
-        properties.put("org.quartz.dataSource.myDS.user", "quartz");
-        properties.put("org.quartz.dataSource.myDS.password", "quartz");
+        properties.put("org.quartz.dataSource.myDS.driver", JdbcQuartzH2Utilities.DATABASE_DRIVER_CLASS);
+        properties.put("org.quartz.dataSource.myDS.URL", JdbcQuartzH2Utilities.DATABASE_CONNECTION_PREFIX);
+        properties.put("org.quartz.dataSource.myDS.user", JdbcQuartzH2Utilities.DATABASE_USERNAME);
+        properties.put("org.quartz.dataSource.myDS.password", JdbcQuartzH2Utilities.DATABASE_PASSWORD);
         properties.put("org.quartz.dataSource.myDS.maxConnections", "5");
         return properties;
     }
@@ -109,8 +109,9 @@ public class QTZ283_IgnoreMisfirePolicyJdbcStore_Test extends QuartzDatabaseTest
 
     @Test
     public void checkOldTriggerGetsFired() throws SQLException {
-        BigDecimal misfirePolicyIgnoreTimesTriggered = JdbcQuartzDerbyUtilities.timesTriggered("trigger1", "group1");
-        assertThat("The old trigger has never been fired, even if the policy is ignore", misfirePolicyIgnoreTimesTriggered,
+        BigDecimal misfirePolicyIgnoreTimesTriggered = JdbcQuartzH2Utilities.timesTriggered("trigger1", "group1");
+        assertThat("The old trigger has never been fired, even if the policy is ignore",
+                misfirePolicyIgnoreTimesTriggered,
                 not(equalTo(BigDecimal.ZERO)));
     }
 }

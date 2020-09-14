@@ -15,6 +15,7 @@
  */
 package org.quartz.job.jdbcjobstore;
 
+import org.quartz.integrations.tests.JdbcQuartzH2Utilities;
 import org.quartz.utils.ConnectionProvider;
 import org.quartz.utils.DBConnectionManager;
 
@@ -31,8 +32,8 @@ import java.util.List;
 
 public final class JdbcQuartzTestUtilities {
 
-    private static final String DATABASE_DRIVER_CLASS = "org.apache.derby.jdbc.EmbeddedDriver";
-    private static final String DATABASE_CONNECTION_PREFIX = "jdbc:derby:memory:";
+    private static final String DATABASE_DRIVER_CLASS = JdbcQuartzH2Utilities.DATABASE_DRIVER_CLASS;
+    private static final String DATABASE_CONNECTION_PREFIX = "jdbc:h2:mem:";
     private static final List<String> DATABASE_SETUP_STATEMENTS;
 
     static {
@@ -49,8 +50,8 @@ public final class JdbcQuartzTestUtilities {
         List<String> setup = new ArrayList<String>();
         String setupScript;
         try {
-            InputStream setupStream = DerbyEmbeddedConnectionProvider.class
-                    .getClassLoader().getResourceAsStream("org/quartz/job/jdbcjobstore/tables_derby.sql");
+            InputStream setupStream = EmbeddedConnectionProvider.class
+                    .getClassLoader().getResourceAsStream("org/quartz/job/jdbcjobstore/tables_h2.sql");
             try {
                 BufferedReader r = new BufferedReader(new InputStreamReader(setupStream, "US-ASCII"));
                 StringBuilder sb = new StringBuilder();
@@ -80,13 +81,13 @@ public final class JdbcQuartzTestUtilities {
 
     public static void createDatabase(String name) throws SQLException {
         DBConnectionManager.getInstance().addConnectionProvider(name,
-                new DerbyEmbeddedConnectionProvider(name));
+                new EmbeddedConnectionProvider(name));
     }
 
     public static void destroyDatabase(String name) throws SQLException {
         try {
             DriverManager.getConnection(
-                    DATABASE_CONNECTION_PREFIX + name + ";drop=true").close();
+                    DATABASE_CONNECTION_PREFIX + name).close();
         } catch (SQLException e) {
             if (!("Database 'memory:" + name + "' dropped.").equals(e.getMessage())) {
                 throw e;
@@ -94,13 +95,17 @@ public final class JdbcQuartzTestUtilities {
         }
     }
 
-    public static void shutdownDatabase() throws SQLException {
+    public static void shutdownDatabase(String name) throws SQLException {
+        Connection connection = null;
         try {
-            DriverManager.getConnection("jdbc:derby:;shutdown=true").close();
+            connection = DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + name);
+            connection.createStatement().execute("SHUTDOWN");
         } catch (SQLException e) {
-            if (!("Derby system shutdown.").equals(e.getMessage())) {
+            if (!("H2 system shutdown.").equals(e.getMessage())) {
                 throw e;
             }
+        } finally {
+            connection.close();
         }
         try {
             Class.forName(DATABASE_DRIVER_CLASS).newInstance();
@@ -113,11 +118,11 @@ public final class JdbcQuartzTestUtilities {
         }
     }
 
-    static class DerbyEmbeddedConnectionProvider implements ConnectionProvider {
+    static class EmbeddedConnectionProvider implements ConnectionProvider {
 
         private final String databaseName;
 
-        DerbyEmbeddedConnectionProvider(String name) throws SQLException {
+        EmbeddedConnectionProvider(String name) throws SQLException {
             this.databaseName = name;
             Connection conn = DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + databaseName + ";create=true");
             try {

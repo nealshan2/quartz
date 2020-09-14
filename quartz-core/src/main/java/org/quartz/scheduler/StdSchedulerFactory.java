@@ -189,42 +189,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
 
     public static final String PROP_CONNECTION_PROVIDER_CLASS = "connectionProvider.class";
 
-    /**
-     * @deprecated Replaced with {@link PoolingConnectionProvider#DB_DRIVER}
-     */
-    @Deprecated
-    public static final String PROP_DATASOURCE_DRIVER = "driver";
-
-    /**
-     * @deprecated Replaced with {@link PoolingConnectionProvider#DB_URL}
-     */
-    @Deprecated
-    public static final String PROP_DATASOURCE_URL = "URL";
-
-    /**
-     * @deprecated Replaced with {@link PoolingConnectionProvider#DB_USER}
-     */
-    @Deprecated
-    public static final String PROP_DATASOURCE_USER = "user";
-
-    /**
-     * @deprecated Replaced with {@link PoolingConnectionProvider#DB_PASSWORD}
-     */
-    @Deprecated
-    public static final String PROP_DATASOURCE_PASSWORD = "password";
-
-    /**
-     * @deprecated Replaced with {@link PoolingConnectionProvider#DB_MAX_CONNECTIONS}
-     */
-    @Deprecated
-    public static final String PROP_DATASOURCE_MAX_CONNECTIONS = "maxConnections";
-
-    /**
-     * @deprecated Replaced with {@link PoolingConnectionProvider#DB_VALIDATION_QUERY}
-     */
-    @Deprecated
-    public static final String PROP_DATASOURCE_VALIDATION_QUERY = "validationQuery";
-
     public static final String PROP_DATASOURCE_JNDI_URL = "jndiURL";
 
     public static final String PROP_DATASOURCE_JNDI_ALWAYS_LOOKUP = "jndiAlwaysLookup";
