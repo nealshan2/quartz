@@ -57,7 +57,8 @@ public class QTZ385Test {
     }
 
     @Test
-    public void testShutdownOrdering() throws SchedulerException, SQLException, InterruptedException, BrokenBarrierException {
+    public void testShutdownOrdering() throws SchedulerException,
+            SQLException, InterruptedException, BrokenBarrierException {
         JdbcQuartzTestUtilities.createDatabase("testShutdownOrdering");
         try {
             final CyclicBarrier barrier = new CyclicBarrier(2);
@@ -66,7 +67,9 @@ public class QTZ385Test {
             realJobStore.setInstanceId("SINGLE_NODE_TEST");
             realJobStore.setInstanceName("testShutdownOrdering");
 
-            JobStore evilJobStore = (JobStore) Proxy.newProxyInstance(JobStore.class.getClassLoader(), new Class[]{JobStore.class}, new InvocationHandler() {
+            JobStore evilJobStore = (JobStore) Proxy.newProxyInstance(JobStore.class.getClassLoader(),
+                    new Class[]{JobStore.class},
+                    new InvocationHandler() {
                 @Override
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                     if (TRIGGERS_FIRED.equals(method)) {

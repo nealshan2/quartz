@@ -18,24 +18,28 @@ package org.quartz.job.jdbcjobstore;
 import org.quartz.integrations.tests.JdbcQuartzH2Utilities;
 import org.quartz.utils.ConnectionProvider;
 import org.quartz.utils.DBConnectionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 public final class JdbcQuartzTestUtilities {
+    private static final Logger LOG = LoggerFactory
+            .getLogger(JdbcQuartzTestUtilities.class);
 
     private static final String DATABASE_DRIVER_CLASS = JdbcQuartzH2Utilities.DATABASE_DRIVER_CLASS;
     private static final String DATABASE_CONNECTION_PREFIX = "jdbc:h2:mem:";
+    private static final String DATABASE_CONNECTION_SUFFIX = ";DB_CLOSE_DELAY=-1"; // not close database after close connection
     private static final List<String> DATABASE_SETUP_STATEMENTS;
+    private static final List<String> DATABASE_TEARDOWN_STATEMENTS;
+
     private final static Properties PROPS = new Properties();
 
     static {
@@ -82,6 +86,37 @@ public final class JdbcQuartzTestUtilities {
             }
         }
         DATABASE_SETUP_STATEMENTS = setup;
+
+        List<String> tearDown = new ArrayList<>();
+        String tearDownScript;
+        try {
+            InputStream tearDownStream = EmbeddedConnectionProvider.class
+                    .getClassLoader().getResourceAsStream("tables_h2_drop.sql");
+            try {
+                BufferedReader r = new BufferedReader(new InputStreamReader(tearDownStream, "US-ASCII"));
+                StringBuilder sb = new StringBuilder();
+                while (true) {
+                    String line = r.readLine();
+                    if (line == null) {
+                        break;
+                    } else if (!line.startsWith("--")) {
+                        sb.append(line).append("\n");
+                    }
+                }
+                tearDownScript = sb.toString();
+            } finally {
+                tearDownStream.close();
+            }
+        } catch (IOException e) {
+            throw new AssertionError(e);
+        }
+
+        for (String command : tearDownScript.split(";")) {
+            if (!command.matches("\\s*")) {
+                tearDown.add(command);
+            }
+        }
+        DATABASE_TEARDOWN_STATEMENTS = tearDown;
     }
 
     public static void createDatabase(String name) throws SQLException {
@@ -90,20 +125,23 @@ public final class JdbcQuartzTestUtilities {
     }
 
     public static void destroyDatabase(String name) throws SQLException {
+        Connection conn = DriverManager.getConnection(
+                DATABASE_CONNECTION_PREFIX + name + DATABASE_CONNECTION_SUFFIX, PROPS);
         try {
-            DriverManager.getConnection(
-                    DATABASE_CONNECTION_PREFIX + name, PROPS).close();
-        } catch (SQLException e) {
-            if (!("Database 'memory:" + name + "' dropped.").equals(e.getMessage())) {
-                throw e;
+            Statement statement = conn.createStatement();
+            for (String command : DATABASE_TEARDOWN_STATEMENTS) {
+                statement.addBatch(command);
             }
+            statement.executeBatch();
+        } finally {
+            conn.close();
         }
     }
 
     public static void shutdownDatabase(String name) throws SQLException {
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + name);
+            connection = DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + name + DATABASE_CONNECTION_SUFFIX);
             connection.createStatement().execute("SHUTDOWN");
         } catch (SQLException e) {
             if (!("H2 system shutdown.").equals(e.getMessage())) {
@@ -130,7 +168,7 @@ public final class JdbcQuartzTestUtilities {
         EmbeddedConnectionProvider(String name) throws SQLException {
             this.databaseName = name;
             Connection conn = DriverManager
-                    .getConnection(DATABASE_CONNECTION_PREFIX + databaseName, PROPS);
+                    .getConnection(DATABASE_CONNECTION_PREFIX + databaseName + DATABASE_CONNECTION_SUFFIX, PROPS);
             try {
                 Statement statement = conn.createStatement();
                 for (String command : DATABASE_SETUP_STATEMENTS) {
@@ -143,7 +181,7 @@ public final class JdbcQuartzTestUtilities {
         }
 
         public Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + databaseName, PROPS);
+            return DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + databaseName + DATABASE_CONNECTION_SUFFIX, PROPS);
         }
 
         public void shutdown() throws SQLException {
