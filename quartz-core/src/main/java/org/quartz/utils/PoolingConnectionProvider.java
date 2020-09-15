@@ -40,11 +40,6 @@ public interface PoolingConnectionProvider extends ConnectionProvider {
     String POOLING_PROVIDER = "provider";
 
     /**
-     * The c3p0 pooling provider.
-     */
-    String POOLING_PROVIDER_C3P0 = "c3p0";
-
-    /**
      * The Hikari pooling provider.
      */
     String POOLING_PROVIDER_HIKARICP = "hikaricp";

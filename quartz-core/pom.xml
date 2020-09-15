@@ -15,18 +15,10 @@
 
 
     <dependencies>
-        <!--Compile scope. If you add something to compile scope, you have to do the same thing in packaging/pom.xml -->
-        <dependency>
-            <groupId>com.mchange</groupId>
-            <artifactId>c3p0</artifactId>
-            <version>${c3p0.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>${hikaricp.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

@@ -909,7 +909,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
                     dbMgr = DBConnectionManager.getInstance();
                     dbMgr.addConnectionProvider(dsNames[i], cp);
                 } else {
-                    String poolingProvider = pp.getStringProperty(PoolingConnectionProvider.POOLING_PROVIDER);
                     String dsDriver = pp.getStringProperty(PoolingConnectionProvider.DB_DRIVER);
                     String dsURL = pp.getStringProperty(PoolingConnectionProvider.DB_URL);
 
@@ -925,13 +924,8 @@ public class StdSchedulerFactory implements SchedulerFactory {
                                         + dsNames[i]);
                         throw initException;
                     }
-                    // we load even these "core" providers by class name in order to avoid a static dependency on
-                    // the c3p0 and hikaricp libraries
-                    if (poolingProvider != null && poolingProvider.equals(PoolingConnectionProvider.POOLING_PROVIDER_HIKARICP)) {
-                        cpClass = "org.quartz.utils.HikariCpPoolingConnectionProvider";
-                    } else {
-                        cpClass = "org.quartz.utils.C3p0PoolingConnectionProvider";
-                    }
+
+                    cpClass = "org.quartz.utils.HikariCpPoolingConnectionProvider";
                     log.info("Using ConnectionProvider class '" + cpClass + "' for data source '" + dsNames[i] + "'");
 
                     try {
@@ -947,8 +941,9 @@ public class StdSchedulerFactory implements SchedulerFactory {
                         dbMgr = DBConnectionManager.getInstance();
                         dbMgr.addConnectionProvider(dsNames[i], cp);
 
-                        // Populate the underlying C3P0/HikariCP data source pool properties
-                        populateProviderWithExtraProps((PoolingConnectionProvider) cp, pp.getUnderlyingProperties());
+                        // Populate the underlying HikariCP data source pool properties
+                        populateProviderWithExtraProps((PoolingConnectionProvider) cp,
+                                pp.getUnderlyingProperties());
                     } catch (Exception sqle) {
                         initException = new SchedulerException(
                                 "Could not initialize DataSource: " + dsNames[i],
@@ -1273,8 +1268,8 @@ public class StdSchedulerFactory implements SchedulerFactory {
         Properties copyProps = new Properties();
         copyProps.putAll(props);
 
-        // Remove all the default properties first (they don't always match to setter name, and they are already
-        // been set!)
+        // Remove all the default properties first (they don't always match to setter name,
+        // and they are already been set!)
         copyProps.remove(PoolingConnectionProvider.DB_DRIVER);
         copyProps.remove(PoolingConnectionProvider.DB_URL);
         copyProps.remove(PoolingConnectionProvider.DB_USER);
@@ -1282,13 +1277,6 @@ public class StdSchedulerFactory implements SchedulerFactory {
         copyProps.remove(PoolingConnectionProvider.DB_MAX_CONNECTIONS);
         copyProps.remove(PoolingConnectionProvider.DB_VALIDATION_QUERY);
         copyProps.remove(PoolingConnectionProvider.POOLING_PROVIDER);
-
-        if (cp instanceof C3p0PoolingConnectionProvider) {
-            copyProps.remove(C3p0PoolingConnectionProvider.DB_MAX_CACHED_STATEMENTS_PER_CONNECTION);
-            copyProps.remove(C3p0PoolingConnectionProvider.DB_VALIDATE_ON_CHECKOUT);
-            copyProps.remove(C3p0PoolingConnectionProvider.DB_IDLE_VALIDATION_SECONDS);
-            copyProps.remove(C3p0PoolingConnectionProvider.DB_DISCARD_IDLE_CONNECTIONS_SECONDS);
-        }
 
         setBeanProps(cp.getDataSource(), copyProps);
     }
