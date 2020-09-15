@@ -125,8 +125,7 @@ public final class JdbcQuartzTestUtilities {
     }
 
     public static void destroyDatabase(String name) throws SQLException {
-        Connection conn = DriverManager.getConnection(
-                DATABASE_CONNECTION_PREFIX + name + DATABASE_CONNECTION_SUFFIX, PROPS);
+        Connection conn = getConnectionByDatasource(name);
         try {
             Statement statement = conn.createStatement();
             for (String command : DATABASE_TEARDOWN_STATEMENTS) {
@@ -141,24 +140,33 @@ public final class JdbcQuartzTestUtilities {
     public static void shutdownDatabase(String name) throws SQLException {
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + name + DATABASE_CONNECTION_SUFFIX);
+            connection = getConnectionByDatasource(name);
             connection.createStatement().execute("SHUTDOWN");
         } catch (SQLException e) {
             if (!("H2 system shutdown.").equals(e.getMessage())) {
                 throw e;
             }
         } finally {
-            connection.close();
+            if (connection != null) {
+                connection.close();
+            }
         }
-        try {
-            Class.forName(DATABASE_DRIVER_CLASS).newInstance();
-        } catch (ClassNotFoundException e) {
-            throw new AssertionError(e);
-        } catch (InstantiationException e) {
-            throw new AssertionError(e);
-        } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
-        }
+//        try {
+//            Class.forName(DATABASE_DRIVER_CLASS).newInstance();
+//        } catch (ClassNotFoundException e) {
+//            throw new AssertionError(e);
+//        } catch (InstantiationException e) {
+//            throw new AssertionError(e);
+//        } catch (IllegalAccessException e) {
+//            throw new AssertionError(e);
+//        }
+    }
+
+    private static Connection getConnectionByDatasource(String name) throws SQLException {
+        return DriverManager.getConnection(DATABASE_CONNECTION_PREFIX +
+                        name +
+                        DATABASE_CONNECTION_SUFFIX,
+                PROPS);
     }
 
     static class EmbeddedConnectionProvider implements ConnectionProvider {
@@ -167,8 +175,7 @@ public final class JdbcQuartzTestUtilities {
 
         EmbeddedConnectionProvider(String name) throws SQLException {
             this.databaseName = name;
-            Connection conn = DriverManager
-                    .getConnection(DATABASE_CONNECTION_PREFIX + databaseName + DATABASE_CONNECTION_SUFFIX, PROPS);
+            Connection conn = getConnectionByDatasource(databaseName);
             try {
                 Statement statement = conn.createStatement();
                 for (String command : DATABASE_SETUP_STATEMENTS) {
@@ -181,7 +188,7 @@ public final class JdbcQuartzTestUtilities {
         }
 
         public Connection getConnection() throws SQLException {
-            return DriverManager.getConnection(DATABASE_CONNECTION_PREFIX + databaseName + DATABASE_CONNECTION_SUFFIX, PROPS);
+            return getConnectionByDatasource(databaseName);
         }
 
         public void shutdown() throws SQLException {

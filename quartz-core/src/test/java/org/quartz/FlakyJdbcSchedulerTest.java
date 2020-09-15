@@ -16,6 +16,9 @@
 package org.quartz;
 
 import junit.framework.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.quartz.exception.DisallowConcurrentExecution;
 import org.quartz.exception.PersistJobDataAfterExecution;
 import org.quartz.job.*;
@@ -38,10 +41,10 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-//@RunWith(Parameterized.class)
+@RunWith(Parameterized.class)
 public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
 
-    //@Parameters
+    @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{{0f, 0f, 0f}, {0.2f, 0f, 0f}, {0f, 0.2f, 0f}, {0f, 0f, 0.2f}, {0.2f, 0.2f, 0.2f}});
     }
@@ -75,7 +78,7 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
         return SchedulerRepository.getInstance().lookup(name + "Scheduler");
     }
 
-//    @Test
+    @Test
     public void testTriggerFiring() throws Exception {
         final int jobCount = 100;
         final int execCount = 5;
