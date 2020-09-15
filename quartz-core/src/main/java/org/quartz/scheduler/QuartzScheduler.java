@@ -496,28 +496,6 @@ public class QuartzScheduler implements RemotableQuartzScheduler {
         getLog().info(
                 "Scheduler " + resources.getUniqueIdentifier()
                         + " shutting down.");
-        // boolean removeMgmtSvr = false;
-        // if (registeredManagementServerBind != null) {
-        // ManagementServer standaloneRestServer =
-        // MGMT_SVR_BY_BIND.get(registeredManagementServerBind);
-        //
-        // try {
-        // standaloneRestServer.unregister(this);
-        //
-        // if (!standaloneRestServer.hasRegistered()) {
-        // removeMgmtSvr = true;
-        // standaloneRestServer.stop();
-        // }
-        // } catch (Exception e) {
-        // getLog().warn("Failed to shutdown the ManagementRESTService", e);
-        // } finally {
-        // if (removeMgmtSvr) {
-        // MGMT_SVR_BY_BIND.remove(registeredManagementServerBind);
-        // }
-        //
-        // registeredManagementServerBind = null;
-        // }
-        // }
 
         standby();
 
