@@ -17,12 +17,12 @@
 
 package org.quartz.job.jdbcjobstore;
 
-import java.sql.Connection;
-
 import org.quartz.job.JobPersistenceException;
 import org.quartz.scheduler.SchedulerConfigException;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.spi.SchedulerSignaler;
+
+import java.sql.Connection;
 
 /**
  * <p>
@@ -70,7 +70,7 @@ public class JobStoreTX extends JobStoreSupport {
      * @param lockName The name of the lock to aquire, for example
      *                 "TRIGGER_ACCESS".  If null, then no lock is aquired, but the
      *                 lockCallback is still executed in a transaction.
-     * @see JobStoreSupport#executeInNonManagedTXLock(String, TransactionCallback)
+     * @see JobStoreSupport#executeInNonManagedTXLock(String, TransactionCallback, TransactionValidator)
      * @see JobStoreSupport#getNonManagedTXConnection()
      * @see JobStoreSupport#getConnection()
      */
