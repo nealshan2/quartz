@@ -16,20 +16,12 @@
 package org.quartz;
 
 import junit.framework.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import org.quartz.exception.DisallowConcurrentExecution;
 import org.quartz.exception.PersistJobDataAfterExecution;
-import org.quartz.scheduler.DirectSchedulerFactory;
-import org.quartz.scheduler.SchedulerRepository;
+import org.quartz.job.*;
 import org.quartz.job.jdbcjobstore.JdbcQuartzTestUtilities;
 import org.quartz.job.jdbcjobstore.JobStoreTX;
-import org.quartz.job.*;
-import org.quartz.scheduler.Scheduler;
-import org.quartz.scheduler.SchedulerException;
-import org.quartz.scheduler.SimpleScheduleBuilder;
+import org.quartz.scheduler.*;
 import org.quartz.simpl.SimpleThreadPool;
 import org.quartz.triggers.Trigger;
 import org.quartz.triggers.TriggerBuilder;
@@ -46,10 +38,10 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-@RunWith(Parameterized.class)
+//@RunWith(Parameterized.class)
 public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
 
-    @Parameters
+    //@Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{{0f, 0f, 0f}, {0.2f, 0f, 0f}, {0f, 0.2f, 0f}, {0f, 0f, 0.2f}, {0.2f, 0.2f, 0.2f}});
     }
@@ -83,7 +75,7 @@ public class FlakyJdbcSchedulerTest extends AbstractSchedulerTest {
         return SchedulerRepository.getInstance().lookup(name + "Scheduler");
     }
 
-    @Test
+//    @Test
     public void testTriggerFiring() throws Exception {
         final int jobCount = 100;
         final int execCount = 5;
