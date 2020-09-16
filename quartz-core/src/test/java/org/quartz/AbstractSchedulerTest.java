@@ -340,11 +340,27 @@ public abstract class AbstractSchedulerTest {
         if (allThreadsEnd.size() > 0) {
             // log the additional threads
             for (Thread t : allThreadsEnd.keySet()) {
-                System.out.println("*** Found additional thread: " + t.getName() + " (of type " + t.getClass().getName() + ")  in group: " + t.getThreadGroup().getName() + " with parent group: " + (t.getThreadGroup().getParent() == null ? "-none-" : t.getThreadGroup().getParent().getName()));
+                String parentThreadGroupName = t.getThreadGroup().getParent() == null
+                        ? "-none-"
+                        : t.getThreadGroup().getParent().getName();
+                String threadGroupName = t.getThreadGroup() == null ?
+                        "-none-" :
+                        (t.getThreadGroup().getName() + " with parent group: " + parentThreadGroupName);
+
+                System.out.println("*** Found additional thread: " + t.getName() +
+                        " (of type " + t.getClass().getName() + ")  in group: " + threadGroupName);
             }
             // log all threads that were running before shutdown
             for (Thread t : allThreadsRunning.keySet()) {
-                System.out.println("- Test runtime thread: " + t.getName() + " (of type " + t.getClass().getName() + ")  in group: " + (t.getThreadGroup() == null ? "-none-" : (t.getThreadGroup().getName() + " with parent group: " + (t.getThreadGroup().getParent() == null ? "-none-" : t.getThreadGroup().getParent().getName()))));
+                String parentThreadGroupName = t.getThreadGroup().getParent() == null
+                        ? "-none-"
+                        : t.getThreadGroup().getParent().getName();
+                String threadGroupName = t.getThreadGroup() == null ?
+                        "-none-" :
+                        (t.getThreadGroup().getName() + " with parent group: " + parentThreadGroupName);
+
+                System.out.println("- Test runtime thread: " + t.getName() +
+                        " (of type " + t.getClass().getName() + ")  in group: " + threadGroupName);
             }
         }
         assertTrue("Found unexpected new threads (see console output for listing)", allThreadsEnd.size() == 0);
