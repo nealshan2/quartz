@@ -493,8 +493,17 @@ public abstract class AbstractSchedulerTest {
         try {
             scheduler.getContext().put(BARRIER, barrier);
             scheduler.start();
-            scheduler.addJob(newJob().ofType(UncleanShutdownJob.class).withIdentity("job").storeDurably().build(), false);
-            scheduler.scheduleJob(newTrigger().forJob("job").startNow().build());
+            scheduler.addJob(
+                    newJob()
+                            .ofType(UncleanShutdownJob.class)
+                            .withIdentity("job")
+                            .storeDurably()
+                            .build(), false);
+            scheduler.scheduleJob(
+                    newTrigger()
+                            .forJob("job")
+                            .startNow()
+                            .build());
             while (scheduler.getCurrentlyExecutingJobs().isEmpty()) {
                 Thread.sleep(50);
             }

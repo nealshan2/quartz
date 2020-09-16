@@ -2972,7 +2972,8 @@ public abstract class JobStoreSupport implements JobStore, Constants {
                     @Override
                     public Boolean validate(Connection conn, List<TriggerFiredResult> result) throws JobPersistenceException {
                         try {
-                            List<FiredTriggerRecord> acquired = getDelegate().selectInstancesFiredTriggerRecords(conn, getInstanceId());
+                            List<FiredTriggerRecord> acquired = getDelegate()
+                                    .selectInstancesFiredTriggerRecords(conn, getInstanceId());
                             Set<String> executingTriggers = new HashSet<String>();
                             for (FiredTriggerRecord ft : acquired) {
                                 if (STATE_EXECUTING.equals(ft.getFireInstanceState())) {
@@ -2980,7 +2981,10 @@ public abstract class JobStoreSupport implements JobStore, Constants {
                                 }
                             }
                             for (TriggerFiredResult tr : result) {
-                                if (tr.getTriggerFiredBundle() != null && executingTriggers.contains(tr.getTriggerFiredBundle().getTrigger().getFireInstanceId())) {
+                                if (tr.getTriggerFiredBundle() != null &&
+                                        executingTriggers.contains(tr.getTriggerFiredBundle()
+                                                .getTrigger()
+                                                .getFireInstanceId())) {
                                     return true;
                                 }
                             }
@@ -3000,8 +3004,7 @@ public abstract class JobStoreSupport implements JobStore, Constants {
 
         // Make sure trigger wasn't deleted, paused, or completed...
         try { // if trigger was deleted, state will be STATE_DELETED
-            String state = getDelegate().selectTriggerState(conn,
-                    trigger.getKey());
+            String state = getDelegate().selectTriggerState(conn, trigger.getKey());
             if (!state.equals(STATE_ACQUIRED)) {
                 return null;
             }

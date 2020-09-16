@@ -394,10 +394,13 @@ public class QuartzSchedulerThread extends Thread {
 
                             JobRunShell shell = null;
                             try {
-                                shell = qsRsrcs.getJobRunShellFactory().createJobRunShell(bndle);
+                                shell = qsRsrcs.getJobRunShellFactory()
+                                        .createJobRunShell(bndle);
                                 shell.initialize(qs);
                             } catch (SchedulerException se) {
-                                qsRsrcs.getJobStore().triggeredJobComplete(triggers.get(i), bndle.getJobDetail(), CompletedExecutionInstruction.SET_ALL_JOB_TRIGGERS_ERROR);
+                                qsRsrcs.getJobStore().triggeredJobComplete(triggers.get(i),
+                                        bndle.getJobDetail(),
+                                        CompletedExecutionInstruction.SET_ALL_JOB_TRIGGERS_ERROR);
                                 continue;
                             }
 
@@ -407,7 +410,9 @@ public class QuartzSchedulerThread extends Thread {
                                 // a thread pool being used concurrently - which the docs
                                 // say not to do...
                                 getLog().error("ThreadPool.runInThread() return false!");
-                                qsRsrcs.getJobStore().triggeredJobComplete(triggers.get(i), bndle.getJobDetail(), CompletedExecutionInstruction.SET_ALL_JOB_TRIGGERS_ERROR);
+                                qsRsrcs.getJobStore().triggeredJobComplete(triggers.get(i),
+                                        bndle.getJobDetail(),
+                                        CompletedExecutionInstruction.SET_ALL_JOB_TRIGGERS_ERROR);
                             }
 
                         }
