@@ -100,23 +100,24 @@ public abstract class AbstractSchedulerTest {
 
         // test basic storage functions of scheduler...
 
+        String job1 = "job1";
         JobDetail job = newJob()
                 .ofType(TestJob.class)
-                .withIdentity("j1")
+                .withIdentity(job1)
                 .storeDurably()
                 .build();
 
-        assertFalse("Unexpected existence of job named 'j1'.", sched.checkExists(jobKey("j1")));
+        assertFalse("Unexpected existence of job named 'job1'.", sched.checkExists(jobKey(job1)));
 
         sched.addJob(job, false);
 
-        assertTrue("Expected existence of job named 'j1' but checkExists return false.", sched.checkExists(jobKey("j1")));
+        assertTrue("Expected existence of job named 'job1' but checkExists return false.", sched.checkExists(jobKey(job1)));
 
-        job = sched.getJobDetail(jobKey("j1"));
+        job = sched.getJobDetail(jobKey(job1));
 
         assertNotNull("Stored job not found!", job);
 
-        sched.deleteJob(jobKey("j1"));
+        sched.deleteJob(jobKey(job1));
 
         Trigger trigger = newTrigger()
                 .withIdentity("t1")
@@ -127,13 +128,13 @@ public abstract class AbstractSchedulerTest {
                         .withIntervalInSeconds(5))
                 .build();
 
-        assertFalse("Unexpected existence of trigger named '11'.", sched.checkExists(triggerKey("t1")));
+        assertFalse("Unexpected existence of trigger named 't1'.", sched.checkExists(triggerKey("t1")));
 
         sched.scheduleJob(job, trigger);
 
         assertTrue("Expected existence of trigger named 't1' but checkExists return false.", sched.checkExists(triggerKey("t1")));
 
-        job = sched.getJobDetail(jobKey("j1"));
+        job = sched.getJobDetail(jobKey(job1));
 
         assertNotNull("Stored job not found!", job);
 
