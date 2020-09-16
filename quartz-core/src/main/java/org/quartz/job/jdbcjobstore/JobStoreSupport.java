@@ -3816,7 +3816,7 @@ public abstract class JobStoreSupport implements JobStore, Constants {
 
     /**
      * Execute the given callback having optionally acquired the given lock.
-     * This uses the non-managed transaction connection.
+     * This uses the non-managed (not container managed) transaction connection.
      *
      * @param lockName The name of the lock to acquire, for example
      *                 "TRIGGER_ACCESS".  If null, then no lock is acquired, but the
